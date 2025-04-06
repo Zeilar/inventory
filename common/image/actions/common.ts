@@ -23,5 +23,6 @@ export async function writeImageToDisk(id: string, blob: Buffer) {
 export async function processImage(data: File | Blob, width: number, height: number) {
   return sharp(await data.arrayBuffer())
     .resize(Math.round(width / 5), Math.round(height / 5))
+    .jpeg()
     .toBuffer();
 }

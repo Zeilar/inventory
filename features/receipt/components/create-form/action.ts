@@ -6,22 +6,22 @@ import { revalidateTag } from "next/cache";
 import base58 from "base58-random";
 import { base64ImageToFile, imageIdLength, processImage, writeImageToDisk } from "@/common/image";
 
-export async function create(
-  title: string | undefined,
+export async function createReceipt(
+  title: string,
   image: string,
   imageWidth: number,
   imageHeight: number
 ): Promise<void>;
 
-export async function create(
-  title: string | undefined,
+export async function createReceipt(
+  title: string,
   image?: undefined,
   imageWidth?: undefined,
   imageHeight?: undefined
 ): Promise<void>;
 
-export async function create(
-  title?: string,
+export async function createReceipt(
+  title: string,
   image?: string, // base64.
   imageWidth?: number,
   imageHeight?: number

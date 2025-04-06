@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import base58 from "base58-random";
 import { base64ImageToFile, imageIdLength, processImage, writeImageToDisk } from "@/common/image";
 
-export async function update(
+export async function updateReceipt(
   id: number,
   title: string | undefined,
   image: string,
@@ -15,7 +15,7 @@ export async function update(
   imageHeight: number
 ): Promise<void>;
 
-export async function update(
+export async function updateReceipt(
   id: number,
   title: string | undefined,
   image?: undefined,
@@ -23,7 +23,7 @@ export async function update(
   imageHeight?: undefined
 ): Promise<void>;
 
-export async function update(
+export async function updateReceipt(
   id: number,
   title: string | undefined,
   image?: string, // base64.

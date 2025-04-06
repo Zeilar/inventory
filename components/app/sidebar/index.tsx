@@ -17,7 +17,18 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <Paper sx={{ height: "100svh", minWidth: 250, borderTop: 0, borderLeft: 0, borderBottom: 0 }}>
+    <Paper
+      sx={{
+        height: "100svh",
+        minWidth: 250,
+        borderTop: 0,
+        borderLeft: 0,
+        borderBottom: 0,
+        borderRadius: 0,
+        position: "sticky",
+        top: 0,
+      }}
+    >
       <List sx={{ p: 1, display: "flex", flexDirection: "column", gap: 0.5 }}>
         <UnstyledLink href="/">
           <ListItem disablePadding>

@@ -8,6 +8,7 @@ export const theme = createTheme({
       paper: "hsl(220, 30%, 7%)",
     },
     divider: "hsla(220, 20%, 25%, 0.6)",
+    common: { black: "hsl(220, 35%, 3%)" },
   },
   typography: {
     allVariants: {

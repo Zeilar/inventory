@@ -1,8 +1,14 @@
 "use client";
 
-import { Button, type ButtonProps, TextField } from "@mui/material";
+import {
+  Button,
+  type ButtonProps,
+  inputAdornmentClasses,
+  TextField,
+  type TextFieldProps,
+} from "@mui/material";
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
-import { MuiFileInput } from "mui-file-input";
+import { MuiFileInput, type MuiFileInputProps } from "mui-file-input";
 
 const { fieldContext, formContext } = createFormHookContexts();
 
@@ -12,8 +18,19 @@ const SubmitButton = (props: ButtonProps) => (
 
 export const { useAppForm } = createFormHook({
   fieldComponents: {
-    TextField,
-    MuiFileInput,
+    TextField: (props: TextFieldProps) => <TextField size="small" {...props} />,
+    MuiFileInput: (props: MuiFileInputProps) => (
+      <MuiFileInput
+        sx={{
+          // This had a margin-right even when there was no icon.
+          [`.${inputAdornmentClasses.root}`]: {
+            display: "none",
+          },
+        }}
+        size="small"
+        {...props}
+      />
+    ),
   },
   formComponents: {
     SubmitButton,

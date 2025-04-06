@@ -4,9 +4,10 @@ import { imageSize } from "image-size";
 import u8 from "to-uint8";
 import { enqueueSnackbar } from "notistack";
 import { useAppForm, useDisclosure } from "@/hooks";
-import { update } from "./action";
-import { Button, Modal } from "@mui/material";
+import { updateReceipt } from "./action";
+import { Button, FormControl, Modal, Typography } from "@mui/material";
 import { ModalContent } from "@/components";
+import z from "zod";
 
 interface Fields {
   title?: string;
@@ -21,18 +22,18 @@ interface UpdateFormProps {
 function successSnackbar() {
   enqueueSnackbar({
     variant: "success",
-    message: "Updated receipt.",
+    message: "Updated receipt",
   });
 }
 
-export function UpdateForm({ id, currentTitle }: UpdateFormProps) {
+export function UpdateReceiptForm({ id, currentTitle }: UpdateFormProps) {
   const [isOpen, { open, close }] = useDisclosure();
   const form = useAppForm({
     defaultValues: { title: currentTitle, image: null } as Fields,
     onSubmit: async ({ value }) => {
       const { image, title } = value;
       if (!image) {
-        await update(id, title?.trim());
+        await updateReceipt(id, title?.trim());
         form.resetField("image");
         close();
         successSnackbar();
@@ -48,7 +49,13 @@ export function UpdateForm({ id, currentTitle }: UpdateFormProps) {
         return;
       }
       const { width, height } = imageSize(imageData);
-      await update(id, title?.trim(), Buffer.from(imageBuffer).toString("base64"), width, height);
+      await updateReceipt(
+        id,
+        title?.trim(),
+        Buffer.from(imageBuffer).toString("base64"),
+        width,
+        height
+      );
       form.resetField("image");
       close();
       successSnackbar();
@@ -67,23 +74,83 @@ export function UpdateForm({ id, currentTitle }: UpdateFormProps) {
             e.preventDefault();
             form.handleSubmit();
           }}
+          display="flex"
+          flexDirection="column"
+          gap={2}
         >
-          <form.AppField name="title">
-            {(field) => (
-              <field.TextField
-                label="New title"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-              />
-            )}
+          <Typography variant="h5" mb={2}>
+            Edit receipt
+          </Typography>
+          <form.AppField
+            name="title"
+            validators={{
+              onChange: z
+                .string({ message: "Title must be a string." })
+                .min(1, "Title is required."),
+            }}
+          >
+            {(field) => {
+              const error = field.state.meta.errors.at(0);
+              const hasError = Boolean(error);
+
+              return (
+                <FormControl fullWidth error={hasError}>
+                  <field.TextField
+                    autoFocus
+                    error={hasError}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    label="Title"
+                    placeholder="IKEA"
+                  />
+                  {error && (
+                    <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+                      {error.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              );
+            }}
           </form.AppField>
-          <form.AppField name="image">
-            {(field) => (
-              <field.MuiFileInput value={field.state.value} onChange={field.handleChange} />
-            )}
+          <form.AppField
+            name="image"
+            validators={{
+              onChange: ({ value }) => {
+                if (!value?.type.startsWith("image")) {
+                  return "File must be of an image format.";
+                }
+                if (value.size > 10_000_000) {
+                  return "Image size must exceed 10MB.";
+                }
+              },
+            }}
+          >
+            {(field) => {
+              const error = field.state.meta.errors.at(0);
+              const hasError = Boolean(error);
+
+              return (
+                <FormControl fullWidth error={hasError}>
+                  <field.MuiFileInput
+                    label="Image"
+                    error={hasError}
+                    value={field.state.value}
+                    onChange={field.handleChange}
+                    placeholder="receipt.jpg"
+                  />
+                  {error && (
+                    <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+                      {error}
+                    </Typography>
+                  )}
+                </FormControl>
+              );
+            }}
           </form.AppField>
-          <form.SubmitButton loading={form.state.isSubmitting}>Submit</form.SubmitButton>
+          <form.SubmitButton sx={{ mt: 1 }} loading={form.state.isSubmitting}>
+            Submit
+          </form.SubmitButton>
         </ModalContent>
       </Modal>
     </>
