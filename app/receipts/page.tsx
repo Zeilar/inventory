@@ -66,7 +66,7 @@ export default async function Page({ searchParams }: SearchParams<"search">) {
                 <CardContent>
                   <Link href={`/receipts/${receipts.id}`}>{receipts.title}</Link>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ pt: 0 }}>
                   <UpdateReceiptForm id={receipts.id} currentTitle={receipts.title} />
                   <DeleteReceiptButton id={receipts.id} />
                 </CardActions>
