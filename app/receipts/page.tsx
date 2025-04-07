@@ -29,7 +29,7 @@ export default async function Page({ searchParams }: SearchParams<"search" | "pa
                 key={receipts.id}
                 id={receipts.id}
                 title={receipts.title}
-                hasImage={Boolean(images)}
+                imageId={images?.id}
               />
             )
         )}

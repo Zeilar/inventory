@@ -10,7 +10,6 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const search = url.searchParams.get("search")?.trim();
     const page = url.searchParams.get("page")?.trim() ?? "1";
-    let total = 0;
 
     // Keep these query builders identical.
     const receiptsQuery = db

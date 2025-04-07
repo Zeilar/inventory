@@ -21,9 +21,9 @@ export default function Loading() {
               sx={{ transform: "none" }}
             />
             <CardContent>
-              <Skeleton />
+              <Skeleton width="65%" />
             </CardContent>
-            <CardActions sx={{ mt: "auto" }}>
+            <CardActions sx={{ mt: "auto", pt: 0 }}>
               <Button disabled>Edit</Button>
               <Button disabled color="error">
                 Delete

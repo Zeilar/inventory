@@ -11,7 +11,7 @@ export function ReceiptsHeader() {
       alignContent="center"
       justifyContent="space-between"
       position="sticky"
-      bgcolor="common.black"
+      bgcolor="background.paper"
       borderBottom="2px solid"
       borderColor="divider"
       top={0}

@@ -15,6 +15,7 @@ export function Pagination({ count, page, disabled }: PaginationProps) {
 
   return (
     <MuiPagination
+      color="primary"
       count={count}
       page={page}
       onChange={(_e, newPage) => {

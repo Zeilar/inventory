@@ -115,6 +115,9 @@ export function UpdateReceiptForm({ id, currentTitle }: UpdateFormProps) {
             name="image"
             validators={{
               onChange: ({ value }) => {
+                if (!value) {
+                  return;
+                }
                 if (!value?.type.startsWith("image")) {
                   return "File must be of an image format.";
                 }

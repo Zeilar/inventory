@@ -44,11 +44,7 @@ export async function updateReceipt(
       imageHeight
     );
 
-    const existingImage = await db
-      .select()
-      .from(imagesTable)
-      .where(eq(imagesTable.receiptId, id))
-      .get();
+    const existingImage = db.select().from(imagesTable).where(eq(imagesTable.receiptId, id)).get();
 
     if (existingImage) {
       await db.update(imagesTable).set({ id: imageId }).where(eq(imagesTable.id, existingImage.id));
