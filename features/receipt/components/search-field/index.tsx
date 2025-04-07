@@ -15,7 +15,10 @@ export function ReceiptSearchField() {
       onSubmit={(e) => {
         e.preventDefault();
         const search = value.trim();
-        push(search ? `?search=${search}` : window.location.pathname);
+        const _searchParams = new URLSearchParams(searchParams);
+        _searchParams.set("search", search);
+        _searchParams.delete("page"); // Always reset to page 1 when searching to avoid empty result.
+        push(search ? `?${_searchParams}` : window.location.pathname);
       }}
       height="100%"
     >

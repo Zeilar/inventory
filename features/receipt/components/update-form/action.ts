@@ -5,7 +5,8 @@ import { imagesTable, receiptsTable } from "@/features/db/schema";
 import { revalidateTag } from "next/cache";
 import { eq } from "drizzle-orm";
 import base58 from "base58-random";
-import { base64ImageToFile, imageIdLength, processImage, writeImageToDisk } from "@/common/image";
+import { base64ImageToFile, processImage, writeImageToDisk } from "@/common/image/actions";
+import { imageIdLength } from "@/common/image";
 
 export async function updateReceipt(
   id: number,

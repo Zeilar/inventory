@@ -1,5 +1,7 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
+import { type InferSelectModel, sql } from "drizzle-orm";
+
+export type Item = InferSelectModel<typeof itemsTable>;
 
 export const itemsTable = sqliteTable("items", {
   id: int().primaryKey({ autoIncrement: true }),

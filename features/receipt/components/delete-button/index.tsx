@@ -23,7 +23,7 @@ export function DeleteReceiptButton({ id }: DeleteReceiptButtonProps) {
   });
 
   return (
-    <Button color="error" variant="outlined" onClick={() => mutate()} loading={isLoading}>
+    <Button color="error" onClick={() => mutate()} loading={isLoading}>
       Delete
     </Button>
   );

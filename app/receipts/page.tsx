@@ -1,79 +1,39 @@
-import { imageCardWidth } from "@/common/image";
-import { Link } from "@/components";
-import type { Receipts } from "@/features/db/schema";
-import { CreateReceiptForm, UpdateReceiptForm } from "@/features/receipt/components";
-import { DeleteReceiptButton } from "@/features/receipt/components/delete-button";
-import { Box, Card, CardActions, CardContent, Typography } from "@mui/material";
-import Image from "next/image";
+import { Pagination } from "@/components";
+import { Alert, Box } from "@mui/material";
 import { SearchParams } from "../types";
-import { ReceiptSearchField } from "@/features/receipt/components/search-field";
+import type { GetReceiptsResponse } from "../api/receipts/types";
+import { PER_PAGE } from "@/features/receipt/config";
+import { ReceiptCard, ReceiptsContainer, ReceiptsHeader } from "./(components)";
 
-export default async function Page({ searchParams }: SearchParams<"search">) {
-  const { search } = await searchParams;
-  const res = await fetch(`http://localhost:3000/api/receipts?search=${search ?? ""}`, {
-    next: !search
-      ? {
-          revalidate: 31_556_926, // 1 year.
-          tags: ["receipts"],
-        }
-      : undefined,
-  });
-  const receipts: Receipts = await res.json();
+export default async function Page({ searchParams }: SearchParams<"search" | "page">) {
+  const { search = "", page = "1" } = await searchParams;
+  const _searchParams = new URLSearchParams({ search, page });
+
+  const res = await fetch(`http://localhost:3000/api/receipts?${_searchParams}`);
+  const { receipts, total }: GetReceiptsResponse = await res.json();
 
   return (
     <Box width="100%">
-      <Box
-        p={2}
-        display="flex"
-        alignContent="center"
-        justifyContent="space-between"
-        position="sticky"
-        bgcolor="common.black"
-        borderBottom="2px solid"
-        borderColor="divider"
-        top={0}
-      >
-        <Typography variant="h4">Receipts</Typography>
-        <Box display="flex" alignItems="center" width="100%" justifyContent="end" gap={1}>
-          <ReceiptSearchField />
-          <CreateReceiptForm />
-        </Box>
-      </Box>
-      <Box
-        display="grid"
-        gridTemplateColumns={[
-          "repeat(1, 1fr)",
-          "repeat(2, 1fr)",
-          "repeat(3, 1fr)",
-          "repeat(4, 1fr)",
-        ]}
-        gap={2}
-        p={2}
-        overflow="auto"
-      >
+      <ReceiptsHeader />
+      {total ? (
+        <Pagination count={Math.ceil(total / PER_PAGE)} page={parseInt(page)} />
+      ) : (
+        <Pagination count={1} page={1} disabled />
+      )}
+      <ReceiptsContainer>
+        {receipts.length === 0 && search && <Alert severity="info">No results for: {search}</Alert>}
         {receipts.map(
           ({ receipts, images }) =>
             receipts && (
-              <Card key={receipts.id}>
-                <Image
-                  src={images ? `/images/${images.id}.jpeg` : "/image-card-placeholder.svg"}
-                  style={{ objectFit: "cover", aspectRatio: 16 / 9, width: "100%" }}
-                  priority
-                  width={imageCardWidth}
-                  height={(9 / 16) * imageCardWidth}
-                  alt="Receipt"
-                />
-                <CardContent>
-                  <Link href={`/receipts/${receipts.id}`}>{receipts.title}</Link>
-                </CardContent>
-                <CardActions sx={{ pt: 0 }}>
-                  <UpdateReceiptForm id={receipts.id} currentTitle={receipts.title} />
-                  <DeleteReceiptButton id={receipts.id} />
-                </CardActions>
-              </Card>
+              <ReceiptCard
+                key={receipts.id}
+                id={receipts.id}
+                title={receipts.title}
+                hasImage={Boolean(images)}
+              />
             )
         )}
-      </Box>
+      </ReceiptsContainer>
     </Box>
   );
 }

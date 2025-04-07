@@ -64,9 +64,7 @@ export function UpdateReceiptForm({ id, currentTitle }: UpdateFormProps) {
 
   return (
     <>
-      <Button variant="outlined" onClick={open}>
-        Edit
-      </Button>
+      <Button onClick={open}>Edit</Button>
       <Modal open={isOpen} onClose={close}>
         <ModalContent
           component="form"
