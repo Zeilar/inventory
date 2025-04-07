@@ -1,7 +1,9 @@
 "use client";
 
 import { deleteReceipt } from "@/common/receipt/actions";
-import { Button } from "@mui/material";
+import { ModalContent } from "@/components";
+import { useDisclosure } from "@/hooks";
+import { Alert, Box, Button, Modal, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { useMutation } from "react-query";
 
@@ -10,11 +12,10 @@ interface DeleteReceiptButtonProps {
 }
 
 export function DeleteReceiptButton({ id }: DeleteReceiptButtonProps) {
+  const [isPromptOpen, prompt] = useDisclosure();
   const { isLoading, mutate } = useMutation({
-    mutationKey: [`delete-receipt-${id}`],
     mutationFn: () => deleteReceipt(id),
     onSuccess: () => {
-      console.log("here");
       enqueueSnackbar({
         variant: "success",
         message: "Deleted receipt",
@@ -23,8 +24,26 @@ export function DeleteReceiptButton({ id }: DeleteReceiptButtonProps) {
   });
 
   return (
-    <Button color="error" onClick={() => mutate()} loading={isLoading}>
-      Delete
-    </Button>
+    <>
+      <Button color="error" onClick={prompt.open}>
+        Delete
+      </Button>
+      <Modal open={isPromptOpen} onClose={prompt.close}>
+        <ModalContent>
+          <Typography variant="h5" mb={2}>
+            Delete receipt
+          </Typography>
+          <Alert severity="error">Are you sure? This cannot be undone.</Alert>
+          <Box display="flex" mt={2} gap={1}>
+            <Button variant="outlined" color="error" onClick={() => mutate()} loading={isLoading}>
+              Ok
+            </Button>
+            <Button variant="outlined" onClick={prompt.close}>
+              Cancel
+            </Button>
+          </Box>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

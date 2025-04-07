@@ -1,4 +1,4 @@
-import { Color, createTheme } from "@mui/material";
+import { Color, createTheme, darken } from "@mui/material";
 import { roboto } from "./fonts/roboto";
 
 export let theme = createTheme();
@@ -23,7 +23,7 @@ theme = createTheme({
       paper: grey[700],
       default: grey[700],
     },
-    divider: grey[600],
+    divider: "hsla(220, 20%, 25%, 0.6)",
     common: { black: "#000" },
     grey,
   },
@@ -44,7 +44,7 @@ theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           backgroundImage: "none",
-          border: "2px solid",
+          border: "1px solid",
           borderColor: theme.palette.divider,
         }),
       },
@@ -55,6 +55,28 @@ theme = createTheme({
           fontWeight: 500,
           borderRadius: theme.shape.borderRadius,
         }),
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: ({ theme, ownerState }) => {
+          let borderColor = theme.palette.divider;
+          switch (ownerState.severity) {
+            case "error":
+              borderColor = theme.palette.error.dark;
+              break;
+            case "info":
+              borderColor = theme.palette.info.dark;
+              break;
+            case "success":
+              borderColor = theme.palette.success.dark;
+              break;
+            case "warning":
+              borderColor = theme.palette.warning.dark;
+              break;
+          }
+          return { borderColor };
+        },
       },
     },
   },
