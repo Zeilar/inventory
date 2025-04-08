@@ -75,8 +75,6 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
     },
   });
 
-  const imageFieldValue = form.getFieldValue("image");
-
   return (
     <>
       <Button onClick={open}>Edit</Button>
@@ -131,15 +129,12 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
             validators={{
               onChange: ({ value }) => {
                 if (!value) {
-                  console.log("no value");
                   return;
                 }
                 if (!value?.type.startsWith("image")) {
-                  console.log("2");
                   return "File must be of an image format.";
                 }
                 if (value.size > 10_000_000) {
-                  console.log("3");
                   return "Image size must exceed 10MB.";
                 }
                 return undefined;
