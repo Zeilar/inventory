@@ -1,8 +1,9 @@
 import { imageCardHeight, imageCardWidth } from "@/common/image";
-import { Link } from "@/components";
+import { getImageSrc } from "@/common/image/path";
+import { ImagePlaceholder, Link, UnstyledLink } from "@/components";
 import { DeleteReceiptButton, UpdateReceiptForm } from "@/features/receipt/components";
 import { HideImage } from "@mui/icons-material";
-import { Box, Card, CardActions, CardContent } from "@mui/material";
+import { Box, ButtonBase, Card, CardActions, CardContent } from "@mui/material";
 import Image from "next/image";
 
 interface ReceiptCardProps {
@@ -12,38 +13,35 @@ interface ReceiptCardProps {
 }
 
 export function ReceiptCard({ id, title, imageId }: ReceiptCardProps) {
+  const url = `/receipts/${id}`;
+
   return (
     <Card key={id} sx={{ display: "flex", flexDirection: "column" }}>
-      {imageId ? (
-        <Image
-          src={`/images/${imageId}.jpeg`}
-          style={{
-            objectFit: "cover",
-            aspectRatio: 16 / 9,
-            width: "100%",
-          }}
-          priority
-          width={imageCardWidth}
-          height={imageCardHeight}
-          alt="Receipt"
-        />
-      ) : (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="100%"
-          height={imageCardHeight}
-          bgcolor="grey.800"
-        >
-          <HideImage color="primary" />
-        </Box>
-      )}
+      <UnstyledLink href={url}>
+        <ButtonBase sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0, width: "100%" }}>
+          {imageId ? (
+            <Image
+              src={getImageSrc(imageId)}
+              style={{
+                objectFit: "cover",
+                aspectRatio: 16 / 9,
+                width: "100%",
+              }}
+              priority
+              width={imageCardWidth}
+              height={imageCardHeight}
+              alt="Receipt"
+            />
+          ) : (
+            <ImagePlaceholder height={imageCardHeight} />
+          )}
+        </ButtonBase>
+      </UnstyledLink>
       <CardContent>
-        <Link href={`/receipts/${id}`}>{title}</Link>
+        <Link href={url}>{title}</Link>
       </CardContent>
       <CardActions sx={{ mt: "auto", pt: 0 }}>
-        <UpdateReceiptForm id={id} currentTitle={title} />
+        <UpdateReceiptForm id={id} currentTitle={title} imageId={imageId} />
         <DeleteReceiptButton id={id} />
       </CardActions>
     </Card>

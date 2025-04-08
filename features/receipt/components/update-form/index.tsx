@@ -5,9 +5,11 @@ import u8 from "to-uint8";
 import { enqueueSnackbar } from "notistack";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { updateReceipt } from "./action";
-import { Button, FormControl, Modal, Typography } from "@mui/material";
-import { ModalContent } from "@/components";
+import { Box, Button, FormControl, Modal, Typography } from "@mui/material";
+import { ImagePlaceholder, ModalContent } from "@/components";
 import z from "zod";
+import { getImageSrc } from "@/common/image/path";
+import { imageCardHeight } from "@/common/image";
 
 interface Fields {
   title?: string;
@@ -17,6 +19,7 @@ interface Fields {
 interface UpdateFormProps {
   id: number;
   currentTitle: string;
+  imageId: string | undefined;
 }
 
 function successSnackbar() {
@@ -26,7 +29,17 @@ function successSnackbar() {
   });
 }
 
-export function UpdateReceiptForm({ id, currentTitle }: UpdateFormProps) {
+function getImageFieldSrc(input: Fields["image"], imageId: string | undefined): string | null {
+  if (input) {
+    return URL.createObjectURL(input);
+  }
+  if (imageId) {
+    return getImageSrc(imageId);
+  }
+  return null;
+}
+
+export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps) {
   const [isOpen, { open, close }] = useDisclosure();
   const form = useAppForm({
     defaultValues: { title: currentTitle, image: null } as Fields,
@@ -61,6 +74,8 @@ export function UpdateReceiptForm({ id, currentTitle }: UpdateFormProps) {
       successSnackbar();
     },
   });
+
+  const imageFieldValue = form.getFieldValue("image");
 
   return (
     <>
@@ -116,20 +131,25 @@ export function UpdateReceiptForm({ id, currentTitle }: UpdateFormProps) {
             validators={{
               onChange: ({ value }) => {
                 if (!value) {
+                  console.log("no value");
                   return;
                 }
                 if (!value?.type.startsWith("image")) {
+                  console.log("2");
                   return "File must be of an image format.";
                 }
                 if (value.size > 10_000_000) {
+                  console.log("3");
                   return "Image size must exceed 10MB.";
                 }
+                return undefined;
               },
             }}
           >
             {(field) => {
               const error = field.state.meta.errors.at(0);
               const hasError = Boolean(error);
+              const imageSrc = getImageFieldSrc(field.state.value, imageId);
 
               return (
                 <FormControl fullWidth error={hasError}>
@@ -145,6 +165,13 @@ export function UpdateReceiptForm({ id, currentTitle }: UpdateFormProps) {
                       {error}
                     </Typography>
                   )}
+                  <Box mt={1}>
+                    {imageSrc ? (
+                      <Box component="img" src={imageSrc} width="100%" alt="Preview" />
+                    ) : (
+                      <ImagePlaceholder height={imageCardHeight} />
+                    )}
+                  </Box>
                 </FormControl>
               );
             }}

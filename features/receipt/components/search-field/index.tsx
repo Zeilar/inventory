@@ -35,12 +35,14 @@ export function ReceiptSearchField() {
       height="100%"
     >
       <FormControl size="small" sx={{ width: 300 }}>
-        <InputLabel htmlFor={inputId}>Amount</InputLabel>
+        <InputLabel htmlFor={inputId}>Search</InputLabel>
         <OutlinedInput
           value={value}
           onChange={(e) => setValue(e.target.value)}
           id={inputId}
           size="small"
+          placeholder="IKEA"
+          label="Search"
           endAdornment={
             value.trim() && (
               <InputAdornment
@@ -55,7 +57,6 @@ export function ReceiptSearchField() {
               </InputAdornment>
             )
           }
-          label="Amount"
         />
       </FormControl>
     </Box>
