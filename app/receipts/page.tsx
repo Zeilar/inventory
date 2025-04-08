@@ -14,12 +14,10 @@ export default async function Page({ searchParams }: SearchParams<"search" | "pa
 
   return (
     <Box width="100%">
-      <ReceiptsHeader />
-      {total ? (
-        <Pagination count={Math.ceil(total / PER_PAGE)} page={parseInt(page)} />
-      ) : (
-        <Pagination count={1} page={1} disabled />
-      )}
+      <ReceiptsHeader
+        count={total ? Math.ceil(total / PER_PAGE) : 1}
+        page={total ? parseInt(page) : 1}
+      />
       <ReceiptsContainer>
         {receipts.length === 0 && search && <Alert severity="info">No results for: {search}</Alert>}
         {receipts.map(

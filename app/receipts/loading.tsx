@@ -2,15 +2,13 @@
 
 import { Box, Button, Card, CardActions, CardContent, Skeleton } from "@mui/material";
 import { ReceiptsContainer, ReceiptsHeader } from "./(components)";
-import { Pagination } from "@/components";
 import { PER_PAGE } from "@/features/receipt/config";
 import { imageCardHeight } from "@/common/image";
 
 export default function Loading() {
   return (
     <Box width="100%">
-      <ReceiptsHeader />
-      <Pagination count={1} page={1} disabled />
+      <ReceiptsHeader count={1} page={1} disablePagination />
       <ReceiptsContainer>
         {Array.from({ length: PER_PAGE }, (_, i) => (
           <Card key={i} sx={{ display: "flex", flexDirection: "column" }}>

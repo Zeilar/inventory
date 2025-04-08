@@ -1,7 +1,14 @@
+import { Pagination } from "@/components";
 import { CreateReceiptForm, ReceiptSearchField } from "@/features/receipt/components";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 
-export function ReceiptsHeader() {
+interface ReceiptsHeaderProps {
+  page: number;
+  count: number;
+  disablePagination?: boolean;
+}
+
+export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeaderProps) {
   return (
     <Paper
       sx={{
@@ -15,11 +22,11 @@ export function ReceiptsHeader() {
         alignItems: "center",
         position: "sticky",
         top: 0,
-        mb: 2,
+        zIndex: 1,
       }}
     >
-      <Typography variant="h4">Receipts</Typography>
-      <Box display="flex" alignItems="center" width="100%" justifyContent="end" gap={1}>
+      <Pagination count={count} page={page} disabled={disablePagination} />
+      <Box display="flex" alignItems="center" justifyContent="end" gap={1}>
         <ReceiptSearchField />
         <CreateReceiptForm />
       </Box>

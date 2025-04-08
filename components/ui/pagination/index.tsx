@@ -24,6 +24,7 @@ export function Pagination({ count, page, disabled }: PaginationProps) {
         push(`?${_searchParams}`);
       }}
       disabled={disabled}
+      sx={{ width: "100%" }}
     />
   );
 }
