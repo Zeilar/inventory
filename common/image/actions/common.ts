@@ -26,10 +26,8 @@ export async function removeImageFromDisk(id: string): Promise<void> {
 
 export async function processImage(
   data: File | Blob,
-  width: number,
-  height: number
+  _width: number,
+  _height: number
 ): Promise<Buffer<ArrayBufferLike>> {
-  return sharp(await data.arrayBuffer())
-    .resize(Math.round(width * 0.75), Math.round(height * 0.75))
-    .toBuffer();
+  return sharp(await data.arrayBuffer()).toBuffer();
 }
