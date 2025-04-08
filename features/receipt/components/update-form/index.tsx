@@ -8,8 +8,10 @@ import { updateReceipt } from "./action";
 import { Box, Button, FormControl, Modal, Typography } from "@mui/material";
 import { ImagePlaceholder, ModalContent } from "@/components";
 import z from "zod";
-import { getImageSrc } from "@/common/image/path";
-import { imageCardHeight } from "@/common/image";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
+import { getImagesDir } from "@/common/image/actions";
+import { getImageFilename } from "@/common/image/path";
 
 interface Fields {
   title?: string;
@@ -27,16 +29,6 @@ function successSnackbar() {
     variant: "success",
     message: "Updated receipt",
   });
-}
-
-function getImageFieldSrc(input: Fields["image"], imageId: string | undefined): string | null {
-  if (input) {
-    return URL.createObjectURL(input);
-  }
-  if (imageId) {
-    return getImageSrc(imageId);
-  }
-  return null;
 }
 
 export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps) {
@@ -72,6 +64,25 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
       form.resetField("image");
       close();
       successSnackbar();
+    },
+  });
+
+  /**
+   * Set the default selected image
+   */
+  useQuery({
+    queryKey: ["image", imageId],
+    queryFn: async () => {
+      if (!imageId) {
+        return null;
+      }
+      const imageFilename = getImageFilename(imageId);
+      const res = await fetch(`/images/${imageFilename}`);
+      const blob = await res.blob();
+      return new File([blob], imageFilename);
+    },
+    onSuccess: (data) => {
+      form.setFieldValue("image", data);
     },
   });
 
@@ -129,7 +140,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
             validators={{
               onChange: ({ value }) => {
                 if (!value) {
-                  return;
+                  return; // Field is optional
                 }
                 if (!value?.type.startsWith("image")) {
                   return "File must be of an image format.";
@@ -144,25 +155,25 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
             {(field) => {
               const error = field.state.meta.errors.at(0);
               const hasError = Boolean(error);
-              const imageSrc = getImageFieldSrc(field.state.value, imageId);
+              const imageSrc = field.state.value ? URL.createObjectURL(field.state.value) : null;
 
               return (
                 <FormControl fullWidth error={hasError}>
-                  <field.MuiFileInput
-                    label="Image"
-                    error={hasError}
-                    value={field.state.value}
-                    onChange={field.handleChange}
-                    placeholder="receipt.jpg"
-                  />
+                  <Box display="flex" gap={1}>
+                    <field.MuiFileInput
+                      label="Image"
+                      error={hasError}
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                      placeholder="receipt.jpg"
+                    />
+                    <Button onClick={() => field.setValue(null)}>Clear</Button>
+                  </Box>
                   {error && (
                     <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
                       {error}
                     </Typography>
                   )}
-                  <Button sx={{ alignSelf: "start", mt: 1 }} onClick={() => field.setValue(null)}>
-                    Clear
-                  </Button>
                   <Box mt={1}>
                     {imageSrc ? (
                       <Box component="img" src={imageSrc} width="100%" alt="Preview" />

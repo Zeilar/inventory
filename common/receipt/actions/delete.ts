@@ -2,11 +2,12 @@
 
 import { eq } from "drizzle-orm";
 import { rm } from "fs/promises";
-import { getImageFilename, getImagesDir } from "@/common/image/actions";
+import { getImagesDir } from "@/common/image/actions";
 import { join } from "path";
 import { db } from "@/features/db";
 import { imagesTable, receiptsTable } from "@/features/db/schema";
 import { revalidateTag } from "next/cache";
+import { getImageFilename } from "@/common/image/path";
 
 /**
  * Only use this to delete receipts from the database, otherwise you risk dangling images on disk.

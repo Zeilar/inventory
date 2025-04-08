@@ -1,26 +1,34 @@
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, rm, writeFile } from "fs/promises";
 import { join } from "path";
 import sharp from "sharp";
+import { getImageFilename, imagesPath } from "../path";
 
 export function base64ImageToFile(id: string, base64: string) {
   return new File([Buffer.from(base64, "base64")], `${id}.jpeg`);
 }
 
 export function getImagesDir(): string {
-  return join(process.cwd(), "public/images");
+  return join(process.cwd(), imagesPath);
 }
 
-export function getImageFilename(id: string): string {
-  return `${id}.jpeg`;
-}
-
-export async function writeImageToDisk(id: string, blob: Buffer) {
+export async function writeImageToDisk(id: string, blob: Buffer): Promise<void> {
   const imagesDir = getImagesDir();
-  await mkdir(imagesDir, { recursive: true });
-  await writeFile(join(imagesDir, getImageFilename(id)), blob);
+  await Promise.all([
+    mkdir(imagesDir, { recursive: true }),
+    writeFile(join(imagesDir, getImageFilename(id)), blob),
+  ]);
 }
 
-export async function processImage(data: File | Blob, width: number, height: number) {
+export async function removeImageFromDisk(id: string): Promise<void> {
+  const imagesDir = getImagesDir();
+  await rm(join(imagesDir, getImageFilename(id)));
+}
+
+export async function processImage(
+  data: File | Blob,
+  width: number,
+  height: number
+): Promise<Buffer<ArrayBufferLike>> {
   return sharp(await data.arrayBuffer())
     .resize(Math.round(width * 0.75), Math.round(height * 0.75))
     .toBuffer();
