@@ -20,25 +20,19 @@ function getReceiptImage(receiptId: number): Image | undefined {
 export async function updateReceipt(
   id: number,
   title: string | undefined,
-  image: string,
-  imageWidth: number,
-  imageHeight: number
+  image: string
 ): Promise<void>;
 
 export async function updateReceipt(
   id: number,
   title: string | undefined,
-  image?: undefined,
-  imageWidth?: undefined,
-  imageHeight?: undefined
+  image?: undefined
 ): Promise<void>;
 
 export async function updateReceipt(
   id: number,
   title: string | undefined,
-  image?: string, // base64.
-  imageWidth?: number,
-  imageHeight?: number
+  image?: string // base64.
 ) {
   const imageId = base58(imageIdLength);
 
@@ -46,12 +40,8 @@ export async function updateReceipt(
 
   console.log("Updated receipt.");
 
-  if (image && imageWidth && imageHeight) {
-    const imageBlob = await processImage(
-      base64ImageToFile(imageId, image),
-      imageWidth,
-      imageHeight
-    );
+  if (image) {
+    const imageBlob = await processImage(base64ImageToFile(imageId, image));
 
     const existingImage = getReceiptImage(id);
 

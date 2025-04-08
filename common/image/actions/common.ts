@@ -4,7 +4,7 @@ import sharp from "sharp";
 import { getImageFilename, imagesPath } from "../path";
 
 export function base64ImageToFile(id: string, base64: string) {
-  return new File([Buffer.from(base64, "base64")], `${id}.jpeg`);
+  return new File([Buffer.from(base64, "base64")], getImageFilename(id));
 }
 
 export function getImagesDir(): string {
@@ -24,10 +24,8 @@ export async function removeImageFromDisk(id: string): Promise<void> {
   await rm(join(imagesDir, getImageFilename(id)));
 }
 
-export async function processImage(
-  data: File | Blob,
-  _width: number,
-  _height: number
-): Promise<Buffer<ArrayBufferLike>> {
-  return sharp(await data.arrayBuffer()).toBuffer();
+export async function processImage(data: File | Blob): Promise<Buffer<ArrayBufferLike>> {
+  return sharp(await data.arrayBuffer())
+    .webp()
+    .toBuffer();
 }

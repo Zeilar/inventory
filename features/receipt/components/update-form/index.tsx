@@ -1,6 +1,5 @@
 "use client";
 
-import { imageSize } from "image-size";
 import u8 from "to-uint8";
 import { enqueueSnackbar } from "notistack";
 import { useAppForm, useDisclosure } from "@/hooks";
@@ -69,14 +68,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
         });
         return;
       }
-      const { width, height } = imageSize(imageData);
-      await updateReceipt(
-        id,
-        title?.trim(),
-        Buffer.from(imageBuffer).toString("base64"),
-        width,
-        height
-      );
+      await updateReceipt(id, title?.trim(), Buffer.from(imageBuffer).toString("base64"));
       form.resetField("image");
       onClose();
       successSnackbar();

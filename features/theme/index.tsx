@@ -1,4 +1,4 @@
-import { Color, createTheme, darken } from "@mui/material";
+import { Color, createTheme } from "@mui/material";
 import { roboto } from "./fonts/roboto";
 
 export let theme = createTheme();
