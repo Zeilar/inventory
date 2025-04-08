@@ -185,9 +185,10 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
               );
             }}
           </form.AppField>
-          <form.SubmitButton sx={{ mt: 1 }} loading={form.state.isSubmitting}>
-            Submit
-          </form.SubmitButton>
+          <Box display="flex" alignItems="center" justifyContent="end" gap={1}>
+            <Button onClick={close}>Cancel</Button>
+            <form.SubmitButton loading={form.state.isSubmitting}>Submit</form.SubmitButton>
+          </Box>
         </ModalContent>
       </Modal>
     </>

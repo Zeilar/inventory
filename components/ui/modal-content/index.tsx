@@ -13,7 +13,8 @@ export function ModalContent({ sx, ...props }: BoxProps) {
         bgcolor: "background.paper",
         border: "2px solid #000",
         boxShadow: 24,
-        p: 4,
+        px: 3,
+        py: 2,
         borderRadius: 2,
         ...sx,
       }}
