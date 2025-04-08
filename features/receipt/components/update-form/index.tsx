@@ -70,7 +70,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
   /**
    * Set the default selected image
    */
-  useQuery({
+  const currentImageQuery = useQuery({
     queryKey: ["image", imageId],
     queryFn: async () => {
       if (!imageId) {
@@ -185,9 +185,16 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
               );
             }}
           </form.AppField>
-          <Box display="flex" alignItems="center" justifyContent="end" gap={1}>
-            <Button onClick={close}>Cancel</Button>
-            <form.SubmitButton loading={form.state.isSubmitting}>Submit</form.SubmitButton>
+          <Box display="flex" alignItems="center" justifyContent="bet" gap={1} mt={1}>
+            <Button
+              onClick={() => form.reset({ title: currentTitle, image: currentImageQuery.data })}
+            >
+              Reset
+            </Button>
+            <Box display="flex" gap={1} justifyContent="end" width="100%">
+              <Button onClick={close}>Cancel</Button>
+              <form.SubmitButton loading={form.state.isSubmitting}>Submit</form.SubmitButton>
+            </Box>
           </Box>
         </ModalContent>
       </Modal>
