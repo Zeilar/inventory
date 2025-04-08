@@ -1,4 +1,3 @@
-import { Pagination } from "@/components";
 import { Alert, Box } from "@mui/material";
 import { SearchParams } from "../types";
 import type { GetReceiptsResponse } from "../api/receipts/types";

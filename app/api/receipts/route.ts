@@ -1,5 +1,5 @@
 import { db } from "@/features/db";
-import { imagesTable, type Receipts, receiptsTable } from "@/features/db/schema";
+import { imagesTable, receiptsTable } from "@/features/db/schema";
 import { NextResponse } from "next/server";
 import { count, eq, like } from "drizzle-orm";
 import { PER_PAGE } from "@/features/receipt/config";

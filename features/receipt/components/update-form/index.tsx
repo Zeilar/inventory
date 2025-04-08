@@ -5,12 +5,11 @@ import u8 from "to-uint8";
 import { enqueueSnackbar } from "notistack";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { updateReceipt } from "./action";
-import { Box, Button, FormControl, Modal, Typography } from "@mui/material";
+import { Box, Button, FormControl, Modal, Skeleton, Typography } from "@mui/material";
 import { ImagePlaceholder, ModalContent } from "@/components";
 import z from "zod";
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { useQuery } from "react-query";
-import { getImagesDir } from "@/common/image/actions";
 import { getImageFilename } from "@/common/image/path";
 
 interface Fields {
@@ -24,11 +23,28 @@ interface UpdateFormProps {
   imageId: string | undefined;
 }
 
+interface ImagePreviewProps {
+  src: string | null;
+  isLoading: boolean;
+}
+
 function successSnackbar() {
   enqueueSnackbar({
     variant: "success",
     message: "Updated receipt",
   });
+}
+
+const IMAGE_PREVIEW_HEIGHT = 150;
+
+function ImagePreview({ isLoading, src }: ImagePreviewProps) {
+  if (isLoading) {
+    return <Skeleton height={IMAGE_PREVIEW_HEIGHT} sx={{ transform: "none" }} />;
+  }
+  if (src) {
+    return <Box component="img" src={src} width="100%" alt="Preview" />;
+  }
+  return <ImagePlaceholder height={IMAGE_PREVIEW_HEIGHT} />;
 }
 
 export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps) {
@@ -40,7 +56,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
       if (!image) {
         await updateReceipt(id, title?.trim());
         form.resetField("image");
-        close();
+        onClose();
         successSnackbar();
         return;
       }
@@ -62,7 +78,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
         height
       );
       form.resetField("image");
-      close();
+      onClose();
       successSnackbar();
     },
   });
@@ -70,7 +86,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
   /**
    * Set the default selected image
    */
-  const currentImageQuery = useQuery({
+  const { data: currentImage, isLoading: isCurrentImageLoading } = useQuery({
     queryKey: ["image", imageId],
     queryFn: async () => {
       if (!imageId) {
@@ -86,10 +102,21 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
     },
   });
 
+  const reset = useCallback(() => {
+    // form.reset for whatever reason doesn't always work.
+    form.setFieldValue("image", currentImage);
+    form.setFieldValue("title", currentTitle);
+  }, [form, currentTitle, currentImage]);
+
+  const onClose = useCallback(() => {
+    close();
+    reset();
+  }, [close, reset]);
+
   return (
     <>
       <Button onClick={open}>Edit</Button>
-      <Modal open={isOpen} onClose={close}>
+      <Modal open={isOpen} onClose={onClose}>
         <ModalContent
           component="form"
           onSubmit={(e) => {
@@ -166,6 +193,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
                       value={field.state.value}
                       onChange={field.handleChange}
                       placeholder="receipt.jpg"
+                      disabled={isCurrentImageLoading}
                     />
                     <Button onClick={() => field.setValue(null)}>Clear</Button>
                   </Box>
@@ -175,24 +203,21 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
                     </Typography>
                   )}
                   <Box mt={1}>
-                    {imageSrc ? (
+                    <ImagePreview src={imageSrc} isLoading={isCurrentImageLoading} />
+                    {/* {imageSrc ? (
                       <Box component="img" src={imageSrc} width="100%" alt="Preview" />
                     ) : (
                       <ImagePlaceholder height={150} />
-                    )}
+                    )} */}
                   </Box>
                 </FormControl>
               );
             }}
           </form.AppField>
           <Box display="flex" alignItems="center" justifyContent="bet" gap={1} mt={1}>
-            <Button
-              onClick={() => form.reset({ title: currentTitle, image: currentImageQuery.data })}
-            >
-              Reset
-            </Button>
+            <Button onClick={reset}>Reset</Button>
             <Box display="flex" gap={1} justifyContent="end" width="100%">
-              <Button onClick={close}>Cancel</Button>
+              <Button onClick={onClose}>Cancel</Button>
               <form.SubmitButton loading={form.state.isSubmitting}>Submit</form.SubmitButton>
             </Box>
           </Box>

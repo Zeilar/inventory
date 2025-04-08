@@ -2,8 +2,7 @@ import { imageCardHeight, imageCardWidth } from "@/common/image";
 import { getImageSrc } from "@/common/image/path";
 import { ImagePlaceholder, Link, UnstyledLink } from "@/components";
 import { DeleteReceiptButton, UpdateReceiptForm } from "@/features/receipt/components";
-import { HideImage } from "@mui/icons-material";
-import { Box, ButtonBase, Card, CardActions, CardContent } from "@mui/material";
+import { ButtonBase, Card, CardActions, CardContent } from "@mui/material";
 import Image from "next/image";
 
 interface ReceiptCardProps {
