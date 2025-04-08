@@ -165,11 +165,14 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
                       {error}
                     </Typography>
                   )}
+                  <Button sx={{ alignSelf: "start", mt: 1 }} onClick={() => field.setValue(null)}>
+                    Clear
+                  </Button>
                   <Box mt={1}>
                     {imageSrc ? (
                       <Box component="img" src={imageSrc} width="100%" alt="Preview" />
                     ) : (
-                      <ImagePlaceholder height={imageCardHeight} />
+                      <ImagePlaceholder height={150} />
                     )}
                   </Box>
                 </FormControl>
