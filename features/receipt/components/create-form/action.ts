@@ -29,4 +29,5 @@ export async function createReceipt(
   console.log("Created receipt.");
 
   revalidateTag("receipts");
+  revalidateTag("receipts-total");
 }

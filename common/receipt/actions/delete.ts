@@ -30,4 +30,5 @@ export async function deleteReceipt(id: number): Promise<void> {
   ]);
 
   revalidateTag(`images-${image.id}`);
+  revalidateTag("receipts-total");
 }
