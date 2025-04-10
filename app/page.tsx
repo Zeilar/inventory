@@ -36,7 +36,7 @@ export default async function Page() {
             promise={getDbSize()}
             sibling={
               <UnstyledLink href="/api/db/backup" download sx={{ ml: "auto" }}>
-                <Button variant="outlined" startIcon={<CloudDownloadOutlined />}>
+                <Button variant="outlined" startIcon={<CloudDownloadOutlined />} size="large">
                   Download
                 </Button>
               </UnstyledLink>
