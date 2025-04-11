@@ -1,7 +1,7 @@
-import { CloudDownloadOutlined, LayersOutlined, Receipt } from "@mui/icons-material";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { CloudDownloadOutlined, Layers, Receipt } from "@mui/icons-material";
+import { Box, Button, Skeleton } from "@mui/material";
 import prettyBytes from "pretty-bytes";
-import { DashboardCard } from "./(components)";
+import { DashboardCard, DashboardCardLayout } from "./(components)";
 import { Suspense } from "react";
 import { UnstyledLink } from "@/components";
 
@@ -24,15 +24,41 @@ export default async function Page() {
   return (
     <Box p={2} width="100%">
       <Box display="grid" gap={2} gridTemplateColumns="repeat(3, 1fr)">
-        <Suspense fallback={<CircularProgress />}>
+        <Suspense
+          fallback={
+            <DashboardCardLayout icon={Receipt} title="Receipts">
+              <Skeleton width={100} />
+            </DashboardCardLayout>
+          }
+        >
           <DashboardCard<number> title="Receipts" icon={Receipt} promise={getTotalReceipts()}>
             {(total) => total}
           </DashboardCard>
         </Suspense>
-        <Suspense fallback={<CircularProgress />}>
+        <Suspense
+          fallback={
+            <DashboardCardLayout
+              icon={Layers}
+              title="Receipts"
+              sibling={
+                <Button
+                  variant="outlined"
+                  startIcon={<CloudDownloadOutlined />}
+                  size="large"
+                  disabled
+                  sx={{ ml: "auto" }}
+                >
+                  Download
+                </Button>
+              }
+            >
+              <Skeleton width={100} />
+            </DashboardCardLayout>
+          }
+        >
           <DashboardCard<number>
             title="Database size"
-            icon={LayersOutlined}
+            icon={Layers}
             promise={getDbSize()}
             sibling={
               <UnstyledLink href="/api/db/backup" download sx={{ ml: "auto" }}>
