@@ -16,6 +16,19 @@ const grey: Partial<Color> = {
   900: "hsl(220, 30%, 3%)",
 };
 
+const primary: Partial<Color> = {
+  50: "#e1f5fe",
+  100: "#b3e5fc",
+  200: "#81d4fa",
+  300: "#4fc3f7",
+  400: "#29b6f6",
+  500: "#29b6f6",
+  600: "#039be5",
+  700: "#0288d1",
+  800: "#0277bd",
+  900: "#01579b",
+};
+
 theme = createTheme({
   palette: {
     mode: "dark",
@@ -26,6 +39,7 @@ theme = createTheme({
     divider: "hsla(220, 20%, 25%, 0.6)",
     common: { black: "#000" },
     grey,
+    primary,
   },
   typography: {
     allVariants: {

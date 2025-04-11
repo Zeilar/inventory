@@ -28,7 +28,7 @@ export async function DashboardCard<T>({
       </Box>
       <Box display="flex" alignItems="center" gap={4} width="100%">
         <div>
-          <Typography variant="body2" color="info" mb={0.5}>
+          <Typography variant="body2" color="primary" mb={0.5}>
             {title}
           </Typography>
           <Typography variant="h4">{children(data)}</Typography>
