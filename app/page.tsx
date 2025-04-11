@@ -1,7 +1,7 @@
 import { CloudDownloadOutlined, LayersOutlined, Receipt } from "@mui/icons-material";
 import { Box, Button, CircularProgress } from "@mui/material";
 import prettyBytes from "pretty-bytes";
-import { DashboardCard } from "./(components)/dashboard-card";
+import { DashboardCard } from "./(components)";
 import { Suspense } from "react";
 import { UnstyledLink } from "@/components";
 

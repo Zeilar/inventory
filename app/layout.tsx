@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { Providers, Sidebar } from "../components/app";
 import { Box } from "@mui/material";
 import classNames from "classnames";
 import { roboto } from "@/features/theme/fonts";
+import { Providers, Sidebar } from "./(components)";
 
 export const metadata: Metadata = {
   title: "Create Next App",

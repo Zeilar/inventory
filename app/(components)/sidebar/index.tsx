@@ -21,7 +21,7 @@ export function Sidebar() {
         top: 0,
         display: "flex",
         flexDirection: "column",
-        p: 2,
+        p: 1,
       }}
     >
       <Navlink href="/" icon={Home} isActive={pathname === "/"} label="Overview" />

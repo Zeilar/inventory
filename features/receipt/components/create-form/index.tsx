@@ -53,11 +53,10 @@ export function CreateReceiptForm() {
     <>
       <Button
         variant="contained"
-        color="success"
         startIcon={<Add />}
         loading={form.state.isSubmitting}
         onClick={open}
-        sx={{ height: "100%" }}
+        sx={{ height: 40 }}
       >
         Add
       </Button>

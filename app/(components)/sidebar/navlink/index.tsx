@@ -35,7 +35,9 @@ export function Navlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
         }}
       >
         <Icon color={isActive ? "primary" : "action"} />
-        <Typography variant="body1">{label}</Typography>
+        <Typography variant="body1" fontWeight={500}>
+          {label}
+        </Typography>
       </ButtonBase>
     </UnstyledLink>
   );
