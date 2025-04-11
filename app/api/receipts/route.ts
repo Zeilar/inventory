@@ -1,7 +1,7 @@
 import { db } from "@/features/db";
 import { imagesTable, receiptsTable } from "@/features/db/schema";
 import { NextResponse } from "next/server";
-import { count, eq, like } from "drizzle-orm";
+import { desc, count, eq, like } from "drizzle-orm";
 import { PER_PAGE } from "@/features/receipt/config";
 import type { GetReceiptsResponse } from "./types";
 
@@ -11,11 +11,12 @@ export async function GET(req: Request) {
     const search = url.searchParams.get("search")?.trim();
     const page = url.searchParams.get("page")?.trim() ?? "1";
 
-    // Keep these query builders identical.
+    // Keep these query builders identical for anything that impacts the row count.
     const receiptsQuery = db
       .select()
       .from(receiptsTable)
-      .leftJoin(imagesTable, eq(receiptsTable.id, imagesTable.receiptId));
+      .leftJoin(imagesTable, eq(receiptsTable.id, imagesTable.receiptId))
+      .orderBy(({ receipts }) => [desc(receipts.id)]);
     const countQuery = db
       .select({ count: count() })
       .from(receiptsTable)
