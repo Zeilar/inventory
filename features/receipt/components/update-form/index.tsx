@@ -1,6 +1,5 @@
 "use client";
 
-import u8 from "to-uint8";
 import { enqueueSnackbar } from "notistack";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { updateReceipt } from "./action";
@@ -54,22 +53,12 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
       const { image, title } = value;
       if (!image) {
         await updateReceipt(id, title?.trim());
-        form.resetField("image");
         onClose();
         successSnackbar();
         return;
       }
       const imageBuffer = await image.arrayBuffer();
-      const imageData = u8(imageBuffer);
-      if (!imageData) {
-        enqueueSnackbar({
-          variant: "error",
-          message: "Invalid image file.",
-        });
-        return;
-      }
       await updateReceipt(id, title?.trim(), Buffer.from(imageBuffer).toString("base64"));
-      form.resetField("image");
       onClose();
       successSnackbar();
     },
@@ -108,7 +97,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
   return (
     <>
       <Button onClick={open}>Edit</Button>
-      <Modal open={isOpen} onClose={onClose}>
+      <Modal open={isOpen} onClose={onClose} keepMounted>
         <ModalContent
           component="form"
           onSubmit={(e) => {
@@ -196,11 +185,6 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
                   )}
                   <Box mt={1}>
                     <ImagePreview src={imageSrc} isLoading={isCurrentImageLoading} />
-                    {/* {imageSrc ? (
-                      <Box component="img" src={imageSrc} width="100%" alt="Preview" />
-                    ) : (
-                      <ImagePlaceholder height={150} />
-                    )} */}
                   </Box>
                 </FormControl>
               );

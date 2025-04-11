@@ -9,7 +9,7 @@ import { imageIdLength } from "@/common/image";
 
 export async function createReceipt(title: string, image: string): Promise<void>;
 
-export async function createReceipt(title: string, image?: undefined): Promise<void>;
+export async function createReceipt(title: string, image?: never): Promise<void>;
 
 export async function createReceipt(
   title: string,

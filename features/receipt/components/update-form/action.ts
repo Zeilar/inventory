@@ -26,7 +26,7 @@ export async function updateReceipt(
 export async function updateReceipt(
   id: number,
   title: string | undefined,
-  image?: undefined
+  image?: never
 ): Promise<void>;
 
 export async function updateReceipt(
