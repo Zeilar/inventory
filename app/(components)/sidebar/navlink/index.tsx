@@ -16,21 +16,21 @@ export function Navlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
   return (
     <UnstyledLink href={href} sx={{ display: "flex" }}>
       <ButtonBase
+        disabled={isActive}
         sx={{
           width: "100%",
           display: "flex",
           gap: 2,
           justifyContent: "start",
-          px: 1.5,
-          py: 1.5,
+          p: 1.5,
           borderRadius: 2,
-          bgcolor: (theme) => (isActive ? alpha(theme.palette.grey[500], 0.25) : undefined),
+          bgcolor: isActive ? "grey.500" : undefined,
           transition: (theme) =>
             theme.transitions.create("background-color", {
-              duration: theme.transitions.duration.shorter,
+              duration: theme.transitions.duration.shortest,
             }),
           "&:hover": {
-            bgcolor: "grey.600",
+            bgcolor: (theme) => alpha(theme.palette.grey[500], 0.5),
           },
         }}
       >
