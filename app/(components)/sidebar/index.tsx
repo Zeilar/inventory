@@ -21,6 +21,7 @@ export function Sidebar() {
         top: 0,
         display: "flex",
         flexDirection: "column",
+        gap: 1,
         p: 1,
       }}
     >
