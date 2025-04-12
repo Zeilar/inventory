@@ -66,7 +66,7 @@ export function CreateReceiptForm() {
 
   return (
     <>
-      <Button onClick={open} variant="contained" startIcon={<Add />}>
+      <Button onClick={open} variant="contained" startIcon={<Add />} sx={{ height: 40 }}>
         Add
       </Button>
       <Modal open={isOpen} onClose={onClose} keepMounted>

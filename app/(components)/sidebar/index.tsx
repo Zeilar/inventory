@@ -14,6 +14,7 @@ export function Sidebar() {
         height: "100svh",
         minWidth: 300,
         position: "sticky",
+        borderRadius: 0,
         top: 0,
         display: "flex",
         flexDirection: "column",

@@ -1,5 +1,5 @@
 import { CloudDownloadOutlined, Layers, Receipt } from "@mui/icons-material";
-import { Box, Button, Skeleton } from "@mui/material";
+import { Box, Button, Skeleton, Typography } from "@mui/material";
 import prettyBytes from "pretty-bytes";
 import { DashboardCard, DashboardCardLayout } from "./(components)";
 import { Suspense } from "react";
@@ -22,8 +22,11 @@ async function getDbSize(): Promise<number> {
 
 export default async function Page() {
   return (
-    <Box p={2} width="100%">
-      <Box display="grid" gap={2} gridTemplateColumns="repeat(3, 1fr)">
+    <Box p={8} width="100%">
+      <Typography variant="h3" mb={1.5}>
+        Overview
+      </Typography>
+      <Box display="grid" gap={3} gridTemplateColumns="repeat(3, 1fr)">
         <Suspense
           fallback={
             <DashboardCardLayout icon={Receipt} title="Receipts">
@@ -62,7 +65,7 @@ export default async function Page() {
             promise={getDbSize()}
             sibling={
               <UnstyledLink href="/api/db/backup" download sx={{ ml: "auto" }}>
-                <Button variant="outlined" startIcon={<CloudDownloadOutlined />} size="large">
+                <Button variant="outlined" startIcon={<CloudDownloadOutlined />}>
                   Download
                 </Button>
               </UnstyledLink>

@@ -4,16 +4,16 @@ import { roboto } from "./fonts/roboto";
 export let theme = createTheme();
 
 const grey: Partial<Color> = {
-  50: "hsl(220, 30%, 980%)",
-  100: "hsl(220, 30%, 65%)",
-  200: "hsl(220, 30%, 50%)",
-  300: "hsl(220, 30%, 35%)",
-  400: "hsl(220, 30%, 25%)",
-  500: "hsl(220, 30%, 18%)",
-  600: "hsl(220, 30%, 13%)",
-  700: "hsl(220, 30%, 9%)",
-  800: "hsl(220, 30%, 5%)",
-  900: "hsl(220, 30%, 3%)",
+  50: "hsl(216, 30%, 65%)",
+  100: "hsl(216, 30%, 50%)",
+  200: "hsl(216, 30%, 40%)",
+  300: "hsl(216, 30%, 35%)",
+  400: "hsl(216, 30%,  25%)",
+  500: "hsl(216, 30%, 20%)",
+  600: "hsl(216, 30%, 15%)",
+  700: "hsl(216, 30%, 12%)", // #233044
+  800: "hsl(216, 30%, 8%)", // #1B2635
+  900: "hsl(216, 30%, 5%)",
 };
 
 const primary: Partial<Color> = {
@@ -33,13 +33,16 @@ theme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      paper: grey[600],
-      default: grey[600],
+      paper: grey[700],
+      default: grey[700],
     },
     divider: "hsla(220, 20%, 25%, 0.6)",
     common: { black: "#000" },
     grey,
     primary,
+    text: {
+      primary: "hsl(210, 9%, 90%)",
+    },
   },
   typography: {
     allVariants: {
@@ -50,7 +53,7 @@ theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: grey[700],
+          backgroundColor: grey[800],
         },
       },
     },

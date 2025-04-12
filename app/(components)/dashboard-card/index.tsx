@@ -26,13 +26,13 @@ export function DashboardCardLayout({
   children,
 }: DashboardCardLayoutProps) {
   return (
-    <Paper sx={{ py: 2, px: 3, display: "flex", gap: 2, alignItems: "center" }}>
-      <Box p={1} bgcolor="grey.600" display="flex" borderRadius={2}>
+    <Paper sx={{ py: 2, px: 3, display: "flex", gap: 3, alignItems: "center" }}>
+      <Box p={1} bgcolor="grey.500" display="flex" borderRadius={2}>
         <Icon color="primary" fontSize="large" />
       </Box>
-      <Box display="flex" alignItems="center" gap={4} width="100%">
+      <Box display="flex" alignItems="center" gap={3} width="100%">
         <div>
-          <Typography variant="body2" color="primary" mb={0.5}>
+          <Typography variant="overline" color="primary">
             {title}
           </Typography>
           <Typography variant="h4">{children}</Typography>

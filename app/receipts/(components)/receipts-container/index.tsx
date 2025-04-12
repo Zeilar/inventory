@@ -4,9 +4,9 @@ export function ReceiptsContainer(props: BoxProps) {
   return (
     <Box
       display="grid"
-      gridTemplateColumns="repeat(6, 1fr)"
-      gap={1}
-      p={2}
+      gridTemplateColumns="repeat(5, 1fr)"
+      gap={3}
+      p={6}
       overflow="auto"
       {...props}
     />
