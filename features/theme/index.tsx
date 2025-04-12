@@ -48,6 +48,24 @@ theme = createTheme({
     allVariants: {
       fontFamily: roboto.style.fontFamily,
     },
+    h1: {
+      fontWeight: 600,
+    },
+    h2: {
+      fontWeight: 600,
+    },
+    h3: {
+      fontWeight: 600,
+    },
+    h4: {
+      fontWeight: 600,
+    },
+    h5: {
+      fontWeight: 500,
+    },
+    h6: {
+      fontWeight: 500,
+    },
   },
   components: {
     MuiCssBaseline: {
