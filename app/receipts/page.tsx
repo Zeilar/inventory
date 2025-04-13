@@ -1,4 +1,4 @@
-import { Alert, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { SearchParams } from "../types";
 import type { GetReceiptsResponse } from "../api/receipts/types";
 import { PER_PAGE } from "@/features/receipt/config";
@@ -18,7 +18,6 @@ export default async function Page({ searchParams }: SearchParams<"search" | "pa
         page={total ? parseInt(page) : 1}
       />
       <ReceiptsContainer>
-        {receipts.length === 0 && search && <Alert severity="info">No results for: {search}</Alert>}
         {receipts.map(
           ({ receipts, images }) =>
             receipts && (

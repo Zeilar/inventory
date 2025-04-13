@@ -23,7 +23,7 @@ async function getDbSize(): Promise<number> {
 export default async function Page() {
   return (
     <Box p={8} width="100%">
-      <Typography variant="h3" mb={1.5}>
+      <Typography variant="h4" mb={1.5}>
         Overview
       </Typography>
       <Box display="grid" gap={3} gridTemplateColumns="repeat(3, 1fr)">

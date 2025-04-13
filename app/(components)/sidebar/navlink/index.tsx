@@ -20,7 +20,7 @@ export function Navlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
         sx={{
           width: "100%",
           display: "flex",
-          gap: 2,
+          gap: 1.5,
           justifyContent: "start",
           p: 1.5,
           borderRadius: 2,
