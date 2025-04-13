@@ -2,14 +2,16 @@
 
 import { Pagination as MuiPagination } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
+import type { TransitionStartFunction } from "react";
 
 interface PaginationProps {
   count: number;
   page: number;
   disabled?: boolean;
+  startTransition?: TransitionStartFunction;
 }
 
-export function Pagination({ count, page, disabled }: PaginationProps) {
+export function Pagination({ count, page, disabled, startTransition }: PaginationProps) {
   const { push } = useRouter();
   const searchParams = useSearchParams();
 
@@ -21,7 +23,16 @@ export function Pagination({ count, page, disabled }: PaginationProps) {
       onChange={(_e, newPage) => {
         const _searchParams = new URLSearchParams(searchParams);
         _searchParams.set("page", `${newPage}`);
-        push(`?${_searchParams}`);
+
+        function navigate() {
+          push(`?${_searchParams}`);
+        }
+
+        if (startTransition) {
+          startTransition(() => navigate());
+        } else {
+          navigate();
+        }
       }}
       disabled={disabled}
       sx={{ width: "100%" }}

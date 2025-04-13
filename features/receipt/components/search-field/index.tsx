@@ -1,5 +1,6 @@
 "use client";
 
+import { useReceiptsPageContext } from "@/app/receipts/context";
 import { Clear } from "@mui/icons-material";
 import { Box, FormControl, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -8,6 +9,7 @@ import { useCallback, useState } from "react";
 const inputId = "receipt-search-field";
 
 export function ReceiptSearchField() {
+  const { startTransition } = useReceiptsPageContext();
   const { push } = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState<string>(searchParams.get("search")?.trim() ?? "");
@@ -20,9 +22,9 @@ export function ReceiptSearchField() {
       const _searchParams = new URLSearchParams(searchParams);
       _searchParams.set("search", search);
       _searchParams.delete("page"); // Always reset to page 1 when searching to avoid empty result.
-      push(search ? `?${_searchParams}` : window.location.pathname);
+      startTransition(() => push(search ? `?${_searchParams}` : window.location.pathname));
     },
-    [value, searchParams, push]
+    [value, searchParams, push, startTransition]
   );
 
   return (

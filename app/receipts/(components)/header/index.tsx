@@ -1,6 +1,9 @@
+"use client";
+
 import { Pagination } from "@/components";
 import { CreateReceiptForm, ReceiptSearchField } from "@/features/receipt/components";
 import { Box, Paper, Typography } from "@mui/material";
+import { useReceiptsPageContext } from "../../context";
 
 interface ReceiptsHeaderProps {
   page: number;
@@ -9,6 +12,8 @@ interface ReceiptsHeaderProps {
 }
 
 export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeaderProps) {
+  const { startTransition } = useReceiptsPageContext();
+
   return (
     <Box m={9} mb={0}>
       <Typography variant="h4" mb={1.5}>
@@ -25,7 +30,12 @@ export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeade
           p: 1.5,
         }}
       >
-        <Pagination count={count} page={page} disabled={disablePagination} />
+        <Pagination
+          count={count}
+          page={page}
+          disabled={disablePagination}
+          startTransition={startTransition}
+        />
         <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
           <ReceiptSearchField />
           <CreateReceiptForm />
