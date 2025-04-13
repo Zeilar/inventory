@@ -29,7 +29,7 @@ const IMAGE_PREVIEW_HEIGHT = 150;
 
 function ImagePreview({ src }: ImagePreviewProps) {
   if (src) {
-    return <Box component="img" src={src} width="100%" alt="Preview" />;
+    return <Box component="img" display="flex" src={src} width="100%" alt="Preview" />;
   }
   return <ImagePlaceholder height={IMAGE_PREVIEW_HEIGHT} />;
 }
@@ -54,6 +54,7 @@ export function CreateReceiptForm() {
   });
 
   const reset = useCallback(() => {
+    form.reset();
     // form.reset for whatever reason doesn't always work.
     form.setFieldValue("image", null);
     form.setFieldValue("title", "");
@@ -78,11 +79,9 @@ export function CreateReceiptForm() {
           }}
           display="flex"
           flexDirection="column"
-          gap={2}
+          gap={3}
         >
-          <Typography variant="h5" mb={2}>
-            Create receipt
-          </Typography>
+          <Typography variant="h5">Create receipt</Typography>
           <form.AppField
             name="title"
             validators={{
@@ -139,7 +138,7 @@ export function CreateReceiptForm() {
 
               return (
                 <FormControl fullWidth error={hasError}>
-                  <Box display="flex" gap={1}>
+                  <Box display="flex" gap={1.5}>
                     <field.MuiFileInput
                       label="Image"
                       error={hasError}
@@ -150,20 +149,20 @@ export function CreateReceiptForm() {
                     <Button onClick={() => field.setValue(null)}>Clear</Button>
                   </Box>
                   {error && (
-                    <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+                    <Typography variant="body2" color="error" mt={0.5}>
                       {error}
                     </Typography>
                   )}
-                  <Box mt={1}>
+                  <Box mt={1.5}>
                     <ImagePreview src={imageSrc} />
                   </Box>
                 </FormControl>
               );
             }}
           </form.AppField>
-          <Box display="flex" alignItems="center" justifyContent="bet" gap={1} mt={1}>
+          <Box display="flex" alignItems="center" justifyContent="bet" gap={1.5}>
             <Button onClick={reset}>Reset</Button>
-            <Box display="flex" gap={1} justifyContent="end" width="100%">
+            <Box display="flex" gap={1.5} justifyContent="end" width="100%">
               <Button onClick={onClose}>Cancel</Button>
               <form.SubmitButton loading={form.state.isSubmitting}>Submit</form.SubmitButton>
             </Box>

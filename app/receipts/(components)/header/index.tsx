@@ -16,7 +16,7 @@ export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeade
         borderTop: 0,
         borderLeft: 0,
         borderRight: 0,
-        p: 2,
+        p: 3,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -26,7 +26,7 @@ export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeade
       }}
     >
       <Pagination count={count} page={page} disabled={disablePagination} />
-      <Box display="flex" alignItems="center" justifyContent="end" gap={1}>
+      <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
         <ReceiptSearchField />
         <CreateReceiptForm />
       </Box>

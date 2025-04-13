@@ -15,7 +15,9 @@ export type Receipts = ReceiptWithImage[];
 export const receiptsTable = sqliteTable("receipts", {
   id: int().primaryKey({ autoIncrement: true }),
   title: text().notNull(),
-  itemId: int().references(() => itemsTable.id, { onDelete: "cascade" }),
+  itemId: int()
+    .unique()
+    .references(() => itemsTable.id, { onDelete: "cascade" }),
   createdAt: text().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text()
     .default(sql`CURRENT_TIMESTAMP`)

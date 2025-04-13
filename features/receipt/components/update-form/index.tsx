@@ -40,7 +40,7 @@ function ImagePreview({ isLoading, src }: ImagePreviewProps) {
     return <Skeleton height={IMAGE_PREVIEW_HEIGHT} sx={{ transform: "none" }} />;
   }
   if (src) {
-    return <Box component="img" src={src} width="100%" alt="Preview" />;
+    return <Box component="img" display="flex" src={src} width="100%" alt="Preview" />;
   }
   return <ImagePlaceholder height={IMAGE_PREVIEW_HEIGHT} />;
 }
@@ -84,6 +84,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
   });
 
   const reset = useCallback(() => {
+    form.reset();
     // form.reset for whatever reason doesn't always work.
     form.setFieldValue("image", currentImage);
     form.setFieldValue("title", currentTitle);
@@ -106,11 +107,9 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
           }}
           display="flex"
           flexDirection="column"
-          gap={2}
+          gap={3}
         >
-          <Typography variant="h5" mb={2}>
-            Edit receipt
-          </Typography>
+          <Typography variant="h5">Edit receipt</Typography>
           <form.AppField
             name="title"
             validators={{
@@ -135,7 +134,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
                     placeholder="IKEA"
                   />
                   {error && (
-                    <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+                    <Typography variant="body2" color="error" mt={0.5}>
                       {error.message}
                     </Typography>
                   )}
@@ -167,7 +166,7 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
 
               return (
                 <FormControl fullWidth error={hasError}>
-                  <Box display="flex" gap={1}>
+                  <Box display="flex" gap={1.5}>
                     <field.MuiFileInput
                       label="Image"
                       error={hasError}
@@ -179,20 +178,20 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
                     <Button onClick={() => field.setValue(null)}>Clear</Button>
                   </Box>
                   {error && (
-                    <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+                    <Typography variant="body2" color="error" mt={0.5}>
                       {error}
                     </Typography>
                   )}
-                  <Box mt={1}>
+                  <Box mt={1.5}>
                     <ImagePreview src={imageSrc} isLoading={isCurrentImageLoading} />
                   </Box>
                 </FormControl>
               );
             }}
           </form.AppField>
-          <Box display="flex" alignItems="center" justifyContent="bet" gap={1} mt={1}>
+          <Box display="flex" alignItems="center" justifyContent="bet" gap={1.5}>
             <Button onClick={reset}>Reset</Button>
-            <Box display="flex" gap={1} justifyContent="end" width="100%">
+            <Box display="flex" gap={1.5} justifyContent="end" width="100%">
               <Button onClick={onClose}>Cancel</Button>
               <form.SubmitButton loading={form.state.isSubmitting}>Submit</form.SubmitButton>
             </Box>
