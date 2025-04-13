@@ -12,7 +12,7 @@ interface ReceiptsHeaderProps {
 }
 
 export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeaderProps) {
-  const { startTransition } = useReceiptsPageContext();
+  const { isLoading, startTransition } = useReceiptsPageContext();
 
   return (
     <Box m={9} mb={0}>
@@ -33,12 +33,12 @@ export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeade
         <Pagination
           count={count}
           page={page}
-          disabled={disablePagination}
+          disabled={disablePagination || isLoading}
           startTransition={startTransition}
         />
         <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
           <ReceiptSearchField />
-          <CreateReceiptForm />
+          <CreateReceiptForm disabled={isLoading} />
         </Box>
       </Paper>
     </Box>

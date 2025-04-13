@@ -9,7 +9,7 @@ import { useCallback, useState } from "react";
 const inputId = "receipt-search-field";
 
 export function ReceiptSearchField() {
-  const { startTransition } = useReceiptsPageContext();
+  const { isLoading, startTransition } = useReceiptsPageContext();
   const { push } = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState<string>(searchParams.get("search")?.trim() ?? "");
@@ -45,6 +45,7 @@ export function ReceiptSearchField() {
           size="small"
           placeholder="IKEA"
           label="Search"
+          disabled={isLoading}
           endAdornment={
             value.trim() && (
               <InputAdornment

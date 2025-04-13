@@ -18,6 +18,10 @@ interface ImagePreviewProps {
   src: string | null;
 }
 
+interface CreateReceiptFormProps {
+  disabled?: boolean;
+}
+
 function successSnackbar() {
   enqueueSnackbar({
     variant: "success",
@@ -34,7 +38,7 @@ function ImagePreview({ src }: ImagePreviewProps) {
   return <ImagePlaceholder height={IMAGE_PREVIEW_HEIGHT} />;
 }
 
-export function CreateReceiptForm() {
+export function CreateReceiptForm({ disabled }: CreateReceiptFormProps) {
   const [isOpen, { open, close }] = useDisclosure();
   const form = useAppForm({
     defaultValues: { title: "", image: null } as Fields,
@@ -67,7 +71,13 @@ export function CreateReceiptForm() {
 
   return (
     <>
-      <Button onClick={open} variant="contained" startIcon={<Add />} sx={{ height: 40 }}>
+      <Button
+        onClick={open}
+        variant="contained"
+        startIcon={<Add />}
+        sx={{ height: 40 }}
+        disabled={disabled}
+      >
         Add
       </Button>
       <Modal open={isOpen} onClose={onClose} keepMounted>
