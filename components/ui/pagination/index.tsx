@@ -21,6 +21,11 @@ export function Pagination({ count, page, disabled, startTransition }: Paginatio
       count={count}
       page={page}
       onChange={(_e, newPage) => {
+        // We don't need to do anything if they click on the active page button.
+        if (newPage === page) {
+          return;
+        }
+
         const _searchParams = new URLSearchParams(searchParams);
         _searchParams.set("page", `${newPage}`);
 
