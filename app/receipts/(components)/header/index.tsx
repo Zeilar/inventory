@@ -61,7 +61,7 @@ export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeade
       paginationProps={{
         count,
         page,
-        disabled: disablePagination,
+        disabled: disablePagination || isLoading,
         startTransition,
       }}
       createReceiptFormProps={{ disabled: isLoading }}
