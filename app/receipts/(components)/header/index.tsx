@@ -1,9 +1,14 @@
 "use client";
 
-import { Pagination } from "@/components";
-import { CreateReceiptForm, ReceiptSearchField } from "@/features/receipt/components";
+import { Pagination, type PaginationProps } from "@/components";
+import {
+  CreateReceiptForm,
+  type CreateReceiptFormProps,
+  ReceiptSearchField,
+} from "@/features/receipt/components";
 import { Box, Paper, Typography } from "@mui/material";
 import { useReceiptsPageContext } from "../../context";
+import type { ReactNode } from "react";
 
 interface ReceiptsHeaderProps {
   page: number;
@@ -11,9 +16,17 @@ interface ReceiptsHeaderProps {
   disablePagination?: boolean;
 }
 
-export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeaderProps) {
-  const { isLoading, startTransition } = useReceiptsPageContext();
+interface ReceiptsHeaderLayoutProps {
+  paginationProps: PaginationProps;
+  createReceiptFormProps?: CreateReceiptFormProps;
+  searchField: ReactNode;
+}
 
+export function ReceiptsHeaderLayout({
+  createReceiptFormProps,
+  paginationProps,
+  searchField,
+}: ReceiptsHeaderLayoutProps) {
   return (
     <Box m={9} mb={0}>
       <Typography variant="h4" mb={1.5}>
@@ -30,17 +43,29 @@ export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeade
           p: 1.5,
         }}
       >
-        <Pagination
-          count={count}
-          page={page}
-          disabled={disablePagination || isLoading}
-          startTransition={startTransition}
-        />
+        <Pagination {...paginationProps} />
         <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
-          <ReceiptSearchField />
-          <CreateReceiptForm disabled={isLoading} />
+          {searchField}
+          <CreateReceiptForm {...createReceiptFormProps} />
         </Box>
       </Paper>
     </Box>
+  );
+}
+
+export function ReceiptsHeader({ count, page, disablePagination }: ReceiptsHeaderProps) {
+  const { isLoading, startTransition } = useReceiptsPageContext();
+
+  return (
+    <ReceiptsHeaderLayout
+      paginationProps={{
+        count,
+        page,
+        disabled: disablePagination,
+        startTransition,
+      }}
+      createReceiptFormProps={{ disabled: isLoading }}
+      searchField={<ReceiptSearchField />}
+    />
   );
 }

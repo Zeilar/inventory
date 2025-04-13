@@ -26,16 +26,7 @@ export function ReceiptsPageProvider({ children }: PropsWithChildren) {
 export function useReceiptsPageContext(): ReceiptsPageContext {
   const context = useContext(ReceiptsPageContext);
   if (!context) {
-    console.warn("`useReceiptsPageContext` must be used within a `ReceiptsPageProvider`.");
+    throw new Error("`useReceiptsPageContext` must be used within a `ReceiptsPageProvider`.");
   }
-  return (
-    // Handle gracefully to make it easier to composite components, particularly in loading.tsx.
-    // This will likely never actually be used in those cases, but this fallback prevents destructuring errors.
-    context ?? {
-      isLoading: false,
-      startTransition: () => {
-        console.warn("`startTransition` was used without a `ReceiptsPageContext`.");
-      },
-    }
-  );
+  return context;
 }

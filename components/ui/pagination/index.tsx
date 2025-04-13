@@ -4,7 +4,7 @@ import { Pagination as MuiPagination } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { TransitionStartFunction } from "react";
 
-interface PaginationProps {
+export interface PaginationProps {
   count: number;
   page: number;
   disabled?: boolean;

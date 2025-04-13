@@ -3,12 +3,13 @@
 import { enqueueSnackbar } from "notistack";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { updateReceipt } from "./action";
-import { Box, Button, FormControl, Modal, Skeleton, Typography } from "@mui/material";
+import { Alert, Box, Button, FormControl, Modal, Skeleton, Typography } from "@mui/material";
 import { ImagePlaceholder, ModalContent } from "@/components";
 import z from "zod";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 import { getImageFilename } from "@/common/image/path";
+import { fileTypeFromBlob } from "file-type";
 
 interface Fields {
   title?: string;
@@ -145,24 +146,26 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
           <form.AppField
             name="image"
             validators={{
-              onChange: ({ value }) => {
+              onChangeAsync: async ({ value }) => {
                 if (!value) {
                   return; // Field is optional
                 }
-                if (!value?.type.startsWith("image")) {
+                const meta = await fileTypeFromBlob(value);
+                if (!meta?.mime.startsWith("image")) {
                   return "File must be of an image format.";
                 }
                 if (value.size > 10_000_000) {
                   return "Image size must exceed 10MB.";
                 }
-                return undefined;
               },
             }}
           >
             {(field) => {
               const error = field.state.meta.errors.at(0);
               const hasError = Boolean(error);
-              const imageSrc = field.state.value ? URL.createObjectURL(field.state.value) : null;
+              const imageSrc = field.state.value?.type.startsWith("image")
+                ? URL.createObjectURL(field.state.value)
+                : null;
 
               return (
                 <FormControl fullWidth error={hasError}>
@@ -182,6 +185,9 @@ export function UpdateReceiptForm({ id, currentTitle, imageId }: UpdateFormProps
                       {error}
                     </Typography>
                   )}
+                  <Alert severity="info" sx={{ mt: 1.5 }}>
+                    Image will be converted to .webp to save storage.
+                  </Alert>
                   <Box mt={1.5}>
                     <ImagePreview src={imageSrc} isLoading={isCurrentImageLoading} />
                   </Box>

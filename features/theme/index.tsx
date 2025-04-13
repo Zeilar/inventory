@@ -110,7 +110,7 @@ theme = createTheme({
               borderColor = theme.palette.warning.dark;
               break;
           }
-          return { borderColor };
+          return { border: "1px solid", borderColor, boxShadow: 0 };
         },
       },
     },

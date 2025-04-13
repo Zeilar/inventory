@@ -30,6 +30,7 @@
     "classnames": "^2.5.1",
     "drizzle-orm": "^0.41.0",
     "ffmpeg": "^0.0.4",
+    "file-type": "^20.4.1",
     "image-file-resize": "^1.0.5",
     "image-resize-compress": "^2.1.1",
     "image-size": "^2.0.2",

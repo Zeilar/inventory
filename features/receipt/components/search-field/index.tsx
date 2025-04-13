@@ -4,9 +4,60 @@ import { useReceiptsPageContext } from "@/app/receipts/context";
 import { Clear } from "@mui/icons-material";
 import { Box, FormControl, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { type ChangeEventHandler, useCallback, useState } from "react";
+
+interface ReceiptSearchFieldLayoutProps {
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onSubmit?: VoidFunction;
+  onClear?: VoidFunction;
+  isLoading?: boolean;
+}
 
 const inputId = "receipt-search-field";
+
+export function ReceiptSearchFieldLayout({
+  onChange,
+  onClear,
+  onSubmit,
+  value,
+  isLoading,
+}: ReceiptSearchFieldLayoutProps) {
+  return (
+    <Box
+      component="form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit?.();
+      }}
+      height="100%"
+    >
+      <FormControl size="small" sx={{ width: 300 }}>
+        <InputLabel htmlFor={inputId}>Search</InputLabel>
+        <OutlinedInput
+          value={value}
+          onChange={onChange}
+          id={inputId}
+          size="small"
+          placeholder="IKEA"
+          label="Search"
+          disabled={isLoading}
+          endAdornment={
+            value?.trim() && (
+              <InputAdornment
+                position="start"
+                sx={{ mr: 0, ml: 1, cursor: "pointer" }}
+                onClick={onClear}
+              >
+                <Clear />
+              </InputAdornment>
+            )
+          }
+        />
+      </FormControl>
+    </Box>
+  );
+}
 
 export function ReceiptSearchField() {
   const { isLoading, startTransition } = useReceiptsPageContext();
@@ -28,40 +79,15 @@ export function ReceiptSearchField() {
   );
 
   return (
-    <Box
-      component="form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit();
+    <ReceiptSearchFieldLayout
+      isLoading={isLoading}
+      onChange={(e) => setValue(e.target.value)}
+      onSubmit={onSubmit}
+      value={value}
+      onClear={() => {
+        onSubmit("");
+        setValue("");
       }}
-      height="100%"
-    >
-      <FormControl size="small" sx={{ width: 300 }}>
-        <InputLabel htmlFor={inputId}>Search</InputLabel>
-        <OutlinedInput
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          id={inputId}
-          size="small"
-          placeholder="IKEA"
-          label="Search"
-          disabled={isLoading}
-          endAdornment={
-            value.trim() && (
-              <InputAdornment
-                position="start"
-                sx={{ mr: 0, ml: 1, cursor: "pointer" }}
-                onClick={() => {
-                  onSubmit("");
-                  setValue("");
-                }}
-              >
-                <Clear />
-              </InputAdornment>
-            )
-          }
-        />
-      </FormControl>
-    </Box>
+    />
   );
 }

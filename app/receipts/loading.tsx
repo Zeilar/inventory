@@ -1,9 +1,11 @@
 "use client";
 
 import { Box, Button, Card, CardActions, CardContent, Skeleton } from "@mui/material";
-import { ReceiptsContainerLayout, ReceiptsHeader } from "./(components)";
+import { ReceiptsContainerLayout, ReceiptsHeaderLayout } from "./(components)";
 import { PER_PAGE } from "@/features/receipt/config";
 import { imageCardHeight } from "@/common/image";
+import { ReceiptSearchFieldLayout } from "@/features/receipt/components";
+import { useSearchParams } from "next/navigation";
 
 export function ReceiptsCardsSkeletons() {
   return (
@@ -32,9 +34,17 @@ export function ReceiptsCardsSkeletons() {
 }
 
 export default function Loading() {
+  const searchParams = useSearchParams();
+
   return (
     <Box width="100%">
-      <ReceiptsHeader count={1} page={1} disablePagination />
+      <ReceiptsHeaderLayout
+        paginationProps={{ count: 1, page: 1, disabled: true }}
+        createReceiptFormProps={{ disabled: true }}
+        searchField={
+          <ReceiptSearchFieldLayout isLoading value={searchParams.get("search") ?? ""} />
+        }
+      />
       <ReceiptsContainerLayout>
         <ReceiptsCardsSkeletons />
       </ReceiptsContainerLayout>
