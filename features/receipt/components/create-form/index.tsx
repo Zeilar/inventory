@@ -34,7 +34,17 @@ const IMAGE_PREVIEW_HEIGHT = 150;
 
 function ImagePreview({ src }: ImagePreviewProps) {
   if (src) {
-    return <Box component="img" display="flex" src={src} width="100%" alt="Preview" />;
+    return (
+      <Box
+        component="img"
+        display="flex"
+        src={src}
+        width="100%"
+        height={IMAGE_PREVIEW_HEIGHT}
+        sx={{ objectFit: "contain" }}
+        alt="Preview"
+      />
+    );
   }
   return <ImagePlaceholder height={IMAGE_PREVIEW_HEIGHT} />;
 }
@@ -169,7 +179,7 @@ export function CreateReceiptForm({ disabled }: CreateReceiptFormProps) {
                   <Alert severity="info" sx={{ mt: 1.5 }}>
                     Image will be converted to .webp to save storage.
                   </Alert>
-                  <Box mt={1.5}>
+                  <Box mt={1.5} borderRadius={1} overflow="hidden">
                     <ImagePreview src={imageSrc} />
                   </Box>
                 </FormControl>
