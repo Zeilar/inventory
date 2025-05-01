@@ -1,27 +1,27 @@
 "use client";
 
-import { Home, Inventory2, Receipt } from "@mui/icons-material";
-import { Divider, Paper, Typography } from "@mui/material";
+import { Home, Inventory2, Warehouse } from "@mui/icons-material";
+import { Box, Divider, Typography, useTheme } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { Navlink } from "./navlink";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { spacing } = useTheme();
 
   return (
-    <Paper
-      sx={{
-        height: "100svh",
-        minWidth: 300,
-        position: "sticky",
-        borderRadius: 0,
-        top: 0,
-        display: "flex",
-        flexDirection: "column",
-        gap: 0.75,
-        p: 1.5,
-        zIndex: 2,
-      }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      height={`calc(100svh - ${spacing(8)})`}
+      position="sticky"
+      top={spacing(4)}
+      gap={0.75}
+      pr={3}
+      py={3}
+      borderRight="1px solid"
+      borderColor="divider"
+      flexShrink={0}
     >
       <Typography
         fontWeight={600}
@@ -29,19 +29,15 @@ export function Sidebar() {
         display="flex"
         alignItems="center"
         gap={1.5}
-        p={1.5}
+        px={1.5}
+        pb={1.5}
       >
         <Inventory2 color="primary" />
         Inventory
       </Typography>
-      <Divider sx={{ my: 1.5 }} />
+      <Divider sx={{ my: 0.75 }} />
       <Navlink href="/" icon={Home} isActive={pathname === "/"} label="Overview" />
-      <Navlink
-        href="/receipts"
-        icon={Receipt}
-        isActive={pathname === "/receipts"}
-        label="Receipts"
-      />
-    </Paper>
+      <Navlink href="/items" icon={Warehouse} isActive={pathname === "/items"} label="Items" />
+    </Box>
   );
 }

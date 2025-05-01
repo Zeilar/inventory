@@ -16,9 +16,18 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         <main>
           <Providers>
-            <Box display="flex">
-              <Sidebar />
-              {children}
+            <Box display="flex" justifyContent="center">
+              <Box
+                display="grid"
+                gridTemplateColumns="250px 900px"
+                width={250 + 900} // Match above to ensure minimum width.
+                px={2}
+                pt={4}
+                gap={3}
+              >
+                <Sidebar />
+                {children}
+              </Box>
             </Box>
           </Providers>
         </main>

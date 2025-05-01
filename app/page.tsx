@@ -1,17 +1,19 @@
-import { CloudDownloadOutlined, Layers, Receipt } from "@mui/icons-material";
+import { CloudDownloadOutlined, Layers, Receipt, Timeline, Warehouse } from "@mui/icons-material";
 import { Box, Button, Skeleton, Typography } from "@mui/material";
 import prettyBytes from "pretty-bytes";
 import { DashboardCard, DashboardCardLayout } from "./(components)";
 import { Suspense } from "react";
 import { UnstyledLink } from "@/components";
+import { ItemsTimeline } from "./(components)/dashboard-card/items-timeline";
+import type { ItemsTimelineResponse } from "./api/items/timeline/route";
 
-async function getTotalReceipts(): Promise<number> {
-  const res = await fetch("http://localhost:3000/api/receipts/total", {
-    next: {
-      revalidate: 31_556_926,
-      tags: ["receipts-total"],
-    },
-  });
+async function getItemsTimeline(): Promise<ItemsTimelineResponse> {
+  const res = await fetch("http://localhost:3000/api/items/timeline");
+  return res.json();
+}
+
+async function getTotalItems(): Promise<number> {
+  const res = await fetch("http://localhost:3000/api/items/total");
   return res.json();
 }
 
@@ -22,19 +24,19 @@ async function getDbSize(): Promise<number> {
 
 export default async function Page() {
   return (
-    <Box p={8} width="100%">
+    <Box width="100%">
       <Typography variant="h4" mb={1.5}>
         Overview
       </Typography>
-      <Box display="grid" gap={3} gridTemplateColumns="repeat(3, 1fr)">
+      <Box display="grid" gap={3} gridTemplateColumns="repeat(2, 1fr)">
         <Suspense
           fallback={
-            <DashboardCardLayout icon={Receipt} title="Receipts">
+            <DashboardCardLayout icon={Receipt} title="Item count">
               <Skeleton width={100} />
             </DashboardCardLayout>
           }
         >
-          <DashboardCard<number> title="Receipts" icon={Receipt} promise={getTotalReceipts()}>
+          <DashboardCard<number> title="Item count" icon={Warehouse} promise={getTotalItems()}>
             {(total) => total}
           </DashboardCard>
         </Suspense>
@@ -42,7 +44,7 @@ export default async function Page() {
           fallback={
             <DashboardCardLayout
               icon={Layers}
-              title="Receipts"
+              title="Database size"
               sibling={
                 <Button
                   variant="outlined"
@@ -72,6 +74,26 @@ export default async function Page() {
             }
           >
             {(dbSize) => prettyBytes(dbSize)}
+          </DashboardCard>
+        </Suspense>
+        <Suspense
+          fallback={
+            <DashboardCardLayout
+              icon={Timeline}
+              title="Deposits"
+              sx={{ gridColumn: "span 2", alignItems: "start" }}
+            >
+              <Skeleton height={250} sx={{ transform: "none" }} />
+            </DashboardCardLayout>
+          }
+        >
+          <DashboardCard<ItemsTimelineResponse>
+            title="Deposits"
+            icon={Timeline}
+            promise={getItemsTimeline()}
+            sx={{ gridColumn: "span 2", alignItems: "start" }}
+          >
+            {(value) => <ItemsTimeline value={value} />}
           </DashboardCard>
         </Suspense>
       </Box>

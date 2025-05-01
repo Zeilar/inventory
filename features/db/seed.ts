@@ -4,31 +4,18 @@
 
 import "dotenv/config"; // Must be run before importing `db`.
 import { db } from ".";
-import { itemsTable, receiptsTable } from "./schema";
+import { itemsTable } from "./schema";
 import { faker } from "@faker-js/faker";
 import { InferInsertModel } from "drizzle-orm";
 
-async function seedReceipts(count: number, itemIds: number[]): Promise<void> {
-  const receipts: Array<InferInsertModel<typeof receiptsTable>> = Array.from(
-    { length: count },
-    (_, i) => ({
-      title: faker.commerce.productName(),
-      itemId: itemIds[i],
-    })
-  );
-  await db.insert(receiptsTable).values(receipts);
-}
-
-async function seedItems(count: number = 500): Promise<void> {
-  const items: Array<InferInsertModel<typeof itemsTable>> = Array.from(
-    { length: count },
-    () => ({})
-  );
-  const insertedItems = await db.insert(itemsTable).values(items).returning();
-  await seedReceipts(
-    count,
-    insertedItems.flatMap(({ id }) => id)
-  );
+async function seedItems(count: number = 100): Promise<void> {
+  const items: Array<InferInsertModel<typeof itemsTable>> = Array.from({ length: count }, () => ({
+    title: faker.commerce.productName(),
+    articleId: faker.string.alphanumeric(),
+    quantity: faker.number.int({ min: 0, max: 5 }),
+    createdAt: faker.date.recent({ days: 50 }).toISOString(),
+  }));
+  await db.insert(itemsTable).values(items).returning();
 }
 
 seedItems();

@@ -36,7 +36,7 @@ theme = createTheme({
       paper: grey[700],
       default: grey[700],
     },
-    divider: "hsla(220, 20%, 25%, 0.6)",
+    divider: "hsla(220, 20%, 25%, 0.65)",
     common: { black: "#000" },
     grey,
     primary,
@@ -80,7 +80,7 @@ theme = createTheme({
         root: ({ theme }) => ({
           backgroundImage: "none",
           backgroundColor: theme.palette.background.paper,
-          boxShadow: theme.shadows[4],
+          border: `1px solid ${theme.palette.divider}`,
         }),
       },
     },
