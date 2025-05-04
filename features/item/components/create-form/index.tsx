@@ -145,13 +145,13 @@ export function CreateItemForm({ disabled }: CreateItemFormProps) {
               return (
                 <FormControl fullWidth error={hasError}>
                   <Box display="flex" gap={1.5}>
-                    <field.MuiFileInput
+                    {/* <field.MuiFileInput
                       label="Image"
                       error={hasError}
                       value={field.state.value}
                       onChange={field.handleChange}
                       placeholder="item.jpg"
-                    />
+                    /> */}
                     <Button onClick={() => field.setValue(null)}>Clear</Button>
                   </Box>
                   {error && (

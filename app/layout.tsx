@@ -3,7 +3,7 @@ import type { PropsWithChildren } from "react";
 import { Box } from "@mui/material";
 import classNames from "classnames";
 import { roboto } from "@/features/theme/fonts";
-import { Providers, Sidebar, ProgressBar } from "./(components)";
+import { Providers, Sidebar } from "./(components)";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +14,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={classNames(roboto.className)}>
       <body>
-        <ProgressBar />
         <main style={{ height: "100svh" }}>
           <Providers>
             <Box display="flex" justifyContent="center" height="100%">
