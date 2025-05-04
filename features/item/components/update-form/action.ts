@@ -43,7 +43,7 @@ export async function updateItem(
     files.map(async (file) => {
       const filePath = resolve(filesDir, file.name);
       try {
-        await writeFile(filePath, Buffer.from(await file.arrayBuffer()).toString("base64"));
+        await writeFile(filePath, Buffer.from(await file.arrayBuffer()));
         uploadedFiles.push(file.name);
       } catch (error) {
         console.error(`Failed to write file ${file.name} to ${filePath}`, error);

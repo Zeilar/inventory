@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const itemsQuery = db
       .select()
       .from(itemsTable)
-      .orderBy(({ createdAt }) => [desc(createdAt)]);
+      .orderBy(({ id }) => [desc(id)]);
     const countQuery = db.select({ count: count() }).from(itemsTable);
 
     if (search) {

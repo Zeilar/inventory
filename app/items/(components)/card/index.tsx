@@ -1,16 +1,13 @@
-import { Link } from "@/components";
-import { DeleteItemButton, UpdateItemForm } from "@/features/item/components";
-import { Card, CardActions, CardContent } from "@mui/material";
+import { Link, UnstyledLink } from "@/components";
+import { DeleteItemButton } from "@/features/item/components";
+import { Button, Card, CardActions, CardContent } from "@mui/material";
 
 interface ReceiptCardProps {
   id: number;
   title: string;
-  files: string;
-  articleId: string | null;
-  quantity: number | null;
 }
 
-export function ItemCard({ id, title, files, articleId, quantity }: ReceiptCardProps) {
+export function ItemCard({ id, title }: ReceiptCardProps) {
   const url = `/items/${id}`;
 
   return (
@@ -24,13 +21,9 @@ export function ItemCard({ id, title, files, articleId, quantity }: ReceiptCardP
         </Link>
       </CardContent>
       <CardActions sx={{ p: 0.75 }}>
-        <UpdateItemForm
-          id={id}
-          title={title}
-          files={files}
-          articleId={articleId}
-          quantity={quantity}
-        />
+        <UnstyledLink href={`/items/${id}/update`}>
+          <Button>Edit</Button>
+        </UnstyledLink>
         <DeleteItemButton id={id} />
       </CardActions>
     </Card>

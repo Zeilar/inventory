@@ -74,6 +74,15 @@ export function FilesTransferList({ initial, onChange }: FilesTransferListProps)
     onChange(right);
   }, [right, onChange]);
 
+  /**
+   * Reset inputs when the existing files change.
+   */
+  useEffect(() => {
+    setChecked([]);
+    setLeft(initial);
+    setRight([]);
+  }, [initial]);
+
   function handleToggle(value: string) {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
