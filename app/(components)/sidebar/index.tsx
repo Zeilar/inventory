@@ -1,27 +1,25 @@
 "use client";
 
 import { Home, Inventory2, Warehouse } from "@mui/icons-material";
-import { Box, Divider, Typography, useTheme } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { Navlink } from "./navlink";
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { spacing } = useTheme();
 
   return (
     <Box
       display="flex"
       flexDirection="column"
-      height={`calc(100svh - ${spacing(8)})`}
+      height="100%"
       position="sticky"
-      top={spacing(4)}
       gap={0.75}
       pr={3}
       py={3}
+      mb={3}
       borderRight="1px solid"
       borderColor="divider"
-      flexShrink={0}
     >
       <Typography
         fontWeight={600}

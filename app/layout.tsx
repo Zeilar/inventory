@@ -3,7 +3,7 @@ import type { PropsWithChildren } from "react";
 import { Box } from "@mui/material";
 import classNames from "classnames";
 import { roboto } from "@/features/theme/fonts";
-import { Providers, Sidebar } from "./(components)";
+import { Providers, Sidebar, ProgressBar } from "./(components)";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,23 +14,17 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={classNames(roboto.className)}>
       <body>
-        <main>
+        <ProgressBar />
+        <Box component="main" height="100svh">
           <Providers>
-            <Box display="flex" justifyContent="center">
-              <Box
-                display="grid"
-                gridTemplateColumns="250px 900px"
-                width={250 + 900} // Match above to ensure minimum width.
-                px={2}
-                pt={4}
-                gap={3}
-              >
+            <Box display="flex" justifyContent="center" height="100%">
+              <Box display="grid" gridTemplateColumns="250px 900px" p={3} gap={3}>
                 <Sidebar />
                 {children}
               </Box>
             </Box>
           </Providers>
-        </main>
+        </Box>
       </body>
     </html>
   );

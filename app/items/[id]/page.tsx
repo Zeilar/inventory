@@ -71,7 +71,7 @@ export default async function Page({ params }: Params<"id">) {
           </Box>
         </InfoBox>
         <InfoBox icon={DateRange} title="Deposited at">
-          {new Date(createdAt).toLocaleString()}
+          {new Date(createdAt).toLocaleString("se")}
         </InfoBox>
       </Box>
     </div>

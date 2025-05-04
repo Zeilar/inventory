@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
   logging: {
     fetches: {
       fullUrl: process.env.NODE_ENV === "development",
-      hmrRefreshes: process.env.NODE_ENV === "development",
     },
   },
 };

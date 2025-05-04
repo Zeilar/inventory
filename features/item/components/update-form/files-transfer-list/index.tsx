@@ -43,7 +43,8 @@ function CustomList({ checked, handleToggle, items, title }: CustomListProps) {
         {title}
       </Typography>
       <Divider />
-      <List dense sx={{ height: 200, overflow: "auto", py: 0 }}>
+      {/* 48px is the height of a list item. Update if needed. */}
+      <List dense sx={{ height: 48 * 4, overflow: "auto", py: 0 }}>
         {items.map((value: string) => (
           <ListItemButton
             key={value}
