@@ -1,8 +1,7 @@
 import { Params } from "@/app/types";
-import { Link } from "@/components";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import type { Item } from "@/features/db/schema";
 import { UpdateItemForm } from "@/features/item/components";
-import { KeyboardBackspace } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 
 export default async function Page({ params }: Params<"id">) {
@@ -11,13 +10,16 @@ export default async function Page({ params }: Params<"id">) {
 
   return (
     <div>
-      <Link
-        href={`/items/${id}`}
-        sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 1.5 }}
-      >
-        <KeyboardBackspace />
-        <span>Back</span>
-      </Link>
+      <Box mb={1.5}>
+        <Breadcrumbs
+          hrefs={[
+            { href: "/", label: "Home" },
+            { href: "/items", label: "Items" },
+            { href: `/items/${id}`, label: title },
+          ]}
+          current="Update"
+        />
+      </Box>
       <Box display="flex" flexDirection="column" gap={3}>
         <Typography variant="h4">{title}</Typography>
         <UpdateItemForm

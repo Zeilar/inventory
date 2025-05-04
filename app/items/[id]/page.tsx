@@ -1,5 +1,6 @@
 import { Params } from "@/app/types";
 import { UnstyledLink } from "@/components";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import type { Item } from "@/features/db/schema";
 import { AttachFile, Download, Fingerprint, Numbers } from "@mui/icons-material";
 import { Box, Button, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
@@ -33,25 +34,43 @@ export default async function Page({ params }: Params<"id">) {
   const parsedFiles = files.split(",").filter(Boolean);
 
   return (
-    <Box display="flex" flexDirection="column" gap={3}>
-      <Typography variant="h4">{title}</Typography>
-      <InfoBox icon={Numbers} title="Quantity">
-        {quantity}
-      </InfoBox>
-      <InfoBox icon={Fingerprint} title="Article id">
-        {articleId || "N/A"}
-      </InfoBox>
-      <InfoBox icon={AttachFile} title="Files">
-        <Box display="flex" flexDirection="column" gap={0.75}>
-          {parsedFiles.length
-            ? parsedFiles.map((file, i) => (
-                <UnstyledLink key={`${file}-${i}`} href={`/api/file/${id}/${file}`} download>
-                  <Button startIcon={<Download />}>{file}</Button>
-                </UnstyledLink>
-              ))
-            : "N/A"}
+    <div>
+      <Box mb={1.5}>
+        <Breadcrumbs
+          hrefs={[
+            { href: "/", label: "Home" },
+            { href: "/items", label: "Items" },
+          ]}
+          current={title}
+        />
+      </Box>
+      <Box display="flex" flexDirection="column" gap={3}>
+        <Box display="flex" gap={3} justifyContent="space-between" alignItems="center">
+          <Typography variant="h4" overflow="hidden" textOverflow="ellipsis">
+            {title}
+          </Typography>
+          <UnstyledLink href={`/items/${id}/update`}>
+            <Button variant="contained">Edit</Button>
+          </UnstyledLink>
         </Box>
-      </InfoBox>
-    </Box>
+        <InfoBox icon={Numbers} title="Quantity">
+          {quantity}
+        </InfoBox>
+        <InfoBox icon={Fingerprint} title="Article id">
+          {articleId || "N/A"}
+        </InfoBox>
+        <InfoBox icon={AttachFile} title="Files">
+          <Box display="flex" flexDirection="column" gap={0.75}>
+            {parsedFiles.length
+              ? parsedFiles.map((file, i) => (
+                  <UnstyledLink key={`${file}-${i}`} href={`/api/file/${id}/${file}`} download>
+                    <Button startIcon={<Download />}>{file}</Button>
+                  </UnstyledLink>
+                ))
+              : "N/A"}
+          </Box>
+        </InfoBox>
+      </Box>
+    </div>
   );
 }

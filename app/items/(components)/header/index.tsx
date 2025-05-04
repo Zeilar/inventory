@@ -9,6 +9,7 @@ import {
 import { Box, Typography } from "@mui/material";
 import { useItemsPageContext } from "../../context";
 import type { ReactNode } from "react";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
 interface ItemsHeaderProps {
   page: number;
@@ -29,7 +30,10 @@ export function ItemsHeaderLayout({
 }: ItemsHeaderLayoutProps) {
   return (
     <>
-      <Typography variant="h4">Items</Typography>
+      <Breadcrumbs hrefs={[{ href: "/", label: "Home" }]} current="Items" />
+      <Typography variant="h4" mt={1.5}>
+        Items
+      </Typography>
       <Box
         position="sticky"
         top={0}
