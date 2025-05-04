@@ -330,7 +330,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
 
             return (
               <FormControl sx={{ gap: 1.5 }}>
-                <FormLabel>Existing</FormLabel>
+                <FormLabel>Existing files</FormLabel>
                 <Paper sx={{ p: 1.5 }}>
                   <FilesTransferList
                     checked={checked}
