@@ -2,7 +2,7 @@ import { Params } from "@/app/types";
 import { UnstyledLink } from "@/components";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import type { Item } from "@/features/db/schema";
-import { AttachFile, Download, Fingerprint, Numbers } from "@mui/icons-material";
+import { AttachFile, DateRange, Download, Fingerprint, Numbers } from "@mui/icons-material";
 import { Box, Button, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { PropsWithChildren, ReactNode } from "react";
@@ -17,7 +17,7 @@ interface InfoBoxProps extends PropsWithChildren {
 function InfoBox({ icon: Icon, children, title }: InfoBoxProps) {
   return (
     <Box display="flex" flexDirection="column" gap={0.75}>
-      <Box display="flex" gap={1.5} alignItems="center">
+      <Box display="flex" gap={0.75} alignItems="center">
         <Icon color="primary" />
         <Typography variant="h6">{title}</Typography>
       </Box>
@@ -29,7 +29,7 @@ function InfoBox({ icon: Icon, children, title }: InfoBoxProps) {
 export default async function Page({ params }: Params<"id">) {
   const { id } = await params;
   const res = await fetch(`http://localhost:3000/api/items/${id}`);
-  const { title, quantity, articleId, files }: Item = await res.json();
+  const { title, quantity, articleId, files, createdAt }: Item = await res.json();
 
   const parsedFiles = files.split(",").filter(Boolean);
 
@@ -69,6 +69,9 @@ export default async function Page({ params }: Params<"id">) {
                 ))
               : "N/A"}
           </Box>
+        </InfoBox>
+        <InfoBox icon={DateRange} title="Deposited at">
+          {new Date(createdAt).toLocaleString()}
         </InfoBox>
       </Box>
     </div>
