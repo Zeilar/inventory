@@ -73,6 +73,10 @@ theme = createTheme({
         body: {
           backgroundColor: grey[800],
         },
+        "::selection": {
+          color: primary[500],
+          backgroundColor: grey[500],
+        },
       },
     },
     MuiPaper: {
