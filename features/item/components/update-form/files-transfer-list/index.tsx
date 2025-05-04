@@ -54,7 +54,7 @@ function CustomList({ checked, handleToggle, items, title }: CustomListProps) {
             key={value}
             role="listitem"
             onClick={() => handleToggle(value)}
-            sx={{ py: 0, pl: 0, pr: 1.5, borderRadius: 0 }}
+            sx={{ pl: 0, pr: 1.5, borderRadius: 0 }}
           >
             <ListItemIcon sx={{ [`.${checkboxClasses.root}`]: { p: 1.5 } }}>
               <Checkbox checked={checked.includes(value)} tabIndex={-1} disableRipple />

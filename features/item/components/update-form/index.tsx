@@ -46,7 +46,6 @@ function successSnackbar() {
 }
 
 export function UpdateItemForm({ id, title, files, articleId, quantity }: UpdateFormProps) {
-  console.log("heres files", files);
   const form = useAppForm({
     defaultValues: {
       title,
@@ -57,7 +56,6 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
     } as Fields,
     onSubmit: async ({ value }) => {
       const { filesToRemove, quantity, articleId, files, title } = value;
-      console.log({ filesToRemove });
       await updateItem(
         id,
         {
@@ -330,8 +328,6 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
           {(field) => {
             const { value } = field.state;
             const combinedFilesLength = value.left.length + value.right.length;
-
-            console.log(value);
 
             return (
               <FormControl>
