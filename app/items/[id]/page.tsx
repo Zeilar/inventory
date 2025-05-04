@@ -3,7 +3,7 @@ import { UnstyledLink } from "@/components";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import type { Item } from "@/features/db/schema";
 import { AttachFile, DateRange, Download, Fingerprint, Numbers } from "@mui/icons-material";
-import { Box, Button, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { PropsWithChildren, ReactNode } from "react";
 
@@ -55,6 +55,7 @@ export default async function Page({ params }: Params<"id">) {
             <Button variant="contained">Edit</Button>
           </UnstyledLink>
         </Box>
+        <Divider />
         <InfoBox icon={Numbers} title="Quantity">
           {quantity}
         </InfoBox>

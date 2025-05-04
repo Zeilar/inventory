@@ -200,7 +200,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
             const { accepted, rejected } = field.state.value;
 
             return (
-              <FormControl sx={{ gap: 0.75 }}>
+              <FormControl sx={{ gap: 1.5 }}>
                 <FormLabel>Files</FormLabel>
                 <Box
                   {...getRootProps()}
@@ -326,22 +326,16 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
         </form.AppField>
         <form.AppField name="filesToRemove">
           {(field) => {
-            const { value } = field.state;
-            const combinedFilesLength = value.left.length + value.right.length;
+            const { checked, left, right } = field.state.value;
 
             return (
-              <FormControl>
-                <Paper sx={{ p: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
-                  <Typography
-                    variant="subtitle2"
-                    color={combinedFilesLength === 0 ? "textDisabled" : undefined}
-                  >
-                    Existing ({combinedFilesLength})
-                  </Typography>
+              <FormControl sx={{ gap: 1.5 }}>
+                <FormLabel>Existing</FormLabel>
+                <Paper sx={{ p: 1.5 }}>
                   <FilesTransferList
-                    checked={value.checked}
-                    left={value.left}
-                    right={value.right}
+                    checked={checked}
+                    left={left}
+                    right={right}
                     onCheckedChange={(checked) => field.handleChange((p) => ({ ...p, checked }))}
                     onLeftChange={(left) => field.handleChange((p) => ({ ...p, left }))}
                     onRightChange={(right) => field.handleChange((p) => ({ ...p, right }))}
