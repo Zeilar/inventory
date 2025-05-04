@@ -185,7 +185,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
             const { accepted, rejected } = field.state.value;
 
             return (
-              <FormControl>
+              <FormControl sx={{ gap: 0.75 }}>
                 <Box
                   {...getRootProps()}
                   borderRadius={1}
@@ -221,103 +221,101 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
                     <input {...getInputProps()} />
                   </Box>
                 </Box>
-                <Box display="flex" flexDirection="column" gap={0.75}>
-                  <Paper sx={{ p: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
-                    <Typography
-                      variant="subtitle2"
-                      color={existingFiles.length === 0 ? "textDisabled" : undefined}
-                    >
-                      Existing ({existingFiles.length})
-                    </Typography>
-                    <FilesTransferList
-                      initial={existingFiles}
-                      onChange={(value) => form.setFieldValue("filesToRemove", value)}
-                    />
-                  </Paper>
-                  <Paper>
-                    <Typography
-                      variant="subtitle2"
-                      p={1.5}
-                      color={accepted.length === 0 ? "textDisabled" : undefined}
-                    >
-                      Accepted ({accepted.length})
-                    </Typography>
-                    {accepted.length > 0 ? (
-                      <>
-                        <Divider />
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          gap={1.5}
-                          overflow="auto"
-                          maxHeight={250}
-                          p={1.5}
-                        >
-                          {accepted.map((file, i) => (
-                            <Alert
-                              key={i}
-                              variant="outlined"
-                              severity="success"
-                              sx={{ mr: "2px", py: 0, px: 1 }}
+                <Paper sx={{ p: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
+                  <Typography
+                    variant="subtitle2"
+                    color={existingFiles.length === 0 ? "textDisabled" : undefined}
+                  >
+                    Existing ({existingFiles.length})
+                  </Typography>
+                  <FilesTransferList
+                    initial={existingFiles}
+                    onChange={(value) => form.setFieldValue("filesToRemove", value)}
+                  />
+                </Paper>
+                <Paper>
+                  <Typography
+                    variant="subtitle2"
+                    p={1.5}
+                    color={accepted.length === 0 ? "textDisabled" : undefined}
+                  >
+                    Accepted ({accepted.length})
+                  </Typography>
+                  {accepted.length > 0 ? (
+                    <>
+                      <Divider />
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap={1.5}
+                        overflow="auto"
+                        maxHeight={250}
+                        p={1.5}
+                      >
+                        {accepted.map((file, i) => (
+                          <Alert
+                            key={i}
+                            variant="outlined"
+                            severity="success"
+                            sx={{ mr: "2px", py: 0, px: 1 }}
+                          >
+                            <Typography
+                              whiteSpace="nowrap"
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                              variant="subtitle2"
                             >
-                              <Typography
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                variant="subtitle2"
-                              >
-                                {file.name}
-                              </Typography>
-                            </Alert>
-                          ))}
-                        </Box>
-                      </>
-                    ) : null}
-                  </Paper>
-                  <Paper>
-                    <Typography
-                      variant="subtitle2"
-                      p={1.5}
-                      color={rejected.length === 0 ? "textDisabled" : undefined}
-                    >
-                      Rejected ({rejected.length})
-                    </Typography>
-                    {rejected.length > 0 ? (
-                      <>
-                        <Divider />
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          gap={1.5}
-                          overflow="auto"
-                          maxHeight={250}
-                          p={1.5}
-                        >
-                          {rejected.map((rejection, i) => (
-                            <Alert
-                              key={i}
-                              variant="outlined"
-                              severity="error"
-                              sx={{ mr: "2px", py: 0, px: 1 }}
+                              {file.name}
+                            </Typography>
+                          </Alert>
+                        ))}
+                      </Box>
+                    </>
+                  ) : null}
+                </Paper>
+                <Paper>
+                  <Typography
+                    variant="subtitle2"
+                    p={1.5}
+                    color={rejected.length === 0 ? "textDisabled" : undefined}
+                  >
+                    Rejected ({rejected.length})
+                  </Typography>
+                  {rejected.length > 0 ? (
+                    <>
+                      <Divider />
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap={1.5}
+                        overflow="auto"
+                        maxHeight={250}
+                        p={1.5}
+                      >
+                        {rejected.map((rejection, i) => (
+                          <Alert
+                            key={i}
+                            variant="outlined"
+                            severity="error"
+                            sx={{ mr: "2px", py: 0, px: 1 }}
+                          >
+                            <Typography
+                              whiteSpace="nowrap"
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                              variant="subtitle2"
                             >
-                              <Typography
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                variant="subtitle2"
-                              >
-                                {rejection.file.name}
-                              </Typography>
-                              <Typography variant="subtitle2" fontWeight={400}>
-                                {rejection.errors.at(0)?.message}
-                              </Typography>
-                            </Alert>
-                          ))}
-                        </Box>
-                      </>
-                    ) : null}
-                  </Paper>
-                </Box>
+                              {rejection.file.name}
+                            </Typography>
+                            <Typography variant="subtitle2" fontWeight={400}>
+                              {rejection.errors.at(0)?.message}
+                            </Typography>
+                          </Alert>
+                        ))}
+                      </Box>
+                    </>
+                  ) : null}
+                </Paper>
               </FormControl>
             );
           }}
