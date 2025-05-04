@@ -1,7 +1,7 @@
 import { Params } from "@/app/types";
 import { UnstyledLink } from "@/components";
 import type { Item } from "@/features/db/schema";
-import { AttachFile, Download, Inventory, Numbers } from "@mui/icons-material";
+import { AttachFile, Download, Fingerprint, Numbers } from "@mui/icons-material";
 import { Box, Button, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { PropsWithChildren, ReactNode } from "react";
@@ -35,10 +35,10 @@ export default async function Page({ params }: Params<"id">) {
   return (
     <Box display="flex" flexDirection="column" gap={3}>
       <Typography variant="h4">{title}</Typography>
-      <InfoBox icon={Inventory} title="Quantity">
+      <InfoBox icon={Numbers} title="Quantity">
         {quantity}
       </InfoBox>
-      <InfoBox icon={Numbers} title="Article id">
+      <InfoBox icon={Fingerprint} title="Article id">
         {articleId || "N/A"}
       </InfoBox>
       <InfoBox icon={AttachFile} title="Files">
