@@ -106,7 +106,6 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
               return (
                 <FormControl fullWidth error={hasError}>
                   <field.TextField
-                    autoFocus
                     error={hasError}
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
