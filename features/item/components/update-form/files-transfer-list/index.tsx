@@ -43,13 +43,13 @@ function CustomList({ checked, handleToggle, items, title }: CustomListProps) {
         {title}
       </Typography>
       <Divider />
-      <List dense sx={{ height: 200, overflow: "auto" }}>
+      <List dense sx={{ height: 200, overflow: "auto", py: 0 }}>
         {items.map((value: string) => (
           <ListItemButton
             key={value}
             role="listitem"
             onClick={() => handleToggle(value)}
-            sx={{ py: 0, pl: 0, pr: 1.5 }}
+            sx={{ py: 0, pl: 0, pr: 1.5, borderRadius: 0 }}
           >
             <ListItemIcon sx={{ [`.${checkboxClasses.root}`]: { p: 1.5 } }}>
               <Checkbox checked={checked.includes(value)} tabIndex={-1} disableRipple />
