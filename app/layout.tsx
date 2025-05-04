@@ -15,7 +15,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en" className={classNames(roboto.className)}>
       <body>
         <ProgressBar />
-        <Box component="main" height="100svh">
+        <main style={{ height: "100svh" }}>
           <Providers>
             <Box display="flex" justifyContent="center" height="100%">
               <Box display="grid" gridTemplateColumns="250px 900px" p={3} gap={3}>
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               </Box>
             </Box>
           </Providers>
-        </Box>
+        </main>
       </body>
     </html>
   );
