@@ -14,7 +14,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { type ReactNode, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 interface CustomListProps {
   checked: string[];
@@ -24,8 +24,12 @@ interface CustomListProps {
 }
 
 interface FilesTransferListProps {
-  initial: string[];
-  onChange(value: string[]): void;
+  checked: string[];
+  left: string[];
+  right: string[];
+  onCheckedChange(value: string[]): void;
+  onLeftChange(value: string[]): void;
+  onRightChange(value: string[]): void;
 }
 
 function not(a: string[], b: string[]): string[] {
@@ -63,26 +67,16 @@ function CustomList({ checked, handleToggle, items, title }: CustomListProps) {
   );
 }
 
-export function FilesTransferList({ initial, onChange }: FilesTransferListProps) {
-  const [checked, setChecked] = useState<string[]>([]);
-  const [left, setLeft] = useState<string[]>(initial);
-  const [right, setRight] = useState<string[]>([]);
-
+export function FilesTransferList({
+  left,
+  right,
+  checked,
+  onLeftChange,
+  onRightChange,
+  onCheckedChange,
+}: FilesTransferListProps) {
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
-
-  useEffect(() => {
-    onChange(right);
-  }, [right, onChange]);
-
-  /**
-   * Reset inputs when the existing files change.
-   */
-  useEffect(() => {
-    setChecked([]);
-    setLeft(initial);
-    setRight([]);
-  }, [initial]);
 
   function handleToggle(value: string) {
     const currentIndex = checked.indexOf(value);
@@ -94,29 +88,29 @@ export function FilesTransferList({ initial, onChange }: FilesTransferListProps)
       newChecked.splice(currentIndex, 1);
     }
 
-    setChecked(newChecked);
+    onCheckedChange(newChecked);
   }
 
   function handleAllRight() {
-    setRight(right.concat(left));
-    setLeft([]);
+    onRightChange(right.concat(left));
+    onLeftChange([]);
   }
 
   function handleCheckedRight() {
-    setRight(right.concat(leftChecked));
-    setLeft(not(left, leftChecked));
-    setChecked(not(checked, leftChecked));
+    onRightChange(right.concat(leftChecked));
+    onLeftChange(not(left, leftChecked));
+    onCheckedChange(not(checked, leftChecked));
   }
 
   function handleCheckedLeft() {
-    setLeft(left.concat(rightChecked));
-    setRight(not(right, rightChecked));
-    setChecked(not(checked, rightChecked));
+    onLeftChange(left.concat(rightChecked));
+    onRightChange(not(right, rightChecked));
+    onCheckedChange(not(checked, rightChecked));
   }
 
   function handleAllLeft() {
-    setLeft(left.concat(right));
-    setRight([]);
+    onLeftChange(left.concat(right));
+    onRightChange([]);
   }
 
   return (

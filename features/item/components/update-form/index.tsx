@@ -17,6 +17,7 @@ import z from "zod";
 import { type FileRejection, useDropzone } from "react-dropzone";
 import { Upload } from "@mui/icons-material";
 import { FilesTransferList } from "./files-transfer-list";
+import { useEffect } from "react";
 
 interface Fields {
   title?: string;
@@ -25,7 +26,7 @@ interface Fields {
     accepted: File[];
     rejected: FileRejection[];
   };
-  filesToRemove: string[];
+  filesToRemove: Record<"left" | "right" | "checked", string[]>;
   quantity: number;
 }
 
@@ -45,16 +46,18 @@ function successSnackbar() {
 }
 
 export function UpdateItemForm({ id, title, files, articleId, quantity }: UpdateFormProps) {
+  console.log("heres files", files);
   const form = useAppForm({
     defaultValues: {
       title,
       files: { accepted: [], rejected: [] },
       quantity: quantity ?? 1,
       articleId: articleId ?? "",
-      filesToRemove: [],
+      filesToRemove: { left: files.split(",").filter(Boolean), right: [], checked: [] },
     } as Fields,
     onSubmit: async ({ value }) => {
       const { filesToRemove, quantity, articleId, files, title } = value;
+      console.log({ filesToRemove });
       await updateItem(
         id,
         {
@@ -63,7 +66,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
           articleId: articleId || null,
         },
         files.accepted,
-        filesToRemove
+        filesToRemove.right
       );
       form.resetField("files");
       successSnackbar();
@@ -76,7 +79,13 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
     onDrop: (accepted, rejected) => form.setFieldValue("files", { accepted, rejected }),
   });
 
-  const existingFiles = files.split(",").filter(Boolean);
+  useEffect(() => {
+    form.setFieldValue("filesToRemove", {
+      left: files.split(",").filter(Boolean),
+      right: [],
+      checked: [],
+    });
+  }, [files, form]);
 
   return (
     <Box
@@ -230,18 +239,6 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
                     <input {...getInputProps()} />
                   </Box>
                 </Box>
-                <Paper sx={{ p: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
-                  <Typography
-                    variant="subtitle2"
-                    color={existingFiles.length === 0 ? "textDisabled" : undefined}
-                  >
-                    Existing ({existingFiles.length})
-                  </Typography>
-                  <FilesTransferList
-                    initial={existingFiles}
-                    onChange={(value) => form.setFieldValue("filesToRemove", value)}
-                  />
-                </Paper>
                 <Paper>
                   <Typography
                     variant="subtitle2"
@@ -324,6 +321,35 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
                       </Box>
                     </>
                   ) : null}
+                </Paper>
+              </FormControl>
+            );
+          }}
+        </form.AppField>
+        <form.AppField name="filesToRemove">
+          {(field) => {
+            const { value } = field.state;
+            const combinedFilesLength = value.left.length + value.right.length;
+
+            console.log(value);
+
+            return (
+              <FormControl>
+                <Paper sx={{ p: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
+                  <Typography
+                    variant="subtitle2"
+                    color={combinedFilesLength === 0 ? "textDisabled" : undefined}
+                  >
+                    Existing ({combinedFilesLength})
+                  </Typography>
+                  <FilesTransferList
+                    checked={value.checked}
+                    left={value.left}
+                    right={value.right}
+                    onCheckedChange={(checked) => field.handleChange((p) => ({ ...p, checked }))}
+                    onLeftChange={(left) => field.handleChange((p) => ({ ...p, left }))}
+                    onRightChange={(right) => field.handleChange((p) => ({ ...p, right }))}
+                  />
                 </Paper>
               </FormControl>
             );
