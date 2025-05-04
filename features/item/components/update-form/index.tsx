@@ -3,7 +3,16 @@
 import { enqueueSnackbar } from "notistack";
 import { useAppForm } from "@/hooks";
 import { updateItem } from "./action";
-import { Alert, Box, Button, Divider, FormControl, Paper, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  FormLabel,
+  Paper,
+  Typography,
+} from "@mui/material";
 import z from "zod";
 import { type FileRejection, useDropzone } from "react-dropzone";
 import { Upload } from "@mui/icons-material";
@@ -186,6 +195,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
 
             return (
               <FormControl sx={{ gap: 0.75 }}>
+                <FormLabel>Files</FormLabel>
                 <Box
                   {...getRootProps()}
                   borderRadius={1}
