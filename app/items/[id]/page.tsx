@@ -28,7 +28,9 @@ function InfoBox({ icon: Icon, children, title }: InfoBoxProps) {
 
 export default async function Page({ params }: Params<"id">) {
   const { id } = await params;
-  const res = await fetch(`http://localhost:3000/api/items/${id}`);
+  const res = await fetch(`http://localhost:3000/api/items/${id}`, {
+    next: { revalidate: 31_556_926, tags: [`items-${id}`] },
+  });
   const { title, quantity, articleId, files, createdAt }: Item = await res.json();
 
   const parsedFiles = files.split(",").filter(Boolean);
