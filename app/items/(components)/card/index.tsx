@@ -5,9 +5,12 @@ import { Card, CardActions, CardContent } from "@mui/material";
 interface ReceiptCardProps {
   id: number;
   title: string;
+  files: string;
+  articleId: string | null;
+  quantity: number | null;
 }
 
-export function ItemCard({ id, title }: ReceiptCardProps) {
+export function ItemCard({ id, title, files, articleId, quantity }: ReceiptCardProps) {
   const url = `/items/${id}`;
 
   return (
@@ -21,7 +24,13 @@ export function ItemCard({ id, title }: ReceiptCardProps) {
         </Link>
       </CardContent>
       <CardActions sx={{ p: 0.75 }}>
-        <UpdateItemForm id={id} currentTitle={title} />
+        <UpdateItemForm
+          id={id}
+          title={title}
+          files={files}
+          articleId={articleId}
+          quantity={quantity}
+        />
         <DeleteItemButton id={id} />
       </CardActions>
     </Card>

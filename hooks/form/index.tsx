@@ -2,7 +2,9 @@
 
 import {
   Button,
+  Checkbox,
   type ButtonProps,
+  type CheckboxProps,
   inputAdornmentClasses,
   TextField,
   type TextFieldProps,
@@ -31,6 +33,7 @@ export const { useAppForm } = createFormHook({
         {...props}
       />
     ),
+    CheckBox: (props: CheckboxProps) => <Checkbox {...props} />,
   },
   formComponents: {
     SubmitButton,

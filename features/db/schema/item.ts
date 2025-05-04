@@ -8,7 +8,7 @@ export const itemsTable = sqliteTable("items", {
   title: text().notNull(),
   articleId: text(), // Nullable. Doesn't refer to anything in the app.
   quantity: int().default(1),
-  files: text(), // Comma separated file paths.
+  files: text().notNull().default(""), // Comma separated file paths.
   createdAt: text()
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

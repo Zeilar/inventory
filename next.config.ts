@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: { reactCompiler: true },
-  transpilePackages: ["mui-file-input"],
+  experimental: {
+    reactCompiler: true,
+    serverActions: {
+      bodySizeLimit: "100MB",
+    },
+  },
   logging: {
     fetches: {
       fullUrl: process.env.NODE_ENV === "development",

@@ -20,8 +20,15 @@ export default async function Page({ searchParams }: SearchParams<"search" | "pa
           page={total ? parseInt(page) : 1}
         />
         <ItemsContainer>
-          {items.map(({ title, id }) => (
-            <ItemCard key={id} id={id} title={title} />
+          {items.map(({ title, id, files, articleId, quantity }) => (
+            <ItemCard
+              key={id}
+              id={id}
+              title={title}
+              files={files}
+              articleId={articleId}
+              quantity={quantity}
+            />
           ))}
         </ItemsContainer>
       </Box>
