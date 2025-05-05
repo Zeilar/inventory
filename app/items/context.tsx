@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useMemo,
+  useState,
   useTransition,
   type PropsWithChildren,
   type TransitionStartFunction,
@@ -12,13 +13,25 @@ import {
 interface ItemsPageContext {
   isLoading: boolean;
   startTransition: TransitionStartFunction;
+  checked: number[];
+  onCheck(id: number): void;
 }
 
 export const ItemsPageContext = createContext<ItemsPageContext | undefined>(undefined);
 
 export function ItemsPageProvider({ children }: PropsWithChildren) {
   const [isLoading, startTransition] = useTransition();
-  const values = useMemo<ItemsPageContext>(() => ({ isLoading, startTransition }), [isLoading]);
+  const [checked, setChecked] = useState<number[]>([]);
+  const values = useMemo<ItemsPageContext>(
+    () => ({
+      isLoading,
+      startTransition,
+      checked,
+      onCheck: (id) =>
+        setChecked((p) => (!p.includes(id) ? [...p, id] : p.filter((element) => element !== id))),
+    }),
+    [isLoading, checked]
+  );
 
   return <ItemsPageContext.Provider value={values}>{children}</ItemsPageContext.Provider>;
 }
