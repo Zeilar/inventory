@@ -4,7 +4,7 @@ import { useItemsPageContext } from "@/app/items/context";
 import { Clear } from "@mui/icons-material";
 import { Box, FormControl, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { type ChangeEventHandler, useCallback, useState } from "react";
+import { type ChangeEventHandler, useCallback, useEffect, useState } from "react";
 
 interface ItemSearchFieldLayoutProps {
   value?: string;
@@ -84,6 +84,10 @@ export function ItemSearchField() {
     [value, searchParams, push, startTransition]
   );
 
+  useEffect(() => {
+    setValue(searchParams.get("search") ?? "");
+  }, [searchParams]);
+
   return (
     <ItemSearchFieldLayout
       isLoading={isLoading}
@@ -93,6 +97,7 @@ export function ItemSearchField() {
       onClear={() => {
         onSubmit("");
         setValue("");
+        push("/items");
       }}
       search={searchParams.get("search")}
     />
