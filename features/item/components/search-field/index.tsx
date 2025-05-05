@@ -42,6 +42,7 @@ export function ItemSearchFieldLayout({
           placeholder="IKEA"
           label="Search"
           disabled={isLoading}
+          required
           endAdornment={
             value?.trim() && (
               <InputAdornment
@@ -70,6 +71,9 @@ export function ItemSearchField() {
         return;
       }
       const search = v ?? value.trim();
+      if (!search) {
+        return;
+      }
       const _searchParams = new URLSearchParams(searchParams);
       _searchParams.set("search", search);
       _searchParams.delete("page"); // Always reset to page 1 when searching to avoid empty result.

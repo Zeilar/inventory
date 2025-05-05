@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { SearchParams } from "../types";
 import type { GetItemsResponse } from "../api/items/types";
 import { PER_PAGE } from "@/features/item/config";
@@ -20,9 +20,11 @@ export default async function Page({ searchParams }: SearchParams<"search" | "pa
           page={total ? parseInt(page) : 1}
         />
         <ItemsContainer>
-          {items.map(({ title, id }) => (
-            <ItemCard key={id} id={id} title={title} />
-          ))}
+          {items.length ? (
+            items.map(({ title, id }) => <ItemCard key={id} id={id} title={title} />)
+          ) : (
+            <Typography>No results for: {search}</Typography>
+          )}
         </ItemsContainer>
       </Box>
     </ItemsPageProvider>
