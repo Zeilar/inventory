@@ -13,21 +13,7 @@ export async function updateItem(
   data: Partial<Item>,
   files: File[],
   filesToRemove: string[]
-): Promise<void>;
-
-export async function updateItem(
-  id: number,
-  data: Partial<Item>,
-  files: File[],
-  filesToRemove: string[]
-): Promise<void>;
-
-export async function updateItem(
-  id: number,
-  data: Partial<Item>,
-  files: File[],
-  filesToRemove: string[]
-) {
+): Promise<void> {
   const currentItem = db.select().from(itemsTable).where(eq(itemsTable.id, id)).get();
   if (!currentItem) {
     throw new Error(`Item with id ${id} not found`);

@@ -5,6 +5,7 @@ import { useDisclosure } from "@/hooks";
 import { Alert, Box, Button, Modal, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { useMutation } from "react-query";
+import { deleteItem } from "./action";
 
 interface DeleteItemButtonProps {
   id: number;
@@ -13,7 +14,7 @@ interface DeleteItemButtonProps {
 export function DeleteItemButton({ id }: DeleteItemButtonProps) {
   const [isPromptOpen, prompt] = useDisclosure();
   const { isLoading, mutate } = useMutation({
-    mutationFn: () => {},
+    mutationFn: () => deleteItem(id),
     onSuccess: () => {
       enqueueSnackbar({
         variant: "success",
@@ -32,9 +33,7 @@ export function DeleteItemButton({ id }: DeleteItemButtonProps) {
           <Typography variant="h5" mb={2}>
             Delete item
           </Typography>
-          <Alert severity="error">
-            Are you sure? This cannot be undone. Any belonging receipt will also be deleted.
-          </Alert>
+          <Alert severity="error">Are you sure? This cannot be undone.</Alert>
           <Box display="flex" mt={2} gap={1} justifyContent="end">
             <Button onClick={prompt.close}>Cancel</Button>
             <Button variant="contained" color="error" onClick={() => mutate()} loading={isLoading}>

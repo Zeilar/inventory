@@ -7,9 +7,9 @@ import { ItemsPageProvider } from "./context";
 
 export default async function Page({ searchParams }: SearchParams<"search" | "page">) {
   const { search = "", page = "1" } = await searchParams;
-  const _searchParams = new URLSearchParams({ search, page });
-
-  const res = await fetch(`http://localhost:3000/api/items?${_searchParams}`);
+  const res = await fetch(
+    `http://localhost:3000/api/items?${new URLSearchParams({ search, page })}`
+  );
   const { items, total }: GetItemsResponse = await res.json();
 
   return (

@@ -41,7 +41,6 @@ export default function Loading() {
     <Box width="100%">
       <ItemsHeaderLayout
         paginationProps={{ count: 1, page: 1, disabled: true }}
-        createReceiptFormProps={{ disabled: true }}
         searchField={<ItemSearchFieldLayout isLoading value={searchParams.get("search") ?? ""} />}
       />
       <ItemsContainerLayout>
