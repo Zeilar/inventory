@@ -6,6 +6,7 @@ import { Alert, Box, Button, Modal, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { useMutation } from "react-query";
 import { deleteItem } from "./action";
+import { Delete } from "@mui/icons-material";
 
 interface DeleteItemButtonProps {
   id: number;
@@ -25,7 +26,7 @@ export function DeleteItemButton({ id }: DeleteItemButtonProps) {
 
   return (
     <>
-      <Button color="error" onClick={prompt.open}>
+      <Button variant="outlined" startIcon={<Delete />} color="error" onClick={prompt.open}>
         Delete
       </Button>
       <Modal open={isPromptOpen} onClose={prompt.close}>

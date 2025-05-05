@@ -1,5 +1,6 @@
 import { Link, UnstyledLink } from "@/components";
 import { DeleteItemButton } from "@/features/item/components";
+import { Edit } from "@mui/icons-material";
 import { Button, Card, CardActions, CardContent } from "@mui/material";
 
 interface ReceiptCardProps {
@@ -22,7 +23,9 @@ export function ItemCard({ id, title }: ReceiptCardProps) {
       </CardContent>
       <CardActions sx={{ p: 0.75 }}>
         <UnstyledLink href={`/items/${id}/update`}>
-          <Button>Edit</Button>
+          <Button variant="outlined" startIcon={<Edit />}>
+            Edit
+          </Button>
         </UnstyledLink>
         <DeleteItemButton id={id} />
       </CardActions>

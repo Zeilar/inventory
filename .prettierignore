@@ -4,5 +4,5 @@ package-lock.json
 *.db
 *.env
 .next
-README.md
 public
+files
