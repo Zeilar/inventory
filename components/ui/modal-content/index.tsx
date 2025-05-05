@@ -11,7 +11,6 @@ export function ModalContent({ sx, ...props }: BoxProps) {
         transform: "translate(-50%, -50%)",
         minWidth: 400,
         bgcolor: "background.paper",
-        border: "2px solid #000",
         boxShadow: 24,
         px: 3,
         py: 2,
