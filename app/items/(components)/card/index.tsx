@@ -13,15 +13,12 @@ export function ItemCard({ id, title }: ReceiptCardProps) {
 
   return (
     <Card key={id} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <CardContent sx={{ px: 1.5, py: 0 }}>
-        <Link
-          sx={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-          href={url}
-        >
-          {title}
-        </Link>
+      <CardContent
+        sx={{ p: 1.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+      >
+        <Link href={url}>{title}</Link>
       </CardContent>
-      <CardActions sx={{ p: 0.75 }}>
+      <CardActions sx={{ p: 1.5, gap: 0.75 }}>
         <UnstyledLink href={`/items/${id}/update`}>
           <Button variant="outlined" startIcon={<Edit />}>
             Edit
