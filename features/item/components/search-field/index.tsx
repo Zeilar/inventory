@@ -12,6 +12,7 @@ interface ItemSearchFieldLayoutProps {
   onSubmit?: VoidFunction;
   onClear?: VoidFunction;
   isLoading?: boolean;
+  search?: string | null;
 }
 
 const inputId = "item-search-field";
@@ -22,6 +23,7 @@ export function ItemSearchFieldLayout({
   onSubmit,
   value,
   isLoading,
+  search,
 }: ItemSearchFieldLayoutProps) {
   return (
     <Box
@@ -44,7 +46,7 @@ export function ItemSearchFieldLayout({
           disabled={isLoading}
           required
           endAdornment={
-            value?.trim() && (
+            (value?.trim() || search) && (
               <InputAdornment
                 position="start"
                 sx={{ mr: 0, ml: 1, cursor: "pointer" }}
@@ -92,6 +94,7 @@ export function ItemSearchField() {
         onSubmit("");
         setValue("");
       }}
+      search={searchParams.get("search")}
     />
   );
 }

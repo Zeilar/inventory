@@ -36,12 +36,13 @@ export function ItemsCardsSkeletons() {
 
 export default function Loading() {
   const searchParams = useSearchParams();
+  const search = searchParams.get("search");
 
   return (
     <Box width="100%">
       <ItemsHeaderLayout
         paginationProps={{ count: 1, page: 1, disabled: true }}
-        searchField={<ItemSearchFieldLayout isLoading value={searchParams.get("search") ?? ""} />}
+        searchField={<ItemSearchFieldLayout isLoading value={search ?? ""} search={search} />}
       />
       <ItemsContainerLayout>
         <ItemsCardsSkeletons />
