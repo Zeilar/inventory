@@ -45,6 +45,7 @@ export default function Loading() {
       <ItemsHeaderLayout
         paginationProps={{ count: 1, page: 1, disabled: true }}
         searchField={<ItemSearchFieldLayout isLoading value={search ?? ""} search={search} />}
+        isLoading
       />
       <ItemsContainerLayout>
         <ItemsCardsSkeletons />

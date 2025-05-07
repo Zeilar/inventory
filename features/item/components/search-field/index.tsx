@@ -34,7 +34,7 @@ export function ItemSearchFieldLayout({
       }}
       height="100%"
     >
-      <FormControl size="small" sx={{ width: 300 }}>
+      <FormControl size="small">
         <InputLabel htmlFor={inputId}>Search</InputLabel>
         <OutlinedInput
           value={value}

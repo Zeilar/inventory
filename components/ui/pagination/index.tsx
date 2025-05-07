@@ -1,6 +1,6 @@
 "use client";
 
-import { Pagination as MuiPagination } from "@mui/material";
+import { Pagination as MuiPagination, paginationClasses } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { TransitionStartFunction } from "react";
 
@@ -40,7 +40,7 @@ export function Pagination({ count, page, disabled, startTransition }: Paginatio
         }
       }}
       disabled={disabled}
-      sx={{ width: "100%" }}
+      sx={{ [`.${paginationClasses.ul}`]: { flexWrap: "nowrap" } }}
     />
   );
 }

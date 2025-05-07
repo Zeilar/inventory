@@ -300,7 +300,7 @@ export function CreateItemForm() {
         </form.AppField>
       </Box>
       <Box display="flex" gap={1.5}>
-        <Button type="submit" variant="contained" loading={form.state.isSubmitting}>
+        <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
           Save
         </Button>
         <Button onClick={back}>Cancel</Button>

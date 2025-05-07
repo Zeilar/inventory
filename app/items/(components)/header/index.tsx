@@ -2,11 +2,12 @@
 
 import { Pagination, UnstyledLink, type PaginationProps } from "@/components";
 import { ItemSearchField } from "@/features/item/components";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Typography } from "@mui/material";
 import { useItemsPageContext } from "../../context";
 import type { ReactNode } from "react";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Add } from "@mui/icons-material";
+import { Add, FilterAlt } from "@mui/icons-material";
+import { PER_PAGE } from "@/features/item/config";
 
 interface ItemsHeaderProps {
   page: number;
@@ -17,9 +18,18 @@ interface ItemsHeaderProps {
 interface ItemsHeaderLayoutProps {
   paginationProps: PaginationProps;
   searchField: ReactNode;
+  onCheckAll?: VoidFunction;
+  checked?: number[];
+  isLoading?: boolean;
 }
 
-export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderLayoutProps) {
+export function ItemsHeaderLayout({
+  paginationProps,
+  searchField,
+  checked = [],
+  onCheckAll,
+  isLoading,
+}: ItemsHeaderLayoutProps) {
   return (
     <>
       <Breadcrumbs hrefs={[{ href: "/", label: "Home" }]} current="Items" />
@@ -35,11 +45,25 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         borderColor="divider"
         py={1.5}
         width="100%"
+        display="flex"
+        flexDirection="column"
+        gap={1.5}
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center" gap={3}>
-          <Pagination {...paginationProps} />
+        <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5} pl={1.5}>
+          <Checkbox
+            checked={checked.length === PER_PAGE}
+            onChange={onCheckAll}
+            disabled={isLoading}
+            indeterminate={checked.length > 0 && checked.length < PER_PAGE}
+          />
+          <Box mr="auto">
+            <Pagination {...paginationProps} />
+          </Box>
           <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
             {searchField}
+            <Button variant="outlined" startIcon={<FilterAlt />} sx={{ height: 40 }}>
+              Filter
+            </Button>
             <UnstyledLink href="/items/create">
               <Button variant="contained" startIcon={<Add />} sx={{ height: 40 }}>
                 Create
@@ -53,7 +77,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
 }
 
 export function ItemsHeader({ count, page, disablePagination }: ItemsHeaderProps) {
-  const { isLoading, startTransition } = useItemsPageContext();
+  const { isLoading, startTransition, checked, onCheckAll } = useItemsPageContext();
 
   return (
     <ItemsHeaderLayout
@@ -64,6 +88,8 @@ export function ItemsHeader({ count, page, disablePagination }: ItemsHeaderProps
         startTransition,
       }}
       searchField={<ItemSearchField />}
+      checked={checked}
+      onCheckAll={onCheckAll}
     />
   );
 }

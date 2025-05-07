@@ -347,7 +347,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
         </form.AppField>
       </Box>
       <div>
-        <Button type="submit" variant="contained" loading={form.state.isSubmitting}>
+        <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
           Save
         </Button>
       </div>

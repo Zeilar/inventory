@@ -13,7 +13,7 @@ export default async function Page({ searchParams }: SearchParams<"search" | "pa
   const { items, total }: GetItemsResponse = await res.json();
 
   return (
-    <ItemsPageProvider>
+    <ItemsPageProvider itemIds={items.flatMap(({ id }) => id)}>
       <Box width="100%">
         <ItemsHeader
           count={total ? Math.ceil(total / PER_PAGE) : 1}
