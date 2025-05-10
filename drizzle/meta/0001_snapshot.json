@@ -1,78 +1,9 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "493eb3d2-1717-4e69-bdd3-66255391103c",
-  "prevId": "5af0df11-65df-4237-8653-abb1a32bc34b",
+  "id": "0db8b8d0-cad4-481f-905f-4c8c53c0cb12",
+  "prevId": "391fe413-492a-4618-8b7b-4e9b500f7469",
   "tables": {
-    "receipts": {
-      "name": "receipts",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "itemId": {
-          "name": "itemId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP"
-        }
-      },
-      "indexes": {
-        "receipts_itemId_unique": {
-          "name": "receipts_itemId_unique",
-          "columns": [
-            "itemId"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "receipts_itemId_items_id_fk": {
-          "name": "receipts_itemId_items_id_fk",
-          "tableFrom": "receipts",
-          "tableTo": "items",
-          "columnsFrom": [
-            "itemId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
     "items": {
       "name": "items",
       "columns": {
@@ -90,19 +21,34 @@
           "notNull": true,
           "autoincrement": false
         },
+        "articleId": {
+          "name": "articleId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "quantity": {
           "name": "quantity",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": 1
+        },
+        "files": {
+          "name": "files",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
         },
         "createdAt": {
           "name": "createdAt",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
@@ -121,35 +67,29 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "images": {
-      "name": "images",
+    "settings": {
+      "name": "settings",
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
-        "receiptId": {
-          "name": "receiptId",
-          "type": "integer",
+        "value": {
+          "name": "value",
+          "type": "blob",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
-        },
-        "itemId": {
-          "name": "itemId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "'{\"itemsPerPage\":10}'"
         },
         "createdAt": {
           "name": "createdAt",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
@@ -162,57 +102,8 @@
           "default": "CURRENT_TIMESTAMP"
         }
       },
-      "indexes": {
-        "images_id_unique": {
-          "name": "images_id_unique",
-          "columns": [
-            "id"
-          ],
-          "isUnique": true
-        },
-        "images_receiptId_unique": {
-          "name": "images_receiptId_unique",
-          "columns": [
-            "receiptId"
-          ],
-          "isUnique": true
-        },
-        "images_itemId_unique": {
-          "name": "images_itemId_unique",
-          "columns": [
-            "itemId"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "images_receiptId_receipts_id_fk": {
-          "name": "images_receiptId_receipts_id_fk",
-          "tableFrom": "images",
-          "tableTo": "receipts",
-          "columnsFrom": [
-            "receiptId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "images_itemId_items_id_fk": {
-          "name": "images_itemId_items_id_fk",
-          "tableFrom": "images",
-          "tableTo": "items",
-          "columnsFrom": [
-            "itemId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}

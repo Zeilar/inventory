@@ -1,6 +1,5 @@
 "use client";
 
-import { PER_PAGE } from "@/features/item/config";
 import { useSearchParams } from "next/navigation";
 import {
   createContext,
@@ -12,6 +11,7 @@ import {
   type PropsWithChildren,
   type TransitionStartFunction,
 } from "react";
+import { useSettings } from "../(components)/providers/settings";
 
 interface ItemsPageContext {
   isLoading: boolean;
@@ -28,6 +28,7 @@ interface ItemsPageProviderProps extends PropsWithChildren {
 export const ItemsPageContext = createContext<ItemsPageContext | undefined>(undefined);
 
 export function ItemsPageProvider({ children, itemIds }: ItemsPageProviderProps) {
+  const { itemsPerPage } = useSettings();
   const searchParams = useSearchParams();
   const [isLoading, startTransition] = useTransition();
   const [checked, setChecked] = useState<number[]>([]);
@@ -39,9 +40,9 @@ export function ItemsPageProvider({ children, itemIds }: ItemsPageProviderProps)
       onCheck: (id) =>
         setChecked((p) => (!p.includes(id) ? [...p, id] : p.filter((element) => element !== id))),
       // If one or more is checked, check all. Else uncheck all.
-      onCheckAll: () => setChecked((p) => (p.length === PER_PAGE ? [] : itemIds)),
+      onCheckAll: () => setChecked((p) => (p.length === itemsPerPage ? [] : itemIds)),
     }),
-    [isLoading, checked, itemIds]
+    [isLoading, checked, itemIds, itemsPerPage]
   );
 
   /**

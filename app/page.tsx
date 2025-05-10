@@ -6,19 +6,20 @@ import { Suspense } from "react";
 import { UnstyledLink } from "@/components";
 import { ItemsTimeline } from "./(components)/dashboard-card/items-timeline";
 import type { ItemsTimelineResponse } from "./api/items/timeline/route";
+import { buildAppUrl } from "@/common";
 
 async function getItemsTimeline(): Promise<ItemsTimelineResponse> {
-  const res = await fetch("http://localhost:3000/api/items/timeline");
+  const res = await fetch(buildAppUrl("/api/items/timeline"));
   return res.json();
 }
 
 async function getTotalItems(): Promise<number> {
-  const res = await fetch("http://localhost:3000/api/items/total");
+  const res = await fetch(buildAppUrl("/api/items/total"));
   return res.json();
 }
 
 async function getDbSize(): Promise<number> {
-  const res = await fetch("http://localhost:3000/api/db/total");
+  const res = await fetch(buildAppUrl("/api/db/total"));
   return res.json();
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useItemsPageContext } from "@/app/items/context";
-import { Clear } from "@mui/icons-material";
+import { Clear, Search } from "@mui/icons-material";
 import { Box, FormControl, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ChangeEventHandler, useCallback, useEffect, useState } from "react";
@@ -41,20 +41,23 @@ export function ItemSearchFieldLayout({
           onChange={onChange}
           id={inputId}
           size="small"
-          placeholder="IKEA"
+          placeholder="Cable"
           label="Search"
           disabled={isLoading}
           required
+          startAdornment={
+            <InputAdornment position="start">
+              <Search color="disabled" />
+            </InputAdornment>
+          }
           endAdornment={
-            (value?.trim() || search) && (
-              <InputAdornment
-                position="start"
-                sx={{ mr: 0, ml: 1, cursor: "pointer" }}
-                onClick={onClear}
-              >
-                <Clear />
-              </InputAdornment>
-            )
+            <InputAdornment
+              position="end"
+              sx={{ cursor: "pointer", opacity: value?.trim() || search ? 1 : 0 }}
+              onClick={onClear}
+            >
+              <Clear />
+            </InputAdornment>
           }
         />
       </FormControl>

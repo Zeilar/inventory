@@ -4,14 +4,16 @@ import { Box, Button, Card, CardActions, CardContent, Checkbox, Skeleton } from 
 import { ItemsContainerLayout, ItemsHeaderLayout } from "./(components)";
 import { ItemSearchFieldLayout } from "@/features/item/components";
 import { useSearchParams } from "next/navigation";
-import { PER_PAGE } from "@/features/item/config";
 import { Link } from "@/components";
 import { Delete, Edit } from "@mui/icons-material";
+import { useSettings } from "../(components)/providers/settings";
 
 export function ItemsCardsSkeletons() {
+  const { itemsPerPage } = useSettings();
+
   return (
     <>
-      {Array.from({ length: PER_PAGE }, (_, i) => (
+      {Array.from({ length: itemsPerPage }, (_, i) => (
         <Card
           key={i}
           sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}

@@ -6,9 +6,15 @@ export type Item = InferSelectModel<typeof itemsTable>;
 export const itemsTable = sqliteTable("items", {
   id: int().primaryKey({ autoIncrement: true }),
   title: text().notNull(),
-  articleId: text(), // Nullable. Doesn't refer to anything in the app.
+  /**
+   * Nullable. Doesn't refer to anything in the app.
+   */
+  articleId: text(),
   quantity: int().notNull().default(1),
-  files: text().notNull().default(""), // Comma separated file paths.
+  /**
+   * Comma separated file paths.
+   */
+  files: text().notNull().default(""),
   createdAt: text()
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

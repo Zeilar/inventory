@@ -4,7 +4,7 @@
 
 import "dotenv/config"; // Must be run before importing `db`.
 import { db } from ".";
-import { itemsTable } from "./schema";
+import { itemsTable, settingsTable } from "./schema";
 import { faker } from "@faker-js/faker";
 import { InferInsertModel } from "drizzle-orm";
 
@@ -18,4 +18,9 @@ async function seedItems(count: number = 100): Promise<void> {
   await db.insert(itemsTable).values(items).returning();
 }
 
+async function seedSettings(): Promise<void> {
+  await db.insert(settingsTable).values({});
+}
+
 seedItems();
+seedSettings();

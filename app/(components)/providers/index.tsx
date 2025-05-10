@@ -7,10 +7,16 @@ import { theme } from "@/features/theme";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { CustomSnackbarProvider } from "./snackbar";
 import { ProgressProvider } from "@bprogress/next/app";
+import { SettingsProvider } from "./settings";
+import type { SettingsValues } from "@/features/db/schema";
+
+interface ProvidersProps extends PropsWithChildren {
+  settings: SettingsValues;
+}
 
 const queryClient = new QueryClient();
 
-export function Providers({ children }: PropsWithChildren) {
+export function Providers({ children, settings }: ProvidersProps) {
   return (
     <ProgressProvider
       height="4px"
@@ -20,11 +26,13 @@ export function Providers({ children }: PropsWithChildren) {
     >
       <AppRouterCacheProvider>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <CustomSnackbarProvider />
-            {children}
-          </ThemeProvider>
+          <SettingsProvider settings={settings}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <CustomSnackbarProvider />
+              {children}
+            </ThemeProvider>
+          </SettingsProvider>
         </QueryClientProvider>
       </AppRouterCacheProvider>
     </ProgressProvider>
