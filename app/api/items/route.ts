@@ -1,12 +1,18 @@
 import { db } from "@/features/db";
 import { itemsTable } from "@/features/db/schema";
 import { NextResponse } from "next/server";
-import { desc, like, or, between, sql, SQL, and } from "drizzle-orm";
+import { desc, like, or, between, sql, SQL, and, eq } from "drizzle-orm";
 import type { GetItemsResponse } from "./types";
 import { getSettings } from "../settings/route";
 import { z } from "zod";
 
-export type ItemsFilterParams = "quantityFrom" | "quantityTo" | "dateFrom" | "dateTo";
+export type ItemsFilterParams =
+  | "quantityFrom"
+  | "quantityTo"
+  | "dateFrom"
+  | "dateTo"
+  | "archived"
+  | "published";
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
 export async function GET(req: Request) {
@@ -22,6 +28,10 @@ export async function GET(req: Request) {
     const filters: Array<SQL | undefined> = [];
     const search = url.searchParams.get("search" satisfies ItemsSearchParams)?.trim();
     const page = url.searchParams.get("page" satisfies ItemsSearchParams)?.trim() ?? "1";
+    const archived =
+      url.searchParams.get("archived" satisfies ItemsSearchParams)?.trim() === "true";
+    const published =
+      url.searchParams.get("published" satisfies ItemsSearchParams)?.trim() === "true";
     const quantityFrom = z
       .number({ coerce: true })
       .optional()
@@ -46,6 +56,7 @@ export async function GET(req: Request) {
         articleId: itemsTable.articleId,
         quantity: itemsTable.quantity,
         files: itemsTable.files,
+        archived: itemsTable.archived,
         createdAt: itemsTable.createdAt,
         updatedAt: itemsTable.updatedAt,
         total: sql<number>`count(*) OVER ()`.as("total"),
@@ -61,6 +72,14 @@ export async function GET(req: Request) {
           like(itemsTable.articleId, `%${lowerCaseSearch}%`)
         )
       );
+    }
+
+    if (!archived) {
+      filters.push(eq(itemsTable.archived, false));
+    }
+
+    if (!published) {
+      filters.push(eq(itemsTable.archived, true));
     }
 
     if (typeof quantityFrom === "number" && typeof quantityTo === "number") {

@@ -19,6 +19,7 @@ interface ItemsPageContext {
   checked: number[];
   onCheck(id: number): void;
   onCheckAll: VoidFunction;
+  onUncheckAll: VoidFunction;
 }
 
 interface ItemsPageProviderProps extends PropsWithChildren {
@@ -41,6 +42,7 @@ export function ItemsPageProvider({ children, itemIds }: ItemsPageProviderProps)
         setChecked((p) => (!p.includes(id) ? [...p, id] : p.filter((element) => element !== id))),
       // If one or more is checked, check all. Else uncheck all.
       onCheckAll: () => setChecked((p) => (p.length === itemsPerPage ? [] : itemIds)),
+      onUncheckAll: () => setChecked([]),
     }),
     [isLoading, checked, itemIds, itemsPerPage]
   );

@@ -1,4 +1,4 @@
-import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { type InferSelectModel, sql } from "drizzle-orm";
 
 export type Item = InferSelectModel<typeof itemsTable>;
@@ -15,12 +15,12 @@ export const itemsTable = sqliteTable("items", {
    * Comma separated file paths.
    */
   files: text().notNull().default(""),
+  archived: integer({ mode: "boolean" }).notNull().default(false),
   createdAt: text()
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: text()
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull()
-    .$onUpdate(() => sql`CURRENT_TIMESTAMP`)
-    .notNull(),
+    .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });

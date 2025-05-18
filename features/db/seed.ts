@@ -14,6 +14,7 @@ async function seedItems(count: number = 100): Promise<void> {
     articleId: faker.string.alphanumeric(),
     quantity: faker.number.int({ min: 0, max: 5 }),
     createdAt: faker.date.recent({ days: 50 }).toISOString(),
+    archived: Math.random() < 0.2, // Make 20% archived.
   }));
   await db.insert(itemsTable).values(items).returning();
 }

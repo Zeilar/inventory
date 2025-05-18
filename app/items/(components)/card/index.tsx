@@ -1,7 +1,7 @@
 "use client";
 
 import { Link, UnstyledLink } from "@/components";
-import { DeleteItemButton } from "@/features/item/components";
+import { ArchiveItemButton } from "@/features/item/components";
 import { Edit } from "@mui/icons-material";
 import { Button, Card, CardActions, CardContent, Checkbox } from "@mui/material";
 import { useItemsPageContext } from "../../context";
@@ -9,9 +9,10 @@ import { useItemsPageContext } from "../../context";
 interface ItemCardProps {
   id: number;
   title: string;
+  archived: boolean;
 }
 
-export function ItemCard({ id, title }: ItemCardProps) {
+export function ItemCard({ id, title, archived }: ItemCardProps) {
   const { checked, onCheck } = useItemsPageContext();
   const url = `/items/${id}`;
 
@@ -29,7 +30,7 @@ export function ItemCard({ id, title }: ItemCardProps) {
             Edit
           </Button>
         </UnstyledLink>
-        <DeleteItemButton id={id} />
+        <ArchiveItemButton ids={[id]} archived={archived} />
       </CardActions>
     </Card>
   );

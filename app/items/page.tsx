@@ -32,7 +32,9 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
         />
         <ItemsContainer>
           {items.length ? (
-            items.map(({ title, id }) => <ItemCard key={id} id={id} title={title} />)
+            items.map(({ title, id, archived }) => (
+              <ItemCard key={id} id={id} title={title} archived={archived} />
+            ))
           ) : (
             <Typography>No results!</Typography>
           )}

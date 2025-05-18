@@ -1,7 +1,7 @@
 "use client";
 
 import { Pagination, UnstyledLink, type PaginationProps } from "@/components";
-import { ItemSearchField } from "@/features/item/components";
+import { ArchiveItemButton, ItemSearchField } from "@/features/item/components";
 import {
   Box,
   Button,
@@ -16,7 +16,7 @@ import {
 import { useItemsPageContext } from "../../context";
 import { useCallback, type ReactNode } from "react";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Add, Delete, FilterAlt } from "@mui/icons-material";
+import { Add, FilterAlt } from "@mui/icons-material";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { useSettings } from "@/app/(components)/providers/settings";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -33,23 +33,27 @@ interface ItemsHeaderLayoutProps {
   paginationProps: PaginationProps;
   searchField: ReactNode;
   onCheckAll?: VoidFunction;
+  onUncheckAll?: VoidFunction;
   checked?: number[];
   isLoading?: boolean;
   hasResults: boolean;
 }
 
-const filters: ItemsFilterParams[] = ["dateFrom", "dateTo", "quantityFrom", "quantityTo"];
-
-const defaultValues = Object.fromEntries(filters.map((filter) => [filter, ""])) as Record<
-  ItemsFilterParams,
-  string
->;
+const defaultValues: Record<ItemsFilterParams, string> = {
+  quantityFrom: "",
+  quantityTo: "",
+  dateFrom: "",
+  dateTo: "",
+  published: `${true}`,
+  archived: `${false}`,
+};
 
 export function ItemsHeaderLayout({
   paginationProps,
   searchField,
   checked = [],
   onCheckAll,
+  onUncheckAll,
   isLoading,
   hasResults,
 }: ItemsHeaderLayoutProps) {
@@ -199,9 +203,44 @@ export function ItemsHeaderLayout({
                 </Box>
               </FormControl>
               <FormControl sx={{ bgcolor: "transparent" }}>
-                <FormLabel sx={{ mb: 1.5 }}>Tags</FormLabel>
+                <FormLabel sx={{ mb: 1.5 }}>Status</FormLabel>
                 <Box display="flex" gap={1.5}>
-                  WIP
+                  <form.AppField
+                    name="published"
+                    listeners={{
+                      onChange: ({ value }) => shallowPushQueryParams("published", `${value}`),
+                    }}
+                  >
+                    {(field) => (
+                      <FormControlLabel
+                        control={
+                          <field.Checkbox
+                            checked={field.state.value === "true"}
+                            onChange={(_e, checked) => field.handleChange(JSON.stringify(checked))}
+                          />
+                        }
+                        label="Published"
+                      />
+                    )}
+                  </form.AppField>
+                  <form.AppField
+                    name="archived"
+                    listeners={{
+                      onChange: ({ value }) => shallowPushQueryParams("archived", `${value}`),
+                    }}
+                  >
+                    {(field) => (
+                      <FormControlLabel
+                        control={
+                          <field.Checkbox
+                            checked={field.state.value === "true"}
+                            onChange={(_e, checked) => field.handleChange(JSON.stringify(checked))}
+                          />
+                        }
+                        label="Archived"
+                      />
+                    )}
+                  </form.AppField>
                 </Box>
               </FormControl>
             </Box>
@@ -211,13 +250,13 @@ export function ItemsHeaderLayout({
                 variant="outlined"
                 type="button"
                 onClick={() => {
-                  Object.keys(defaultValues).forEach((element) => {
-                    shallowPushQueryParams(element as ItemsFilterParams, "");
+                  Object.entries(defaultValues).forEach(([key, value]) => {
+                    shallowPushQueryParams(key as ItemsFilterParams, value);
                   });
                   form.reset(defaultValues, { keepDefaultValues: false });
                 }}
               >
-                Clear
+                Reset
               </Button>
             </Box>
           </form.Form>
@@ -237,21 +276,14 @@ export function ItemsHeaderLayout({
           label={<Typography>{checked.length} selected</Typography>}
           sx={{ ml: 0, gap: 1.5 }} // Override negative margin-left.
         />
-        <Button
-          variant="outlined"
-          disabled={checked.length === 0}
-          color="error"
-          startIcon={<Delete />}
-        >
-          Delete
-        </Button>
+        <ArchiveItemButton archived={false} ids={checked} onSuccess={onUncheckAll} />
       </Box>
     </>
   );
 }
 
 export function ItemsHeader({ count, page, disablePagination, hasResults }: ItemsHeaderProps) {
-  const { isLoading, startTransition, checked, onCheckAll } = useItemsPageContext();
+  const { isLoading, startTransition, checked, onCheckAll, onUncheckAll } = useItemsPageContext();
 
   return (
     <ItemsHeaderLayout
@@ -264,6 +296,7 @@ export function ItemsHeader({ count, page, disablePagination, hasResults }: Item
       searchField={<ItemSearchField />}
       checked={checked}
       onCheckAll={onCheckAll}
+      onUncheckAll={onUncheckAll}
       hasResults={hasResults}
     />
   );

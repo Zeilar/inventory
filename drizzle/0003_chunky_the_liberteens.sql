@@ -1,0 +1,1 @@
+ALTER TABLE `items` ADD `archived` integer DEFAULT false;
