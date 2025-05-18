@@ -1,9 +1,13 @@
 import { db } from "@/features/db";
 import { itemsTable } from "@/features/db/schema";
 import { NextResponse } from "next/server";
-import { desc, count, like, or } from "drizzle-orm";
+import { desc, like, or, between, sql, SQL, and } from "drizzle-orm";
 import type { GetItemsResponse } from "./types";
 import { getSettings } from "../settings/route";
+import { z } from "zod";
+
+export type ItemsFilterParams = "quantityFrom" | "quantityTo" | "dateFrom" | "dateTo";
+export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
 export async function GET(req: Request) {
   try {
@@ -15,39 +19,69 @@ export async function GET(req: Request) {
 
     const { itemsPerPage } = settings;
     const url = new URL(req.url);
-    const search = url.searchParams.get("search")?.trim();
-    const page = url.searchParams.get("page")?.trim() ?? "1";
+    const filters: Array<SQL | undefined> = [];
+    const search = url.searchParams.get("search" satisfies ItemsSearchParams)?.trim();
+    const page = url.searchParams.get("page" satisfies ItemsSearchParams)?.trim() ?? "1";
+    const quantityFrom = z
+      .number({ coerce: true })
+      .optional()
+      .parse(url.searchParams.get("quantityFrom" satisfies ItemsSearchParams)?.trim());
+    const quantityTo = z
+      .number({ coerce: true })
+      .optional()
+      .parse(url.searchParams.get("quantityTo" satisfies ItemsSearchParams)?.trim());
+    const dateFrom = z
+      .date({ coerce: true })
+      .optional()
+      .parse(url.searchParams.get("dateFrom" satisfies ItemsSearchParams)?.trim());
+    const dateTo = z
+      .date({ coerce: true })
+      .optional()
+      .parse(url.searchParams.get("dateTo" satisfies ItemsSearchParams)?.trim());
 
-    // Keep these query builders identical for anything that impacts the row count.
     const itemsQuery = db
-      .select()
+      .select({
+        id: itemsTable.id,
+        title: itemsTable.title,
+        articleId: itemsTable.articleId,
+        quantity: itemsTable.quantity,
+        files: itemsTable.files,
+        createdAt: itemsTable.createdAt,
+        updatedAt: itemsTable.updatedAt,
+        total: sql<number>`count(*) OVER ()`.as("total"),
+      })
       .from(itemsTable)
       .orderBy(({ id }) => [desc(id)]);
-    const countQuery = db.select({ count: count() }).from(itemsTable);
 
     if (search) {
       const lowerCaseSearch = search.toLowerCase();
-      itemsQuery.where(
-        or(
-          like(itemsTable.title, `%${lowerCaseSearch}%`),
-          like(itemsTable.articleId, `%${lowerCaseSearch}%`)
-        )
-      );
-      countQuery.where(
+      filters.push(
         or(
           like(itemsTable.title, `%${lowerCaseSearch}%`),
           like(itemsTable.articleId, `%${lowerCaseSearch}%`)
         )
       );
     }
+
+    if (typeof quantityFrom === "number" && typeof quantityTo === "number") {
+      filters.push(between(itemsTable.quantity, quantityFrom, quantityTo));
+    }
+
+    if (dateFrom instanceof Date && dateTo instanceof Date) {
+      filters.push(between(itemsTable.createdAt, dateFrom.toISOString(), dateTo.toISOString()));
+    }
+
+    if (filters.length > 0) {
+      itemsQuery.where(and(...filters));
+    }
+
     itemsQuery.limit(itemsPerPage).offset((parseInt(page) - 1) * itemsPerPage); // Paginate.
 
-    const countQueryResult = await countQuery;
     const items = await itemsQuery;
 
     return NextResponse.json({
       items,
-      total: countQueryResult.at(0)?.count ?? items.length,
+      total: items.at(0)?.total ?? items.length,
     } satisfies GetItemsResponse);
   } catch (error) {
     console.error(error);

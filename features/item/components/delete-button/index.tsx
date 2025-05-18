@@ -36,7 +36,9 @@ export function DeleteItemButton({ id }: DeleteItemButtonProps) {
           </Typography>
           <Alert severity="error">Are you sure? This cannot be undone.</Alert>
           <Box display="flex" mt={2} gap={1} justifyContent="end">
-            <Button onClick={prompt.close}>Cancel</Button>
+            <Button variant="outlined" onClick={prompt.close}>
+              Cancel
+            </Button>
             <Button variant="contained" color="error" onClick={() => mutate()} loading={isLoading}>
               Delete
             </Button>

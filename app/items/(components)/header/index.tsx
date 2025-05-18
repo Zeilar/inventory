@@ -11,21 +11,22 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Paper,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useItemsPageContext } from "../../context";
-import type { ReactNode } from "react";
+import { useCallback, type ReactNode } from "react";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Add, Delete, FilterAlt } from "@mui/icons-material";
-import { useDisclosure } from "@/hooks";
+import { useAppForm, useDisclosure } from "@/hooks";
 import { useSettings } from "@/app/(components)/providers/settings";
+import { useRouter, useSearchParams } from "next/navigation";
+import type { ItemsFilterParams, ItemsSearchParams } from "@/app/api/items/route";
 
 interface ItemsHeaderProps {
   page: number;
   count: number;
   disablePagination?: boolean;
+  hasResults: boolean;
 }
 
 interface ItemsHeaderLayoutProps {
@@ -34,7 +35,15 @@ interface ItemsHeaderLayoutProps {
   onCheckAll?: VoidFunction;
   checked?: number[];
   isLoading?: boolean;
+  hasResults: boolean;
 }
+
+const filters: ItemsFilterParams[] = ["dateFrom", "dateTo", "quantityFrom", "quantityTo"];
+
+const defaultValues = Object.fromEntries(filters.map((filter) => [filter, ""])) as Record<
+  ItemsFilterParams,
+  string
+>;
 
 export function ItemsHeaderLayout({
   paginationProps,
@@ -42,9 +51,31 @@ export function ItemsHeaderLayout({
   checked = [],
   onCheckAll,
   isLoading,
+  hasResults,
 }: ItemsHeaderLayoutProps) {
-  const [isFilterOpen, filter] = useDisclosure();
+  const { refresh } = useRouter();
+  const searchParams = useSearchParams();
   const { itemsPerPage } = useSettings();
+  const form = useAppForm({
+    defaultValues: Object.fromEntries(
+      Object.entries(defaultValues).map(([filter]) => [filter, searchParams.get(filter) ?? ""])
+    ) as Record<ItemsFilterParams, string>,
+    onSubmit: refresh,
+  });
+  /**
+   * Filters should start expanded if there are one(s) already in the URL.
+   */
+  const [isFilterOpen, filter] = useDisclosure(Object.values(form.state.values).some(Boolean));
+  const shallowPushQueryParams = useCallback((param: ItemsSearchParams, value: string): void => {
+    // Do not use `useSearchParams` as it doesn't update when using `window.history.pushState`.
+    const newSearchParams = new URLSearchParams(window.location.search);
+    if (value) {
+      newSearchParams.set(param, value);
+    } else {
+      newSearchParams.delete(param);
+    }
+    window.history.pushState(null, "", `?${newSearchParams}`);
+  }, []);
 
   return (
     <>
@@ -88,30 +119,109 @@ export function ItemsHeaderLayout({
         </Box>
       </Box>
       <Collapse in={isFilterOpen}>
-        <Box py={3} display="grid" gap={3} gridTemplateColumns="175px 350px 1fr">
-          <Paper component={FormControl} sx={{ p: 1.5, bgcolor: "transparent" }}>
-            <FormLabel sx={{ mb: 0.75 }}>Quantity</FormLabel>
-            <Box display="flex" alignItems="center" gap={1.5}>
-              <TextField size="small" />
-              <span>-</span>
-              <TextField size="small" />
+        <form.AppForm>
+          <form.Form display="flex" flexDirection="column" gap={3} py={3}>
+            <Box display="grid" gap={3} gridTemplateColumns="200px 350px 1fr">
+              <FormControl sx={{ bgcolor: "transparent" }}>
+                <FormLabel sx={{ mb: 1.5 }}>Quantity</FormLabel>
+                <Box display="flex" gap={1.5}>
+                  <form.AppField
+                    name="quantityFrom"
+                    validators={{
+                      onChange: ({ value }) =>
+                        parseInt(value) < 0 ? "Must not be a negative number." : undefined,
+                    }}
+                    listeners={{
+                      onChange: ({ value }) => shallowPushQueryParams("quantityFrom", value),
+                    }}
+                  >
+                    {(field) => (
+                      <field.TextField
+                        type="number"
+                        label="From"
+                        slotProps={{ htmlInput: { min: 0 } }}
+                      />
+                    )}
+                  </form.AppField>
+                  <span>-</span>
+                  <form.AppField
+                    name="quantityTo"
+                    validators={{
+                      onChange: ({ value }) =>
+                        parseInt(value) < 0 ? "Must not be a negative number." : undefined,
+                    }}
+                    listeners={{
+                      onChange: ({ value }) => shallowPushQueryParams("quantityTo", value),
+                    }}
+                  >
+                    {(field) => (
+                      <field.TextField
+                        type="number"
+                        label="To"
+                        slotProps={{ htmlInput: { min: 0 } }}
+                      />
+                    )}
+                  </form.AppField>
+                </Box>
+              </FormControl>
+              <FormControl sx={{ bgcolor: "transparent" }}>
+                <FormLabel sx={{ mb: 1.5 }}>Date</FormLabel>
+                <Box display="flex" gap={1.5}>
+                  <form.AppField
+                    name="dateFrom"
+                    listeners={{
+                      onChange: ({ value }) => shallowPushQueryParams("dateFrom", value),
+                    }}
+                  >
+                    {(field) => (
+                      <field.TextField
+                        type="date"
+                        label="From"
+                        slotProps={{ inputLabel: { shrink: true } }}
+                      />
+                    )}
+                  </form.AppField>
+                  <span>-</span>
+                  <form.AppField
+                    name="dateTo"
+                    listeners={{
+                      onChange: ({ value }) => shallowPushQueryParams("dateTo", value),
+                    }}
+                  >
+                    {(field) => (
+                      <field.TextField
+                        type="date"
+                        label="To"
+                        slotProps={{ inputLabel: { shrink: true } }}
+                      />
+                    )}
+                  </form.AppField>
+                </Box>
+              </FormControl>
+              <FormControl sx={{ bgcolor: "transparent" }}>
+                <FormLabel sx={{ mb: 1.5 }}>Tags</FormLabel>
+                <Box display="flex" gap={1.5}>
+                  WIP
+                </Box>
+              </FormControl>
             </Box>
-          </Paper>
-          <Paper component={FormControl} sx={{ p: 1.5, bgcolor: "transparent" }}>
-            <FormLabel sx={{ mb: 0.75 }}>Date</FormLabel>
-            <Box display="flex" alignItems="center" gap={1.5}>
-              <TextField size="small" type="date" />
-              <span>-</span>
-              <TextField size="small" type="date" />
+            <Box display="flex" gap={1.5}>
+              <form.SubmitButton sx={{ width: "fit-content" }}>Apply</form.SubmitButton>
+              <Button
+                variant="outlined"
+                type="button"
+                onClick={() => {
+                  Object.keys(defaultValues).forEach((element) => {
+                    shallowPushQueryParams(element as ItemsFilterParams, "");
+                  });
+                  form.reset(defaultValues, { keepDefaultValues: false });
+                }}
+              >
+                Clear
+              </Button>
             </Box>
-          </Paper>
-          <Paper component={FormControl} sx={{ p: 1.5, bgcolor: "transparent" }}>
-            <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
-            <Box display="flex" alignItems="center" gap={1.5}>
-              WIP
-            </Box>
-          </Paper>
-        </Box>
+          </form.Form>
+        </form.AppForm>
         <Divider />
       </Collapse>
       <Box display="flex" alignItems="center" justifyContent="space-between" pl={1.5} mt={3}>
@@ -120,7 +230,7 @@ export function ItemsHeaderLayout({
             <Checkbox
               checked={checked.length === itemsPerPage}
               onChange={onCheckAll}
-              disabled={isLoading}
+              disabled={isLoading || !hasResults}
               indeterminate={checked.length > 0 && checked.length < itemsPerPage}
             />
           }
@@ -140,7 +250,7 @@ export function ItemsHeaderLayout({
   );
 }
 
-export function ItemsHeader({ count, page, disablePagination }: ItemsHeaderProps) {
+export function ItemsHeader({ count, page, disablePagination, hasResults }: ItemsHeaderProps) {
   const { isLoading, startTransition, checked, onCheckAll } = useItemsPageContext();
 
   return (
@@ -154,6 +264,7 @@ export function ItemsHeader({ count, page, disablePagination }: ItemsHeaderProps
       searchField={<ItemSearchField />}
       checked={checked}
       onCheckAll={onCheckAll}
+      hasResults={hasResults}
     />
   );
 }

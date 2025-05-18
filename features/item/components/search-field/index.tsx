@@ -100,7 +100,9 @@ export function ItemSearchField() {
       onClear={() => {
         onSubmit("");
         setValue("");
-        push("/items");
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.delete("search");
+        push(`/items?${newSearchParams}`);
       }}
       search={searchParams.get("search")}
     />

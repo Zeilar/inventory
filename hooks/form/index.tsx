@@ -1,28 +1,17 @@
 "use client";
 
-import {
-  Button,
-  Checkbox,
-  type ButtonProps,
-  type CheckboxProps,
-  TextField,
-  type TextFieldProps,
-} from "@mui/material";
-import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
-
-const { fieldContext, formContext } = createFormHookContexts();
-
-const SubmitButton = (props: ButtonProps) => (
-  <Button {...props} variant="contained" type="submit" />
-);
+import { createFormHook } from "@tanstack/react-form";
+import { Checkbox, Form, SubmitButton, TextField } from "./components";
+import { fieldContext, formContext } from "./context";
 
 export const { useAppForm } = createFormHook({
   fieldComponents: {
-    TextField: (props: TextFieldProps) => <TextField size="small" {...props} />,
-    CheckBox: (props: CheckboxProps) => <Checkbox {...props} />,
+    TextField,
+    Checkbox,
   },
   formComponents: {
     SubmitButton,
+    Form,
   },
   fieldContext,
   formContext,

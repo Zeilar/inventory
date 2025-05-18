@@ -18,6 +18,7 @@ import { type FileRejection, useDropzone } from "react-dropzone";
 import { Upload } from "@mui/icons-material";
 import { FilesTransferList } from "./files-transfer-list";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface Fields {
   title?: string;
@@ -46,6 +47,7 @@ function successSnackbar() {
 }
 
 export function UpdateItemForm({ id, title, files, articleId, quantity }: UpdateFormProps) {
+  const { back } = useRouter();
   const form = useAppForm({
     defaultValues: {
       title,
@@ -86,271 +88,206 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
   }, [files, form]);
 
   return (
-    <Box
-      component="form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        form.handleSubmit();
-      }}
-      display="flex"
-      flexDirection="column"
-      gap={3}
-    >
-      <Box display="flex" flexDirection="column" gap={3}>
-        <Box display="flex" gap={3}>
-          <form.AppField
-            name="title"
-            validators={{
-              onChange: z
-                .string({ message: "Title must be a string." })
-                .min(1, "Title is required."),
-            }}
-          >
+    <form.AppForm>
+      <form.Form display="flex" flexDirection="column" gap={3}>
+        <Box display="flex" flexDirection="column" gap={3}>
+          <Box display="flex" gap={3}>
+            <form.AppField
+              name="title"
+              validators={{
+                onChange: z
+                  .string({ message: "Title must be a string." })
+                  .min(1, "Title is required."),
+              }}
+            >
+              {(field) => <field.TextField label="Title" placeholder="IKEA" />}
+            </form.AppField>
+            <form.AppField
+              name="quantity"
+              validators={{
+                onChange: z
+                  .number({ message: "Quantity must be a number." })
+                  .min(0, "Quantity must be 0 or bigger."),
+              }}
+            >
+              {(field) => (
+                <field.TextField
+                  label="Quantity"
+                  placeholder="1"
+                  slotProps={{ htmlInput: { min: 0 } }}
+                />
+              )}
+            </form.AppField>
+          </Box>
+          <Box display="flex" gap={3}>
+            <form.AppField
+              name="articleId"
+              validators={{
+                onChange: z.string({ message: "Title must be a string." }),
+              }}
+            >
+              {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
+            </form.AppField>
+            <Box width="100%" />
+          </Box>
+          <form.AppField name="files">
             {(field) => {
-              const error = field.state.meta.errors.at(0);
-              const hasError = Boolean(error);
+              const { accepted, rejected } = field.state.value;
 
               return (
-                <FormControl fullWidth error={hasError}>
-                  <field.TextField
-                    error={hasError}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    onBlur={field.handleBlur}
-                    label="Title"
-                    placeholder="IKEA"
-                  />
-                  {error && (
-                    <Typography variant="body2" color="error" mt={0.5}>
-                      {error.message}
-                    </Typography>
-                  )}
-                </FormControl>
-              );
-            }}
-          </form.AppField>
-          <form.AppField
-            name="quantity"
-            validators={{
-              onChange: z
-                .number({ message: "Quantity must be a number." })
-                .min(0, "Quantity must be 0 or bigger."),
-            }}
-          >
-            {(field) => {
-              const error = field.state.meta.errors.at(0);
-              const hasError = Boolean(error);
-
-              return (
-                <FormControl fullWidth error={hasError}>
-                  <field.TextField
-                    error={hasError}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(Number(e.target.value))}
-                    onBlur={field.handleBlur}
-                    label="Quantity"
-                    placeholder="1"
-                    slotProps={{ htmlInput: { min: 0 } }}
-                    type="number"
-                  />
-                  {error && (
-                    <Typography variant="body2" color="error" mt={0.5}>
-                      {error.message}
-                    </Typography>
-                  )}
-                </FormControl>
-              );
-            }}
-          </form.AppField>
-        </Box>
-        <Box display="flex" gap={3}>
-          <form.AppField
-            name="articleId"
-            validators={{
-              onChange: z.string({ message: "Title must be a string." }),
-            }}
-          >
-            {(field) => {
-              const error = field.state.meta.errors.at(0);
-              const hasError = Boolean(error);
-
-              return (
-                <FormControl fullWidth error={hasError}>
-                  <field.TextField
-                    error={hasError}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    onBlur={field.handleBlur}
-                    label="Article id"
-                    placeholder="dG8rm4nVC7dfj57"
-                  />
-                  {error && (
-                    <Typography variant="body2" color="error" mt={0.5}>
-                      {error.message}
-                    </Typography>
-                  )}
-                </FormControl>
-              );
-            }}
-          </form.AppField>
-          <Box width="100%" />
-        </Box>
-        <form.AppField name="files">
-          {(field) => {
-            const { accepted, rejected } = field.state.value;
-
-            return (
-              <FormControl sx={{ gap: 1.5 }}>
-                <FormLabel>Files</FormLabel>
-                <Box
-                  {...getRootProps()}
-                  borderRadius={1}
-                  border="2px dashed"
-                  borderColor={isDragActive ? "primary.main" : "grey.400"}
-                  height={200}
-                  display="flex"
-                  sx={{ cursor: "pointer" }}
-                >
+                <FormControl sx={{ gap: 1.5 }}>
+                  <FormLabel>Files</FormLabel>
                   <Box
-                    m="auto"
+                    {...getRootProps()}
+                    borderRadius={1}
+                    border="2px dashed"
+                    borderColor={isDragActive ? "primary.main" : "grey.400"}
+                    height={200}
                     display="flex"
-                    flexDirection="column"
-                    textAlign="center"
-                    sx={{ pointerEvents: "none" }}
+                    sx={{ cursor: "pointer" }}
                   >
-                    <Typography
+                    <Box
+                      m="auto"
                       display="flex"
                       flexDirection="column"
-                      variant="h6"
-                      alignItems="center"
-                      gap={0.25}
+                      textAlign="center"
+                      sx={{ pointerEvents: "none" }}
                     >
-                      <Upload color="primary" />
-                      Drop your files here
-                    </Typography>
-                    <Typography variant="subtitle2" fontWeight={400}>
-                      Or click anywhere in the area
-                    </Typography>
-                    <Typography color="textSecondary" variant="caption" mt={1.5}>
-                      Max 10 files, up to 10MB per file. Filenames must be unique.
-                    </Typography>
-                    <input {...getInputProps()} />
+                      <Typography
+                        display="flex"
+                        flexDirection="column"
+                        variant="h6"
+                        alignItems="center"
+                        gap={0.25}
+                      >
+                        <Upload color="primary" />
+                        Drop your files here
+                      </Typography>
+                      <Typography variant="subtitle2" fontWeight={400}>
+                        Or click anywhere in the area
+                      </Typography>
+                      <Typography color="textSecondary" variant="caption" mt={1.5}>
+                        Max 10 files, up to 10MB per file. Filenames must be unique.
+                      </Typography>
+                      <input {...getInputProps()} />
+                    </Box>
                   </Box>
-                </Box>
-                <Paper>
-                  <Typography
-                    variant="subtitle2"
-                    p={1.5}
-                    color={accepted.length === 0 ? "textDisabled" : undefined}
-                  >
-                    Accepted ({accepted.length})
-                  </Typography>
-                  {accepted.length > 0 ? (
-                    <>
-                      <Divider />
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        gap={1.5}
-                        overflow="auto"
-                        maxHeight={250}
-                        p={1.5}
-                      >
-                        {accepted.map((file, i) => (
-                          <Alert
-                            key={i}
-                            variant="outlined"
-                            severity="success"
-                            sx={{ mr: "2px", py: 0, px: 1 }}
-                          >
-                            <Typography
-                              whiteSpace="nowrap"
-                              overflow="hidden"
-                              textOverflow="ellipsis"
-                              variant="subtitle2"
+                  <Paper>
+                    <Typography
+                      variant="subtitle2"
+                      p={1.5}
+                      color={accepted.length === 0 ? "textDisabled" : undefined}
+                    >
+                      Accepted ({accepted.length})
+                    </Typography>
+                    {accepted.length > 0 ? (
+                      <>
+                        <Divider />
+                        <Box
+                          display="flex"
+                          flexDirection="column"
+                          gap={1.5}
+                          overflow="auto"
+                          maxHeight={250}
+                          p={1.5}
+                        >
+                          {accepted.map((file, i) => (
+                            <Alert
+                              key={i}
+                              variant="outlined"
+                              severity="success"
+                              sx={{ mr: "2px", py: 0, px: 1 }}
                             >
-                              {file.name}
-                            </Typography>
-                          </Alert>
-                        ))}
-                      </Box>
-                    </>
-                  ) : null}
-                </Paper>
-                <Paper>
-                  <Typography
-                    variant="subtitle2"
-                    p={1.5}
-                    color={rejected.length === 0 ? "textDisabled" : undefined}
-                  >
-                    Rejected ({rejected.length})
-                  </Typography>
-                  {rejected.length > 0 ? (
-                    <>
-                      <Divider />
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        gap={1.5}
-                        overflow="auto"
-                        maxHeight={250}
-                        p={1.5}
-                      >
-                        {rejected.map((rejection, i) => (
-                          <Alert
-                            key={i}
-                            variant="outlined"
-                            severity="error"
-                            sx={{ mr: "2px", py: 0, px: 1 }}
-                          >
-                            <Typography
-                              whiteSpace="nowrap"
-                              overflow="hidden"
-                              textOverflow="ellipsis"
-                              variant="subtitle2"
+                              <Typography
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                variant="subtitle2"
+                              >
+                                {file.name}
+                              </Typography>
+                            </Alert>
+                          ))}
+                        </Box>
+                      </>
+                    ) : null}
+                  </Paper>
+                  <Paper>
+                    <Typography
+                      variant="subtitle2"
+                      p={1.5}
+                      color={rejected.length === 0 ? "textDisabled" : undefined}
+                    >
+                      Rejected ({rejected.length})
+                    </Typography>
+                    {rejected.length > 0 ? (
+                      <>
+                        <Divider />
+                        <Box
+                          display="flex"
+                          flexDirection="column"
+                          gap={1.5}
+                          overflow="auto"
+                          maxHeight={250}
+                          p={1.5}
+                        >
+                          {rejected.map((rejection, i) => (
+                            <Alert
+                              key={i}
+                              variant="outlined"
+                              severity="error"
+                              sx={{ mr: "2px", py: 0, px: 1 }}
                             >
-                              {rejection.file.name}
-                            </Typography>
-                            <Typography variant="subtitle2" fontWeight={400}>
-                              {rejection.errors.at(0)?.message}
-                            </Typography>
-                          </Alert>
-                        ))}
-                      </Box>
-                    </>
-                  ) : null}
-                </Paper>
-              </FormControl>
-            );
-          }}
-        </form.AppField>
-        <form.AppField name="filesToRemove">
-          {(field) => {
-            const { checked, left, right } = field.state.value;
+                              <Typography
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                variant="subtitle2"
+                              >
+                                {rejection.file.name}
+                              </Typography>
+                              <Typography variant="subtitle2" fontWeight={400}>
+                                {rejection.errors.at(0)?.message}
+                              </Typography>
+                            </Alert>
+                          ))}
+                        </Box>
+                      </>
+                    ) : null}
+                  </Paper>
+                </FormControl>
+              );
+            }}
+          </form.AppField>
+          <form.AppField name="filesToRemove">
+            {(field) => {
+              const { checked, left, right } = field.state.value;
 
-            return (
-              <FormControl sx={{ gap: 1.5 }}>
-                <FormLabel>Existing files</FormLabel>
-                <Paper sx={{ p: 1.5 }}>
-                  <FilesTransferList
-                    checked={checked}
-                    left={left}
-                    right={right}
-                    onCheckedChange={(checked) => field.handleChange((p) => ({ ...p, checked }))}
-                    onLeftChange={(left) => field.handleChange((p) => ({ ...p, left }))}
-                    onRightChange={(right) => field.handleChange((p) => ({ ...p, right }))}
-                  />
-                </Paper>
-              </FormControl>
-            );
-          }}
-        </form.AppField>
-      </Box>
-      <div>
-        <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
-          Save
-        </Button>
-      </div>
-    </Box>
+              return (
+                <FormControl sx={{ gap: 1.5 }}>
+                  <FormLabel>Existing files</FormLabel>
+                  <Paper sx={{ p: 1.5 }}>
+                    <FilesTransferList
+                      checked={checked}
+                      left={left}
+                      right={right}
+                      onCheckedChange={(checked) => field.handleChange((p) => ({ ...p, checked }))}
+                      onLeftChange={(left) => field.handleChange((p) => ({ ...p, left }))}
+                      onRightChange={(right) => field.handleChange((p) => ({ ...p, right }))}
+                    />
+                  </Paper>
+                </FormControl>
+              );
+            }}
+          </form.AppField>
+        </Box>
+        <Box display="flex" gap={1.5}>
+          <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
+            Save
+          </Button>
+          <Button onClick={back}>Cancel</Button>
+        </Box>
+      </form.Form>
+    </form.AppForm>
   );
 }
