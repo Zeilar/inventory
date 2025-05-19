@@ -242,6 +242,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     shallowPush(key as ItemsFilterParams, value);
                   });
                   form.reset(defaultValues, { keepDefaultValues: false });
+                  form.handleSubmit();
                 }}
               >
                 Reset
