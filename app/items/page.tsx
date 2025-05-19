@@ -23,22 +23,13 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
   const { items, total }: GetItemsResponse = await res.json();
 
   return (
-    <ItemsPageProvider itemIds={items.flatMap(({ id }) => id)}>
-      <Box width="100%">
+    <ItemsPageProvider>
+      <Box width="100%" overflow="auto" pr={3}>
         <ItemsHeader
           count={total ? Math.ceil(total / itemsPerPage) : 1}
           page={total ? parseInt(page) : 1}
-          hasResults={total > 0}
         />
-        <ItemsContainer>
-          {items.length ? (
-            items.map(({ title, id, archived }) => (
-              <ItemCard key={id} id={id} title={title} archived={archived} />
-            ))
-          ) : (
-            <Typography>No results!</Typography>
-          )}
-        </ItemsContainer>
+        <ItemsContainer rows={items}></ItemsContainer>
       </Box>
     </ItemsPageProvider>
   );

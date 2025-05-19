@@ -1,59 +1,24 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   useTransition,
   type PropsWithChildren,
   type TransitionStartFunction,
 } from "react";
-import { useSettings } from "../(components)/providers/settings";
 
 interface ItemsPageContext {
   isLoading: boolean;
   startTransition: TransitionStartFunction;
-  checked: number[];
-  onCheck(id: number): void;
-  onCheckAll: VoidFunction;
-  onUncheckAll: VoidFunction;
-}
-
-interface ItemsPageProviderProps extends PropsWithChildren {
-  itemIds: number[];
 }
 
 export const ItemsPageContext = createContext<ItemsPageContext | undefined>(undefined);
 
-export function ItemsPageProvider({ children, itemIds }: ItemsPageProviderProps) {
-  const { itemsPerPage } = useSettings();
-  const searchParams = useSearchParams();
+export function ItemsPageProvider({ children }: PropsWithChildren) {
   const [isLoading, startTransition] = useTransition();
-  const [checked, setChecked] = useState<number[]>([]);
-  const values = useMemo<ItemsPageContext>(
-    () => ({
-      isLoading,
-      startTransition,
-      checked,
-      onCheck: (id) =>
-        setChecked((p) => (!p.includes(id) ? [...p, id] : p.filter((element) => element !== id))),
-      // If one or more is checked, check all. Else uncheck all.
-      onCheckAll: () => setChecked((p) => (p.length === itemsPerPage ? [] : itemIds)),
-      onUncheckAll: () => setChecked([]),
-    }),
-    [isLoading, checked, itemIds, itemsPerPage]
-  );
-
-  /**
-   * Unselect all when changing query params.
-   * Otherwise we may have hidden selections that the user cannot uncheck easily.
-   */
-  useEffect(() => {
-    setChecked([]);
-  }, [searchParams]);
+  const values = useMemo<ItemsPageContext>(() => ({ isLoading, startTransition }), [isLoading]);
 
   return <ItemsPageContext.Provider value={values}>{children}</ItemsPageContext.Provider>;
 }

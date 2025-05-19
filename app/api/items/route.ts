@@ -12,7 +12,8 @@ export type ItemsFilterParams =
   | "dateFrom"
   | "dateTo"
   | "archived"
-  | "published";
+  | "published"
+  | "tags";
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
 export async function GET(req: Request) {
@@ -48,6 +49,11 @@ export async function GET(req: Request) {
       .date({ coerce: true })
       .optional()
       .parse(url.searchParams.get("dateTo" satisfies ItemsSearchParams)?.trim());
+    const tags = url.searchParams
+      .get("tags" satisfies ItemsSearchParams)
+      ?.trim()
+      .split(",")
+      .filter(Boolean);
 
     const itemsQuery = db
       .select({
@@ -59,10 +65,17 @@ export async function GET(req: Request) {
         archived: itemsTable.archived,
         createdAt: itemsTable.createdAt,
         updatedAt: itemsTable.updatedAt,
+        tags: itemsTable.tags,
         total: sql<number>`count(*) OVER ()`.as("total"),
       })
       .from(itemsTable)
       .orderBy(({ id }) => [desc(id)]);
+
+    if (tags?.length) {
+      filters.push(
+        or(...tags.map((tag) => sql`instr(',' || tags || ',', ',' || ${tag} || ',') > 0`))
+      );
+    }
 
     if (search) {
       const lowerCaseSearch = search.toLowerCase();

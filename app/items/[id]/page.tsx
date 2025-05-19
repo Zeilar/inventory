@@ -10,6 +10,7 @@ import {
   Download,
   Fingerprint,
   Numbers,
+  Tag,
 } from "@mui/icons-material";
 import { Box, Button, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -39,7 +40,7 @@ export default async function Page({ params }: Params<"id">) {
   const res = await fetch(buildAppUrl(`/api/items/${id}`), {
     next: { revalidate: 31_556_926, tags: [`items-${id}`] },
   });
-  const { title, quantity, articleId, files, archived, createdAt }: Item = await res.json();
+  const { title, quantity, articleId, files, archived, tags, createdAt }: Item = await res.json();
 
   const parsedFiles = files.split(",").filter(Boolean);
 
@@ -72,6 +73,14 @@ export default async function Page({ params }: Params<"id">) {
         </InfoBox>
         <InfoBox icon={Archive} title="Archived">
           {archived ? "Yes" : "No"}
+        </InfoBox>
+        <InfoBox icon={Tag} title="Tags">
+          {tags
+            .split(",")
+            .filter(Boolean)
+            .map((tag) => (
+              <span key={tag}>{tag} </span>
+            ))}
         </InfoBox>
         <InfoBox icon={AttachFile} title="Files">
           <Box display="flex" flexDirection="column" gap={0.75}>

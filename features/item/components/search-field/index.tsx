@@ -2,9 +2,17 @@
 
 import { useItemsPageContext } from "@/app/items/context";
 import { Clear, Search } from "@mui/icons-material";
-import { Box, FormControl, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ChangeEventHandler, useCallback, useEffect, useState } from "react";
+import { useShallowPush } from "../../hooks";
 
 interface ItemSearchFieldLayoutProps {
   value?: string;
@@ -56,7 +64,9 @@ export function ItemSearchFieldLayout({
               sx={{ cursor: "pointer", opacity: value?.trim() || search ? 1 : 0 }}
               onClick={onClear}
             >
-              <Clear />
+              <IconButton size="small">
+                <Clear fontSize="small" />
+              </IconButton>
             </InputAdornment>
           }
         />
@@ -70,6 +80,7 @@ export function ItemSearchField() {
   const { push } = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState<string>(searchParams.get("search")?.trim() ?? "");
+  const shallowPush = useShallowPush();
   const onSubmit = useCallback(
     (v?: string) => {
       if (typeof window === "undefined") {
@@ -94,7 +105,11 @@ export function ItemSearchField() {
   return (
     <ItemSearchFieldLayout
       isLoading={isLoading}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={(e) => {
+        const { value } = e.target;
+        shallowPush("search", value);
+        setValue(value);
+      }}
       onSubmit={onSubmit}
       value={value}
       onClear={() => {

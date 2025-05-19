@@ -1,32 +1,63 @@
 "use client";
 
-import { Box, type BoxProps } from "@mui/material";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { useItemsPageContext } from "../../context";
 import { ItemsCardsSkeletons } from "../../loading";
+import { ItemCard, type ItemCardProps } from "../card";
 
-export function ItemsContainerLayout(props: BoxProps) {
+interface ItemContainerLayoutProps {
+  rows: ItemCardProps[];
+}
+
+interface ItemsContainerProps {
+  rows: ItemCardProps[];
+}
+
+export function ItemsContainerLayout({ rows }: ItemContainerLayoutProps) {
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      mt={1.5}
-      gap={0.75}
-      overflow="auto"
-      width="100%"
-      {...props}
-    />
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Title</TableCell>
+            <TableCell align="center" width={75}>
+              Quantity
+            </TableCell>
+            <TableCell align="center" width={150}>
+              Deposited
+            </TableCell>
+            <TableCell align="center" width={100}>
+              Status
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <ItemCard key={row.id} {...row} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
 /**
  * Do not use in loading.tsx.
  */
-export function ItemsContainer({ children, ...props }: BoxProps) {
+export function ItemsContainer({ rows }: ItemsContainerProps) {
   const { isLoading } = useItemsPageContext();
 
   return (
-    <ItemsContainerLayout {...props}>
-      {!isLoading ? children : <ItemsCardsSkeletons />}
+    <ItemsContainerLayout rows={rows}>
+      {/* {!isLoading ? children : <ItemsCardsSkeletons />} */}
     </ItemsContainerLayout>
   );
 }

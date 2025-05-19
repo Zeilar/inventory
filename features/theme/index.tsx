@@ -11,8 +11,8 @@ const grey: Partial<Color> = {
   400: "hsl(216, 30%,  25%)",
   500: "hsl(216, 30%, 20%)",
   600: "hsl(216, 30%, 15%)",
-  700: "hsl(216, 30%, 12%)", // #233044
-  800: "hsl(216, 30%, 8%)", // #1B2635
+  700: "hsl(216, 30%, 12%)",
+  800: "hsl(216, 30%, 8%)",
   900: "hsl(216, 30%, 5%)",
 };
 
@@ -117,6 +117,49 @@ theme = createTheme({
           }
           return { border: "1px solid", borderColor, boxShadow: "none" };
         },
+      },
+    },
+    MuiChip: {
+      defaultProps: {
+        variant: "outlined",
+      },
+      styleOverrides: {
+        icon: ({ theme }) => ({ marginLeft: theme.spacing(1) }),
+        root: ({ theme, ownerState }) => {
+          let borderColor;
+          switch (ownerState.color) {
+            case "primary":
+              borderColor = theme.palette.primary.dark;
+              break;
+            case "error":
+              borderColor = theme.palette.error.dark;
+              break;
+            case "info":
+              borderColor = theme.palette.info.dark;
+              break;
+            case "success":
+              borderColor = theme.palette.success.dark;
+              break;
+            case "warning":
+              borderColor = theme.palette.warning.dark;
+              break;
+            case "secondary":
+              borderColor = theme.palette.secondary.dark;
+              break;
+            case "default":
+            default:
+              borderColor = theme.palette.divider;
+              break;
+          }
+          return { border: "1px solid", borderColor, boxShadow: "none" };
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          padding: theme.spacing(1.5),
+        }),
       },
     },
   },

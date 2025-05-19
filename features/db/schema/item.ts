@@ -16,6 +16,10 @@ export const itemsTable = sqliteTable("items", {
    */
   files: text().notNull().default(""),
   archived: integer({ mode: "boolean" }).notNull().default(false),
+  /**
+   * Comma separated strings. These can be anything the user wants.
+   */
+  tags: text().notNull().default(""),
   createdAt: text()
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
