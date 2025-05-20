@@ -166,7 +166,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
               <form.AppField
                 name="status"
                 listeners={{
-                  onChange: ({ value }) => shallowPush("status", `${value}`),
+                  onChange: ({ value }) => shallowPush("status", value),
                 }}
               >
                 {(field) => (
@@ -174,7 +174,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     <FormLabel>Status</FormLabel>
                     <RadioGroup
                       row
-                      value={field.state.value}
+                      value={field.state.value || "published"}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                     >
