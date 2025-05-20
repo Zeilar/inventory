@@ -29,6 +29,7 @@ interface Fields {
   };
   filesToRemove: Record<"left" | "right" | "checked", string[]>;
   quantity: number;
+  tags: string;
 }
 
 interface UpdateFormProps {
@@ -37,6 +38,7 @@ interface UpdateFormProps {
   files: string;
   articleId: string | null;
   quantity: number;
+  tags: string;
 }
 
 function successSnackbar() {
@@ -46,7 +48,7 @@ function successSnackbar() {
   });
 }
 
-export function UpdateItemForm({ id, title, files, articleId, quantity }: UpdateFormProps) {
+export function UpdateItemForm({ id, title, files, articleId, quantity, tags }: UpdateFormProps) {
   const { back } = useRouter();
   const form = useAppForm({
     defaultValues: {
@@ -55,15 +57,17 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
       quantity: quantity ?? 1,
       articleId: articleId ?? "",
       filesToRemove: { left: files.split(",").filter(Boolean), right: [], checked: [] },
+      tags,
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { filesToRemove, quantity, articleId, files, title } = value;
+      const { filesToRemove, quantity, articleId, files, title, tags } = value;
       await updateItem(
         id,
         {
           title: title?.trim(),
           quantity,
           articleId: articleId || null,
+          tags,
         },
         files.accepted,
         filesToRemove.right
@@ -281,6 +285,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity }: Update
             }}
           </form.AppField>
         </Box>
+        <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
         <Box display="flex" gap={1.5}>
           <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
             Save

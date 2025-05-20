@@ -19,7 +19,6 @@ import { Add, FilterAlt } from "@mui/icons-material";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ItemsFilterParams } from "@/app/api/items/route";
-import { MuiChipsInput } from "mui-chips-input";
 import { useShallowPush } from "@/features/item";
 
 interface ItemsHeaderProps {
@@ -211,23 +210,12 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     onChange: ({ value }) => shallowPush("tags", value),
                   }}
                 >
-                  {(field) => {
-                    const tags = field.state.value.split(",").filter(Boolean);
-
-                    return (
-                      <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
-                        <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
-                        <MuiChipsInput
-                          size="small"
-                          validate={(value) => Boolean(value) && !tags.includes(value)}
-                          value={tags}
-                          onBlur={field.handleBlur}
-                          onChange={(value) => field.handleChange(value.join(","))}
-                          placeholder={undefined}
-                        />
-                      </FormControl>
-                    );
-                  }}
+                  {(field) => (
+                    <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
+                      <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
+                      <field.TagsField />
+                    </FormControl>
+                  )}
                 </form.AppField>
               </Box>
             </Box>

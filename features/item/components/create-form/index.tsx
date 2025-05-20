@@ -27,6 +27,7 @@ interface Fields {
     rejected: FileRejection[];
   };
   quantity: number;
+  tags: string;
 }
 
 function successSnackbar() {
@@ -44,10 +45,11 @@ export function CreateItemForm() {
       files: { accepted: [], rejected: [] },
       quantity: 1,
       articleId: "",
+      tags: "",
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { files, quantity, title, articleId } = value;
-      const id = await createItem({ title, articleId, files: "", quantity }, files.accepted);
+      const { files, quantity, title, articleId, tags } = value;
+      const id = await createItem({ title, articleId, files: "", quantity, tags }, files.accepted);
       form.resetField("files");
       successSnackbar();
       push(`/items/${id}`);
@@ -55,7 +57,7 @@ export function CreateItemForm() {
   });
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple: true,
-    maxSize: 10_000_000,
+    maxSize: 10_000_000, // 10MB.
     maxFiles: 10,
     onDrop: (accepted, rejected) => form.setFieldValue("files", { accepted, rejected }),
   });
@@ -243,6 +245,7 @@ export function CreateItemForm() {
               );
             }}
           </form.AppField>
+          <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
         </Box>
         <Box display="flex" gap={1.5}>
           <form.SubmitButton>Save</form.SubmitButton>
