@@ -44,7 +44,7 @@ const defaultValues: Record<ItemsFilterParams, string> = {
 };
 
 export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderLayoutProps) {
-  const { refresh } = useRouter();
+  const { refresh, push } = useRouter();
   const searchParams = useSearchParams();
   const form = useAppForm({
     defaultValues: Object.fromEntries(
@@ -209,11 +209,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                 variant="outlined"
                 type="button"
                 onClick={() => {
-                  Object.entries(defaultValues).forEach(([key, value]) => {
-                    shallowPush(key as ItemsFilterParams, value);
-                  });
-                  form.reset(defaultValues, { keepDefaultValues: false });
-                  form.handleSubmit();
+                  form.reset();
+                  push("/items");
                 }}
               >
                 Reset
