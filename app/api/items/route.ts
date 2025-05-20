@@ -11,9 +11,9 @@ export type ItemsFilterParams =
   | "quantityTo"
   | "dateFrom"
   | "dateTo"
-  | "archived"
-  | "published"
+  | "status"
   | "tags";
+
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
 export async function GET(req: Request) {
@@ -29,10 +29,8 @@ export async function GET(req: Request) {
     const filters: Array<SQL | undefined> = [];
     const search = url.searchParams.get("search" satisfies ItemsSearchParams)?.trim();
     const page = url.searchParams.get("page" satisfies ItemsSearchParams)?.trim() ?? "1";
-    const archived =
-      url.searchParams.get("archived" satisfies ItemsSearchParams)?.trim() === "true";
-    const published =
-      url.searchParams.get("published" satisfies ItemsSearchParams)?.trim() === "true";
+    const status =
+      url.searchParams.get("status" satisfies ItemsSearchParams)?.trim() ?? "published";
     const quantityFrom = z
       .number({ coerce: true })
       .optional()
@@ -87,11 +85,9 @@ export async function GET(req: Request) {
       );
     }
 
-    if (!archived) {
+    if (status === "published") {
       filters.push(eq(itemsTable.archived, false));
-    }
-
-    if (!published) {
+    } else if (status === "archived") {
       filters.push(eq(itemsTable.archived, true));
     }
 

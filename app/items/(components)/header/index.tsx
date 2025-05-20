@@ -10,6 +10,8 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  Radio,
+  RadioGroup,
   Typography,
 } from "@mui/material";
 import { useItemsPageContext } from "../../context";
@@ -37,8 +39,7 @@ const defaultValues: Record<ItemsFilterParams, string> = {
   quantityTo: "",
   dateFrom: "",
   dateTo: "",
-  published: `${true}`,
-  archived: `${false}`,
+  status: "published",
   tags: "",
 };
 
@@ -101,8 +102,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
       <Collapse in={isFilterOpen}>
         <form.AppForm>
           <form.Form display="flex" flexDirection="column" gap={3} py={3}>
-            <Box display="grid" gap={3} gridTemplateColumns="200px 350px 1fr">
-              <FormControl sx={{ bgcolor: "transparent" }}>
+            <Box display="flex" gap={3} flexWrap="wrap">
+              <FormControl sx={{ bgcolor: "transparent", width: 200 }}>
                 <FormLabel sx={{ mb: 0.75 }}>Quantity</FormLabel>
                 <Box display="flex" gap={1.5} alignItems="center">
                   <form.AppField
@@ -162,48 +163,29 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                   </form.AppField>
                 </Box>
               </FormControl>
-              <FormControl sx={{ bgcolor: "transparent" }}>
-                <FormLabel sx={{ mb: 0.75 }}>Status</FormLabel>
-                <Box display="flex" gap={1.5} alignItems="center">
-                  <form.AppField
-                    name="published"
-                    listeners={{
-                      onChange: ({ value }) => shallowPush("published", `${value}`),
-                    }}
-                  >
-                    {(field) => (
-                      <FormControlLabel
-                        control={
-                          <field.Checkbox
-                            checked={field.state.value === "true"}
-                            onChange={(_e, checked) => field.handleChange(JSON.stringify(checked))}
-                          />
-                        }
-                        label="Published"
-                      />
-                    )}
-                  </form.AppField>
-                  <form.AppField
-                    name="archived"
-                    listeners={{
-                      onChange: ({ value }) => shallowPush("archived", `${value}`),
-                    }}
-                  >
-                    {(field) => (
-                      <FormControlLabel
-                        control={
-                          <field.Checkbox
-                            checked={field.state.value === "true"}
-                            onChange={(_e, checked) => field.handleChange(JSON.stringify(checked))}
-                          />
-                        }
-                        label="Archived"
-                      />
-                    )}
-                  </form.AppField>
-                </Box>
-              </FormControl>
-              <Box gridColumn="1 / -1">
+              <form.AppField
+                name="status"
+                listeners={{
+                  onChange: ({ value }) => shallowPush("status", `${value}`),
+                }}
+              >
+                {(field) => (
+                  <FormControl>
+                    <FormLabel>Status</FormLabel>
+                    <RadioGroup
+                      row
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      onBlur={field.handleBlur}
+                    >
+                      <FormControlLabel value="all" control={<Radio />} label="All" />
+                      <FormControlLabel value="published" control={<Radio />} label="Published" />
+                      <FormControlLabel value="archived" control={<Radio />} label="Archived" />
+                    </RadioGroup>
+                  </FormControl>
+                )}
+              </form.AppField>
+              <Box width="100%">
                 <form.AppField
                   name="tags"
                   listeners={{
