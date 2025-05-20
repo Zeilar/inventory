@@ -218,6 +218,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                       <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
                         <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
                         <MuiChipsInput
+                          size="small"
                           validate={(value) => Boolean(value) && !tags.includes(value)}
                           value={tags}
                           onBlur={field.handleBlur}
