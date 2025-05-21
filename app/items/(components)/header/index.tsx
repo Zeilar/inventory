@@ -75,6 +75,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         borderBottom="1px solid"
         borderColor="divider"
         gap={3}
+        mb={3}
         pb={3}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" gap={3}>
@@ -101,7 +102,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
       </Box>
       <Collapse in={isFilterOpen}>
         <form.AppForm>
-          <form.Form display="flex" flexDirection="column" gap={3} py={3}>
+          <form.Form display="flex" flexDirection="column" gap={3} pb={3}>
             <Box display="flex" gap={3} flexWrap="wrap">
               <FormControl sx={{ bgcolor: "transparent", width: 200 }}>
                 <FormLabel sx={{ mb: 0.75 }}>Quantity</FormLabel>
