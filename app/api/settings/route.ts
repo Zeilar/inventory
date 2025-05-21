@@ -1,8 +1,8 @@
 import { buildAppUrl } from "@/common";
 import { db } from "@/features/db";
 import { settingsTable, type SettingsValues } from "@/features/db/schema";
+import { settingsValuesValidator } from "@/features/settings";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 
 export const settingsTag = "settings";
 
@@ -15,7 +15,7 @@ export async function getSettings(): Promise<SettingsValues> {
   const settingsRes = await fetch(buildAppUrl("/api/settings"), {
     next: settingsNextConfig,
   });
-  return z.object({ itemsPerPage: z.number() }).parse(await settingsRes.json());
+  return settingsValuesValidator.parse(await settingsRes.json());
 }
 
 export async function GET() {
