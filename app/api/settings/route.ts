@@ -4,12 +4,16 @@ import { settingsTable, type SettingsValues } from "@/features/db/schema";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+export const settingsTag = "settings";
+
+export const settingsNextConfig: NextFetchRequestConfig = {
+  revalidate: 31_556_926, // One year.
+  tags: [settingsTag],
+};
+
 export async function getSettings(): Promise<SettingsValues> {
   const settingsRes = await fetch(buildAppUrl("/api/settings"), {
-    next: {
-      revalidate: 31_556_926, // One year.
-      tags: ["settings"],
-    },
+    next: settingsNextConfig,
   });
   return z.object({ itemsPerPage: z.number() }).parse(await settingsRes.json());
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Inventory2, Warehouse } from "@mui/icons-material";
+import { Home, Inventory2, Settings, Warehouse } from "@mui/icons-material";
 import { Box, Divider, Typography } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { Navlink } from "./navlink";
@@ -36,6 +36,12 @@ export function Sidebar() {
       <Divider sx={{ my: 0.75 }} />
       <Navlink href="/" icon={Home} isActive={pathname === "/"} label="Overview" />
       <Navlink href="/items" icon={Warehouse} isActive={pathname === "/items"} label="Items" />
+      <Navlink
+        href="/settings"
+        icon={Settings}
+        isActive={pathname === "/settings"}
+        label="Settings"
+      />
     </Box>
   );
 }
