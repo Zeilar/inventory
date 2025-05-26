@@ -113,10 +113,10 @@ export function ArchivedToggler() {
         handleChange(value);
       }}
     >
-      <ToggleButton color="success" value={true}>
+      <ToggleButton color="success" value={false}>
         Published
       </ToggleButton>
-      <ToggleButton color="warning" value={false}>
+      <ToggleButton color="warning" value={true}>
         Archived
       </ToggleButton>
     </ToggleButtonGroup>
