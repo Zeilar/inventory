@@ -8,6 +8,7 @@ export type ItemCardProps = Pick<Item, "id" | "title" | "archived" | "quantity" 
 export function ItemCard({ id, title, archived, createdAt, quantity }: ItemCardProps) {
   return (
     <TableRow key={id} sx={{ p: 1.5 }}>
+      <TableCell>{id}</TableCell>
       <TableCell>
         <Link href={`/items/${id}`}>{title}</Link>
       </TableCell>

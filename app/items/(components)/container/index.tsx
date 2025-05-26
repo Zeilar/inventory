@@ -27,6 +27,7 @@ export function ItemsContainerLayout({ rows }: ItemContainerLayoutProps) {
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell>ID</TableCell>
             <TableCell>Title</TableCell>
             <TableCell align="center" width={75}>
               Quantity
