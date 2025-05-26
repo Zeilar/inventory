@@ -28,6 +28,7 @@ interface Fields {
   };
   quantity: number;
   tags: string;
+  archived: boolean;
 }
 
 function successSnackbar() {
@@ -46,6 +47,7 @@ export function CreateItemForm() {
       quantity: 1,
       articleId: "",
       tags: "",
+      archived: false,
     } as Fields,
     onSubmit: async ({ value }) => {
       const { files, quantity, title, articleId, tags } = value;
@@ -66,6 +68,7 @@ export function CreateItemForm() {
     <form.AppForm>
       <form.Form display="flex" flexDirection="column" gap={3}>
         <Box display="flex" flexDirection="column" gap={3}>
+          <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
           <Box display="flex" gap={3}>
             <form.AppField
               name="title"

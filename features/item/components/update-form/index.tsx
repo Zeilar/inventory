@@ -30,6 +30,7 @@ interface Fields {
   filesToRemove: Record<"left" | "right" | "checked", string[]>;
   quantity: number;
   tags: string;
+  archived: boolean;
 }
 
 interface UpdateFormProps {
@@ -39,6 +40,7 @@ interface UpdateFormProps {
   articleId: string | null;
   quantity: number;
   tags: string;
+  archived: boolean;
 }
 
 function successSnackbar() {
@@ -48,7 +50,15 @@ function successSnackbar() {
   });
 }
 
-export function UpdateItemForm({ id, title, files, articleId, quantity, tags }: UpdateFormProps) {
+export function UpdateItemForm({
+  id,
+  title,
+  files,
+  articleId,
+  quantity,
+  tags,
+  archived,
+}: UpdateFormProps) {
   const { back } = useRouter();
   const form = useAppForm({
     defaultValues: {
@@ -58,9 +68,10 @@ export function UpdateItemForm({ id, title, files, articleId, quantity, tags }: 
       articleId: articleId ?? "",
       filesToRemove: { left: files.split(",").filter(Boolean), right: [], checked: [] },
       tags,
+      archived,
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { filesToRemove, quantity, articleId, files, title, tags } = value;
+      const { filesToRemove, quantity, articleId, files, title, tags, archived } = value;
       await updateItem(
         id,
         {
@@ -68,6 +79,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity, tags }: 
           quantity,
           articleId: articleId || null,
           tags,
+          archived,
         },
         files.accepted,
         filesToRemove.right
@@ -95,6 +107,7 @@ export function UpdateItemForm({ id, title, files, articleId, quantity, tags }: 
     <form.AppForm>
       <form.Form display="flex" flexDirection="column" gap={3}>
         <Box display="flex" flexDirection="column" gap={3}>
+          <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
           <Box display="flex" gap={3}>
             <form.AppField
               name="title"

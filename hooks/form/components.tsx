@@ -9,13 +9,15 @@ import {
   Checkbox as MuiCheckbox,
   TextField as MuiTextField,
   type TextFieldProps,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import { useFieldContext, useFormContext } from "./context";
 import { FormEvent } from "react";
 import { MuiChipsInput, type MuiChipsInputProps } from "mui-chips-input";
 import type { ZodIssueBase } from "zod";
 
-export const TextField = (props: TextFieldProps) => {
+export function TextField(props: TextFieldProps) {
   const { handleBlur, handleChange, state } = useFieldContext();
   const error: ZodIssueBase | string | undefined = state.meta.errors.at(0);
 
@@ -31,9 +33,9 @@ export const TextField = (props: TextFieldProps) => {
       {...props}
     />
   );
-};
+}
 
-export const Checkbox = (props: CheckboxProps) => {
+export function Checkbox(props: CheckboxProps) {
   const { handleBlur, handleChange, state } = useFieldContext();
 
   return (
@@ -44,9 +46,9 @@ export const Checkbox = (props: CheckboxProps) => {
       {...props}
     />
   );
-};
+}
 
-export const SubmitButton = (props: ButtonProps) => {
+export function SubmitButton(props: ButtonProps) {
   const { state } = useFormContext();
 
   return (
@@ -58,9 +60,9 @@ export const SubmitButton = (props: ButtonProps) => {
       {...props}
     />
   );
-};
+}
 
-export const Form = (props: BoxProps) => {
+export function Form(props: BoxProps) {
   const { handleSubmit } = useFormContext();
 
   return (
@@ -74,9 +76,9 @@ export const Form = (props: BoxProps) => {
       {...props}
     />
   );
-};
+}
 
-export const TagsField = (props: MuiChipsInputProps) => {
+export function TagsField(props: MuiChipsInputProps) {
   const { state, handleBlur, handleChange } = useFieldContext<string>();
   const { meta, value } = state;
   const tags = value.split(",").filter(Boolean);
@@ -95,4 +97,28 @@ export const TagsField = (props: MuiChipsInputProps) => {
       {...props}
     />
   );
-};
+}
+
+export function ArchivedToggler() {
+  const { state, handleChange } = useFieldContext<boolean>();
+
+  return (
+    <ToggleButtonGroup
+      value={state.value}
+      exclusive
+      onChange={(_e, value) => {
+        if (value == null) {
+          return;
+        }
+        handleChange(value);
+      }}
+    >
+      <ToggleButton color="success" value={true}>
+        Published
+      </ToggleButton>
+      <ToggleButton color="warning" value={false}>
+        Archived
+      </ToggleButton>
+    </ToggleButtonGroup>
+  );
+}

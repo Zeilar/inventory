@@ -10,7 +10,7 @@ export default async function Page({ params }: Params<"id">) {
   const res = await fetch(buildAppUrl(`/api/items/${id}`), {
     next: { revalidate: 31_556_926, tags: [`items-${id}`] },
   });
-  const { title, quantity, articleId, files, tags }: Item = await res.json();
+  const { title, quantity, articleId, files, tags, archived }: Item = await res.json();
 
   return (
     <div>
@@ -34,6 +34,7 @@ export default async function Page({ params }: Params<"id">) {
           quantity={quantity}
           title={title}
           tags={tags}
+          archived={archived}
         />
       </Box>
     </div>
