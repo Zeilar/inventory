@@ -10,7 +10,6 @@ export async function GET(_req: Request, { params }: Params<"id">) {
   const paramId = (await params).id;
   try {
     const id = z.number().parse(Number(paramId));
-
     const item: Item | undefined = db.select().from(itemsTable).where(eq(itemsTable.id, id)).get();
 
     if (!item) {

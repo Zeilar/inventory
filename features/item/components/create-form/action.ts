@@ -14,7 +14,11 @@ export async function createItem(
 ): Promise<number> {
   const { id } = db
     .insert(itemsTable)
-    .values({ ...data, files: files.map((file) => file.name).join(",") })
+    .values({
+      ...data,
+      files: files.map((file) => file.name).join(","),
+      archivedAt: data.archived ? new Date().toISOString() : undefined,
+    })
     .returning()
     .get();
 

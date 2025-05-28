@@ -20,6 +20,7 @@ export const itemsTable = sqliteTable("items", {
    * Comma separated strings. These can be anything the user wants.
    */
   tags: text().notNull().default(""),
+  archivedAt: text(),
   createdAt: text()
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

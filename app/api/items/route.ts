@@ -59,8 +59,6 @@ export async function GET(req: Request) {
     const sortBy = url.searchParams.get("sortBy" satisfies ItemsSearchParams) as keyof Item | null;
     const sortDirection = url.searchParams.get("sortDirection" satisfies ItemsSearchParams);
 
-    console.log(sortBy, sortDirection);
-
     const itemsQuery = db
       .select({
         id: itemsTable.id,
@@ -71,6 +69,7 @@ export async function GET(req: Request) {
         archived: itemsTable.archived,
         createdAt: itemsTable.createdAt,
         updatedAt: itemsTable.updatedAt,
+        archivedAt: itemsTable.archivedAt,
         tags: itemsTable.tags,
         total: sql<number>`count(*) OVER ()`.as("total"),
       })
@@ -121,6 +120,8 @@ export async function GET(req: Request) {
     itemsQuery.limit(itemsPerPage).offset((parseInt(page) - 1) * itemsPerPage); // Paginate.
 
     const items = await itemsQuery;
+
+    console.log(items);
 
     return NextResponse.json({
       items,
