@@ -121,8 +121,6 @@ export async function GET(req: Request) {
 
     const items = await itemsQuery;
 
-    console.log(items);
-
     return NextResponse.json({
       items,
       total: items.at(0)?.total ?? items.length,

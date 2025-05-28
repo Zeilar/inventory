@@ -64,6 +64,8 @@ function renderSortLabel(property: keyof Item, direction: SortDirection): string
       return `Updated (${direction === "asc" ? "newest first" : "oldest first"})`;
     case "createdAt":
       return `Deposited (${direction === "asc" ? "newest first" : "oldest first"})`;
+    case "archivedAt":
+      return `Archived (${direction === "asc" ? "newest first" : "oldest first"})`;
     default:
       return `${capitalize(property)} ${direction === "asc" ? "min - max" : "max - min"}`;
   }
@@ -292,6 +294,12 @@ export function ItemsHeaderLayout({ paginationProps, searchField, total }: Items
                       </MenuItem>
                       <MenuItem value="createdAt,desc">
                         {renderSortLabel("createdAt", "desc")}
+                      </MenuItem>
+                      <MenuItem value="archivedAt,asc">
+                        {renderSortLabel("archivedAt", "asc")}
+                      </MenuItem>
+                      <MenuItem value="archivedAt,desc">
+                        {renderSortLabel("archivedAt", "desc")}
                       </MenuItem>
                       <MenuItem value="updatedAt,asc">
                         {renderSortLabel("updatedAt", "asc")}

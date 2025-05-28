@@ -162,5 +162,12 @@ theme = createTheme({
         }),
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: grey[500],
+        },
+      },
+    },
   },
 });
