@@ -79,6 +79,15 @@ export function ItemsHeaderLayout({ paginationProps, searchField, total }: Items
       Object.entries(defaultValues).map(([filter]) => [filter, searchParams.get(filter) ?? ""])
     ) as Record<ItemsFilterParams, string>,
     onSubmit: refresh,
+    validators: {
+      onChange: ({ value, formApi }) => {
+        if (value.status !== "published" || value.sortBy !== ("archivedAt" satisfies keyof Item)) {
+          return;
+        }
+        formApi.setFieldValue("sortBy", "id" satisfies keyof Item);
+        formApi.setFieldValue("sortDirection", "desc" satisfies SortDirection);
+      },
+    },
   });
   /**
    * Filters should start expanded if there are one(s) already in the URL.
@@ -254,7 +263,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField, total }: Items
               alignItems="center"
             >
               <Typography>{total} hits</Typography>
-              <form.AppField name="sortBy">
+              <form.AppField name="sortBy" validators={{ onChangeListenTo: ["status"] }}>
                 {(field) => (
                   <FormControl size="small" sx={{ width: 250 }}>
                     <InputLabel>Sort</InputLabel>
@@ -295,10 +304,16 @@ export function ItemsHeaderLayout({ paginationProps, searchField, total }: Items
                       <MenuItem value="createdAt,desc">
                         {renderSortLabel("createdAt", "desc")}
                       </MenuItem>
-                      <MenuItem value="archivedAt,asc">
+                      <MenuItem
+                        value="archivedAt,asc"
+                        disabled={form.getFieldValue("status") === "published"}
+                      >
                         {renderSortLabel("archivedAt", "asc")}
                       </MenuItem>
-                      <MenuItem value="archivedAt,desc">
+                      <MenuItem
+                        value="archivedAt,desc"
+                        disabled={form.getFieldValue("status") === "published"}
+                      >
                         {renderSortLabel("archivedAt", "desc")}
                       </MenuItem>
                       <MenuItem value="updatedAt,asc">
