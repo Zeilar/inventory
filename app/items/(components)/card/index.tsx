@@ -25,7 +25,6 @@ export function ItemCard({ id, title, archived, createdAt, quantity, archivedAt 
         />
       </TableCell>
       <TableCell align="center">
-        {new Date(archivedAt ?? "").toLocaleDateString()}
         {!archived ? (
           <Chip variant="outlined" label="Published" color="success" />
         ) : (
