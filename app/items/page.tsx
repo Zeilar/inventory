@@ -1,7 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { SearchParams } from "../types";
 import type { GetItemsResponse } from "../api/items/types";
-import { ItemCard, ItemsContainer, ItemsHeader } from "./(components)";
+import { ItemsContainer, ItemsHeader } from "./(components)";
 import { ItemsPageProvider } from "./context";
 import { getSettings } from "../api/settings/route";
 import { buildAppUrl } from "@/common";
@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
   });
 
   const res = await fetch(buildAppUrl(`/api/items?${newSearchParams}`));
-  const { items, total }: GetItemsResponse = await res.json();
+  const { items = [], total }: GetItemsResponse = await res.json();
 
   return (
     <ItemsPageProvider>
@@ -28,6 +28,7 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
         <ItemsHeader
           count={total ? Math.ceil(total / itemsPerPage) : 1}
           page={total ? parseInt(page) : 1}
+          total={total}
         />
         <ItemsContainer rows={items}></ItemsContainer>
       </Box>

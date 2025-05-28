@@ -1,10 +1,12 @@
 import { db } from "@/features/db";
-import { itemsTable } from "@/features/db/schema";
+import { Item, itemsTable } from "@/features/db/schema";
 import { NextResponse } from "next/server";
-import { desc, like, or, between, sql, SQL, and, eq } from "drizzle-orm";
+import { desc, like, or, between, sql, SQL, and, eq, asc } from "drizzle-orm";
 import type { GetItemsResponse } from "./types";
 import { getSettings } from "../settings/route";
 import { z } from "zod";
+
+export type SortDirection = "asc" | "desc";
 
 export type ItemsFilterParams =
   | "quantityFrom"
@@ -12,7 +14,9 @@ export type ItemsFilterParams =
   | "dateFrom"
   | "dateTo"
   | "status"
-  | "tags";
+  | "tags"
+  | "sortBy"
+  | "sortDirection";
 
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
@@ -52,6 +56,10 @@ export async function GET(req: Request) {
       ?.trim()
       .split(",")
       .filter(Boolean);
+    const sortBy = url.searchParams.get("sortBy" satisfies ItemsSearchParams) as keyof Item | null;
+    const sortDirection = url.searchParams.get("sortDirection" satisfies ItemsSearchParams);
+
+    console.log(sortBy, sortDirection);
 
     const itemsQuery = db
       .select({
@@ -66,8 +74,13 @@ export async function GET(req: Request) {
         tags: itemsTable.tags,
         total: sql<number>`count(*) OVER ()`.as("total"),
       })
-      .from(itemsTable)
-      .orderBy(({ id }) => [desc(id)]);
+      .from(itemsTable);
+
+    if (sortBy && sortDirection) {
+      itemsQuery.orderBy((item) => [
+        sortDirection === "asc" ? asc(item[sortBy]) : desc(item[sortBy]),
+      ]);
+    }
 
     if (tags?.length) {
       filters.push(
@@ -76,11 +89,13 @@ export async function GET(req: Request) {
     }
 
     if (search) {
-      const lowerCaseSearch = search.toLowerCase();
+      const lowerCaseSearch = `%${search.toLowerCase()}%`;
       filters.push(
         or(
-          like(itemsTable.title, `%${lowerCaseSearch}%`),
-          like(itemsTable.articleId, `%${lowerCaseSearch}%`)
+          like(itemsTable.title, lowerCaseSearch),
+          like(itemsTable.articleId, lowerCaseSearch),
+          like(itemsTable.id, lowerCaseSearch),
+          like(itemsTable.quantity, lowerCaseSearch)
         )
       );
     }
