@@ -3,6 +3,8 @@ import { roboto } from "./fonts/roboto";
 
 export let theme = createTheme();
 
+export const SIDEBAR_WIDTH = 300;
+
 const grey: Partial<Color> = {
   50: "hsl(216, 30%, 65%)",
   100: "hsl(216, 30%, 50%)",

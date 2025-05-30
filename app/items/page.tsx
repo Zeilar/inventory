@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { SearchParams } from "../types";
 import type { GetItemsResponse } from "../api/items/types";
 import { ItemsContainer, ItemsHeader } from "./(components)";
@@ -6,6 +5,22 @@ import { ItemsPageProvider } from "./context";
 import { getSettings } from "../api/settings/route";
 import { buildAppUrl } from "@/common";
 import type { ItemsSearchParams } from "../api/items/route";
+import { Typography } from "@mui/material";
+
+function getPaginationSummary(
+  currentPage: number,
+  itemsPerPage: number,
+  totalItems: number
+): string {
+  const start = (currentPage - 1) * itemsPerPage + 1;
+  const end = Math.min(currentPage * itemsPerPage, totalItems);
+
+  if (totalItems === 0) {
+    return "Showing 0 of 0 results";
+  }
+
+  return `Showing ${start}-${end} of ${totalItems} results`;
+}
 
 export default async function Page({ searchParams }: SearchParams<ItemsSearchParams>) {
   const { itemsPerPage } = await getSettings();
@@ -21,17 +36,16 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
 
   const res = await fetch(buildAppUrl(`/api/items?${newSearchParams}`));
   const { items = [], total }: GetItemsResponse = await res.json();
+  const parsedPage = parseInt(page) || 1;
 
   return (
     <ItemsPageProvider>
-      <Box width="100%" overflow="auto" pr={3}>
-        <ItemsHeader
-          count={total ? Math.ceil(total / itemsPerPage) : 1}
-          page={total ? parseInt(page) : 1}
-          total={total}
-        />
-        <ItemsContainer rows={items}></ItemsContainer>
-      </Box>
+      <ItemsHeader
+        count={total ? Math.ceil(total / itemsPerPage) : 1}
+        page={total ? parsedPage : 1}
+      />
+      <ItemsContainer rows={items}></ItemsContainer>
+      <Typography mt={1.5}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Typography>
     </ItemsPageProvider>
   );
 }

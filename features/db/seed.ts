@@ -11,6 +11,9 @@ import { InferInsertModel } from "drizzle-orm";
 async function seedItems(count: number = 100): Promise<void> {
   const items: Array<InferInsertModel<typeof itemsTable>> = Array.from({ length: count }, () => {
     const archived = Math.random() < 0.3; // Make 30% archived.
+    const tags = faker.helpers.multiple(() => faker.commerce.productMaterial(), {
+      count: Math.random() * 10,
+    });
     return {
       title: faker.commerce.productName(),
       articleId: faker.string.alphanumeric({ length: 15 }),
@@ -18,9 +21,7 @@ async function seedItems(count: number = 100): Promise<void> {
       createdAt: faker.date.recent({ days: 50 }).toISOString(),
       archived,
       archivedAt: archived ? faker.date.recent({ days: 50 }).toISOString() : undefined,
-      tags: faker.helpers
-        .multiple(() => faker.commerce.productMaterial(), { count: Math.random() * 10 })
-        .join(","),
+      tags: [...new Set(tags)].join(","), // Tags must be unique.
     };
   });
   await db.insert(itemsTable).values(items);

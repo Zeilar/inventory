@@ -76,9 +76,11 @@ export async function GET(req: Request) {
       .from(itemsTable);
 
     if (sortBy && sortDirection) {
-      itemsQuery.orderBy((item) => [
-        sortDirection === "asc" ? asc(item[sortBy]) : desc(item[sortBy]),
-      ]);
+      itemsQuery.orderBy((item) =>
+        sortDirection === "asc" ? asc(item[sortBy]) : desc(item[sortBy])
+      );
+    } else {
+      itemsQuery.orderBy((item) => desc(item.id));
     }
 
     if (tags?.length) {
