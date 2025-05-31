@@ -5,7 +5,7 @@ export let theme = createTheme();
 
 export const SIDEBAR_WIDTH = 300;
 
-const grey: Partial<Color> = {
+const grey: Omit<Color, "A100" | "A200" | "A400" | "A700"> = {
   50: "hsl(216, 30%, 65%)",
   100: "hsl(216, 30%, 50%)",
   200: "hsl(216, 30%, 40%)",
@@ -18,7 +18,7 @@ const grey: Partial<Color> = {
   900: "hsl(216, 30%, 5%)",
 };
 
-const primary: Partial<Color> = {
+const primary: Omit<Color, "A100" | "A200" | "A400" | "A700"> = {
   50: "#e1f5fe",
   100: "#b3e5fc",
   200: "#81d4fa",
@@ -38,10 +38,13 @@ theme = createTheme({
       paper: grey[700],
       default: grey[700],
     },
-    divider: "hsla(220, 20%, 25%, 0.65)",
+    divider: grey[500],
     common: { black: "#000" },
     grey,
     primary,
+    secondary: {
+      main: grey[50],
+    },
     text: {
       primary: "hsl(210, 9%, 90%)",
     },

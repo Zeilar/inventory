@@ -117,6 +117,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
             {searchField}
             <Button
+              color="secondary"
               variant="outlined"
               startIcon={!isFilterOpen ? <FilterAlt /> : <Close />}
               sx={{ height: 40 }}
@@ -296,6 +297,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             <form.SubmitButton size="medium">Apply</form.SubmitButton>
             <Button
               variant="outlined"
+              color="secondary"
               type="button"
               onClick={() => {
                 form.reset(defaultValues);

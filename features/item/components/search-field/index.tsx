@@ -52,7 +52,6 @@ export function ItemSearchFieldLayout({
           placeholder="Cable"
           label="Search"
           disabled={isLoading}
-          required
           startAdornment={
             <InputAdornment position="start">
               <Search color="disabled" />
@@ -79,7 +78,7 @@ export function ItemSearchField() {
   const { isLoading, startTransition } = useItemsPageContext();
   const { push } = useRouter();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState<string>(searchParams.get("search")?.trim() ?? "");
+  const [value, setValue] = useState<string>(() => searchParams.get("search")?.trim() ?? "");
   const shallowPush = useShallowPush();
   const onSubmit = useCallback(
     (v?: string) => {
