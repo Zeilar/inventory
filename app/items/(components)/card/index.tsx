@@ -15,13 +15,13 @@ export function ItemCard({ id, title, archived, createdAt, quantity, archivedAt 
         <Link href={`/items/${id}`}>{title}</Link>
       </TableCell>
       <TableCell align="center">{quantity}</TableCell>
-      <TableCell align="center">{new Date(createdAt).toLocaleDateString()}</TableCell>
+      <TableCell align="center">{new Date(createdAt).toLocaleDateString("sv")}</TableCell>
       <TableCell align="center">
         {!archived ? (
           <Chip variant="outlined" label="Published" color="success" />
         ) : (
           <Tooltip
-            title={new Date(archivedAt ?? "").toLocaleDateString()}
+            title={new Date(archivedAt ?? "").toLocaleDateString("sv")}
             placement="top"
             disableInteractive
           >
