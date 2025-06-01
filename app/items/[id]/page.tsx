@@ -1,7 +1,6 @@
 import { Params } from "@/app/types";
 import { buildAppUrl } from "@/common";
-import { UnstyledLink } from "@/components";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { UnstyledLink, Breadcrumbs } from "@/components";
 import type { Item } from "@/features/db/schema";
 import {
   Archive,

@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { getSettings } from "../api/settings/route";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumbs } from "@/components";
 import { Form } from "./form";
 
 export default async function Page() {

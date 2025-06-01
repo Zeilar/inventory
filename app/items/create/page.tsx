@@ -1,4 +1,4 @@
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumbs } from "@/components";
 import { CreateItemForm } from "@/features/item/components";
 import { Box, Divider, Typography } from "@mui/material";
 

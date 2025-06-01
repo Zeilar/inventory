@@ -1,6 +1,6 @@
 import { Params } from "@/app/types";
 import { buildAppUrl } from "@/common";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumbs } from "@/components";
 import type { Item } from "@/features/db/schema";
 import { UpdateItemForm } from "@/features/item/components";
 import { Box, Divider, Typography } from "@mui/material";

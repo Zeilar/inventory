@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { useItemsPageContext } from "../../context";
 import type { ReactNode } from "react";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Breadcrumbs } from "@/components";
 import { Add, Close, FilterAlt } from "@mui/icons-material";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
