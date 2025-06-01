@@ -52,17 +52,17 @@ const defaultValues: Record<ItemsFilterParams, string> = {
 function renderSortLabel(property: keyof Item, direction: SortDirection): string {
   switch (property) {
     case "id":
-      return direction === "asc" ? "Oldest first" : "Newest first";
+      return direction === "asc" ? "Oldest" : "Newest";
     case "quantity":
-      return `Quantity (${direction === "asc" ? "lowest first" : "highest first"})`;
+      return `Quantity (${direction === "asc" ? "lowest" : "highest"})`;
     case "title":
       return `Title (${direction === "asc" ? "A-Z" : "Z-A"})`;
     case "updatedAt":
-      return `Updated (${direction === "asc" ? "oldest first" : "newest first"})`;
+      return `Updated (${direction === "asc" ? "oldest" : "newest"})`;
     case "createdAt":
-      return `Deposited (${direction === "asc" ? "oldest first" : "newest first"})`;
+      return `Deposited (${direction === "asc" ? "oldest" : "newest"})`;
     case "archivedAt":
-      return `Archived (${direction === "asc" ? "oldest first" : "newest first"})`;
+      return `Archived (${direction === "asc" ? "oldest" : "newest"})`;
     default:
       return `${capitalize(property)} ${direction === "asc" ? "min - max" : "max - min"}`;
   }
@@ -156,10 +156,10 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                 >
                   <MenuItem value="id,desc">{renderSortLabel("id", "desc")}</MenuItem>
                   <MenuItem value="id,asc">{renderSortLabel("id", "asc")}</MenuItem>
-                  <MenuItem value="quantity,desc">{renderSortLabel("quantity", "desc")}</MenuItem>
                   <MenuItem value="quantity,asc">{renderSortLabel("quantity", "asc")}</MenuItem>
-                  <MenuItem value="title,desc">{renderSortLabel("title", "desc")}</MenuItem>
+                  <MenuItem value="quantity,desc">{renderSortLabel("quantity", "desc")}</MenuItem>
                   <MenuItem value="title,asc">{renderSortLabel("title", "asc")}</MenuItem>
+                  <MenuItem value="title,desc">{renderSortLabel("title", "desc")}</MenuItem>
                   <MenuItem value="createdAt,desc">{renderSortLabel("createdAt", "desc")}</MenuItem>
                   <MenuItem value="createdAt,asc">{renderSortLabel("createdAt", "asc")}</MenuItem>
                   <MenuItem
