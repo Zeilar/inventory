@@ -9,13 +9,12 @@ import {
   Divider,
   Drawer,
   FormControl,
-  FormControlLabel,
   FormLabel,
   IconButton,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import { useItemsPageContext } from "../../context";
@@ -198,16 +197,25 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             {(field) => (
               <FormControl>
                 <FormLabel>Status</FormLabel>
-                <RadioGroup
-                  row
-                  value={field.state.value || "published"}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
+                <ToggleButtonGroup
+                  color="primary"
+                  value={field.state.value}
+                  exclusive
+                  onChange={(_e, value: string) => {
+                    if (value == null) {
+                      return;
+                    }
+                    field.handleChange(value);
+                  }}
                 >
-                  <FormControlLabel value="published" control={<Radio />} label="Published" />
-                  <FormControlLabel value="archived" control={<Radio />} label="Archived" />
-                  <FormControlLabel value="all" control={<Radio />} label="All" />
-                </RadioGroup>
+                  <ToggleButton value="published" color="success">
+                    Published
+                  </ToggleButton>
+                  <ToggleButton value="archived" color="warning">
+                    Archived
+                  </ToggleButton>
+                  <ToggleButton value="all">All</ToggleButton>
+                </ToggleButtonGroup>
               </FormControl>
             )}
           </form.AppField>
@@ -239,16 +247,22 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           <Divider />
           <FormControl sx={{ bgcolor: "transparent" }}>
             <FormLabel sx={{ mb: 0.75 }}>Date</FormLabel>
-            <Box display="flex" gap={1.5} alignItems="center">
+            <Box display="flex" gap={1.5} flexDirection="column" alignItems="center">
               <form.AppField name="dateFrom">
                 {(field) => (
-                  <field.TextField type="date" slotProps={{ inputLabel: { shrink: true } }} />
+                  <field.TextField
+                    type="datetime-local"
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
                 )}
               </form.AppField>
-              <span>-</span>
+              <span>to</span>
               <form.AppField name="dateTo">
                 {(field) => (
-                  <field.TextField type="date" slotProps={{ inputLabel: { shrink: true } }} />
+                  <field.TextField
+                    type="datetime-local"
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
                 )}
               </form.AppField>
             </Box>
