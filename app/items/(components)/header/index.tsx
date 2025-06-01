@@ -196,7 +196,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           <form.AppField name="status">
             {(field) => (
               <FormControl>
-                <FormLabel>Status</FormLabel>
+                <FormLabel sx={{ mb: 0.75 }}>Status</FormLabel>
                 <ToggleButtonGroup
                   color="primary"
                   value={field.state.value}
