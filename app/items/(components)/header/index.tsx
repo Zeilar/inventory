@@ -26,6 +26,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { ItemsFilterParams, SortDirection } from "@/app/api/items/route";
 import { Item } from "@/features/db/schema";
 import { SIDEBAR_WIDTH } from "@/features/theme";
+import isEqual from "lodash/isEqual";
 
 interface ItemsHeaderProps {
   page: number;
@@ -38,7 +39,9 @@ interface ItemsHeaderLayoutProps {
   searchField: ReactNode;
 }
 
-const defaultValues: Record<ItemsFilterParams, string> = {
+type DefaultValues = Record<ItemsFilterParams, string>;
+
+const defaultValues: DefaultValues = {
   quantityFrom: "",
   quantityTo: "",
   dateFrom: "",
@@ -77,7 +80,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         filter,
         searchParams.get(filter) ?? defaultValue,
       ])
-    ) as Record<ItemsFilterParams, string>,
+    ) as DefaultValues,
     onSubmit: ({ value }) => {
       const newSearchParams = new URLSearchParams(searchParams);
       for (const property in value) {
@@ -102,7 +105,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
   /**
    * Filters should start expanded if there are one(s) already in the URL.
    */
-  const [isFilterOpen, filter] = useDisclosure(Object.values(form.state.values).some(Boolean));
+  const [isFilterOpen, filter] = useDisclosure(!isEqual(defaultValues, form.state.values));
 
   return (
     <form.AppForm>
