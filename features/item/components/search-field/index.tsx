@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ChangeEventHandler, useCallback, useEffect, useState } from "react";
-import { useShallowPush } from "../../hooks";
 
 interface ItemSearchFieldLayoutProps {
   value?: string;
@@ -78,8 +77,8 @@ export function ItemSearchField() {
   const { isLoading, startTransition } = useItemsPageContext();
   const { push } = useRouter();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState<string>(() => searchParams.get("search")?.trim() ?? "");
-  const shallowPush = useShallowPush();
+  const search = searchParams.get("search")?.trim() ?? "";
+  const [value, setValue] = useState<string>(search);
   const onSubmit = useCallback(
     (v?: string) => {
       if (typeof window === "undefined") {
@@ -98,17 +97,13 @@ export function ItemSearchField() {
   );
 
   useEffect(() => {
-    setValue(searchParams.get("search") ?? "");
-  }, [searchParams]);
+    setValue(search);
+  }, [searchParams, search]);
 
   return (
     <ItemSearchFieldLayout
       isLoading={isLoading}
-      onChange={(e) => {
-        const { value } = e.target;
-        shallowPush("search", value);
-        setValue(value);
-      }}
+      onChange={(e) => setValue(e.target.value)}
       onSubmit={onSubmit}
       value={value}
       onClear={() => {
@@ -118,7 +113,7 @@ export function ItemSearchField() {
         newSearchParams.delete("search");
         push(`/items?${newSearchParams}`);
       }}
-      search={searchParams.get("search")}
+      search={search}
     />
   );
 }

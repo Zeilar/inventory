@@ -26,7 +26,6 @@ import { Add, Close, FilterAlt } from "@mui/icons-material";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ItemsFilterParams, SortDirection } from "@/app/api/items/route";
-import { useShallowPush } from "@/features/item";
 import { Item } from "@/features/db/schema";
 import { SIDEBAR_WIDTH } from "@/features/theme";
 
@@ -72,13 +71,23 @@ function renderSortLabel(property: keyof Item, direction: SortDirection): string
 }
 
 export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderLayoutProps) {
-  const { refresh } = useRouter();
+  const { push } = useRouter();
   const searchParams = useSearchParams();
   const form = useAppForm({
     defaultValues: Object.fromEntries(
       Object.entries(defaultValues).map(([filter]) => [filter, searchParams.get(filter) ?? ""])
     ) as Record<ItemsFilterParams, string>,
-    onSubmit: refresh,
+    onSubmit: ({ value }) => {
+      const newSearchParams = new URLSearchParams(searchParams);
+      for (const property in value) {
+        const param = value[property as keyof typeof value];
+        if (!param) {
+          continue;
+        }
+        newSearchParams.set(property, param);
+      }
+      push(`?${newSearchParams}`);
+    },
     validators: {
       onChange: ({ value, formApi }) => {
         if (value.status !== "published" || value.sortBy !== ("archivedAt" satisfies keyof Item)) {
@@ -93,7 +102,6 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
    * Filters should start expanded if there are one(s) already in the URL.
    */
   const [isFilterOpen, filter] = useDisclosure(Object.values(form.state.values).some(Boolean));
-  const shallowPush = useShallowPush();
 
   return (
     <form.AppForm>
@@ -142,8 +150,6 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     onChange={(e) => {
                       const { value } = e.target;
                       const [sortBy, sortDirection] = value.split(",");
-                      shallowPush("sortBy", sortBy);
-                      shallowPush("sortDirection", sortDirection);
                       field.handleChange(sortBy);
                       form.setFieldValue("sortDirection", sortDirection);
                       form.handleSubmit();
@@ -196,12 +202,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             </IconButton>
           </Box>
           <Divider />
-          <form.AppField
-            name="status"
-            listeners={{
-              onChange: ({ value }) => shallowPush("status", value),
-            }}
-          >
+          <form.AppField name="status">
             {(field) => (
               <FormControl>
                 <FormLabel>Status</FormLabel>
@@ -228,9 +229,6 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                   onChange: ({ value }) =>
                     parseInt(value) < 0 ? "Must not be a negative number." : undefined,
                 }}
-                listeners={{
-                  onChange: ({ value }) => shallowPush("quantityFrom", value),
-                }}
               >
                 {(field) => <field.TextField type="number" slotProps={{ htmlInput: { min: 0 } }} />}
               </form.AppField>
@@ -241,9 +239,6 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                   onChange: ({ value }) =>
                     parseInt(value) < 0 ? "Must not be a negative number." : undefined,
                 }}
-                listeners={{
-                  onChange: ({ value }) => shallowPush("quantityTo", value),
-                }}
               >
                 {(field) => <field.TextField type="number" slotProps={{ htmlInput: { min: 0 } }} />}
               </form.AppField>
@@ -253,23 +248,13 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           <FormControl sx={{ bgcolor: "transparent" }}>
             <FormLabel sx={{ mb: 0.75 }}>Date</FormLabel>
             <Box display="flex" gap={1.5} alignItems="center">
-              <form.AppField
-                name="dateFrom"
-                listeners={{
-                  onChange: ({ value }) => shallowPush("dateFrom", value),
-                }}
-              >
+              <form.AppField name="dateFrom">
                 {(field) => (
                   <field.TextField type="date" slotProps={{ inputLabel: { shrink: true } }} />
                 )}
               </form.AppField>
               <span>-</span>
-              <form.AppField
-                name="dateTo"
-                listeners={{
-                  onChange: ({ value }) => shallowPush("dateTo", value),
-                }}
-              >
+              <form.AppField name="dateTo">
                 {(field) => (
                   <field.TextField type="date" slotProps={{ inputLabel: { shrink: true } }} />
                 )}
@@ -278,12 +263,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           </FormControl>
           <Divider />
           <Box width="100%">
-            <form.AppField
-              name="tags"
-              listeners={{
-                onChange: ({ value }) => shallowPush("tags", value),
-              }}
-            >
+            <form.AppField name="tags">
               {(field) => (
                 <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
                   <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
