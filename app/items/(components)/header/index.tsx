@@ -73,7 +73,10 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
   const searchParams = useSearchParams();
   const form = useAppForm({
     defaultValues: Object.fromEntries(
-      Object.entries(defaultValues).map(([filter]) => [filter, searchParams.get(filter) ?? ""])
+      Object.entries(defaultValues).map(([filter, defaultValue]) => [
+        filter,
+        searchParams.get(filter) ?? defaultValue,
+      ])
     ) as Record<ItemsFilterParams, string>,
     onSubmit: ({ value }) => {
       const newSearchParams = new URLSearchParams(searchParams);
