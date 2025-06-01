@@ -2,14 +2,7 @@
 
 import { useItemsPageContext } from "@/app/items/context";
 import { Clear, Search } from "@mui/icons-material";
-import {
-  Box,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-} from "@mui/material";
+import { Box, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ChangeEventHandler, useCallback, useEffect, useState } from "react";
 
@@ -21,8 +14,6 @@ interface ItemSearchFieldLayoutProps {
   isLoading?: boolean;
   search?: string | null;
 }
-
-const inputId = "item-search-field";
 
 export function ItemSearchFieldLayout({
   onChange,
@@ -41,34 +32,29 @@ export function ItemSearchFieldLayout({
       }}
       height="100%"
     >
-      <FormControl size="small">
-        <InputLabel htmlFor={inputId}>Search</InputLabel>
-        <OutlinedInput
-          value={value}
-          onChange={onChange}
-          id={inputId}
-          size="small"
-          placeholder="Cable"
-          label="Search"
-          disabled={isLoading}
-          startAdornment={
-            <InputAdornment position="start">
-              <Search color="disabled" />
-            </InputAdornment>
-          }
-          endAdornment={
-            <InputAdornment
-              position="end"
-              sx={{ cursor: "pointer", opacity: value?.trim() || search ? 1 : 0 }}
-              onClick={onClear}
-            >
-              <IconButton size="small">
-                <Clear fontSize="small" />
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
+      <OutlinedInput
+        value={value}
+        onChange={onChange}
+        size="small"
+        placeholder="Cable"
+        disabled={isLoading}
+        startAdornment={
+          <InputAdornment position="start">
+            <Search color="disabled" />
+          </InputAdornment>
+        }
+        endAdornment={
+          <InputAdornment
+            position="end"
+            sx={{ cursor: "pointer", opacity: value?.trim() || search ? 1 : 0 }}
+            onClick={onClear}
+          >
+            <IconButton size="small">
+              <Clear fontSize="small" />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
     </Box>
   );
 }

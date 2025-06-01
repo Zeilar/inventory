@@ -58,11 +58,7 @@ export async function updateItem(
 
   await db
     .update(itemsTable)
-    .set({
-      ...data,
-      files: filesToSave.join(","),
-      archivedAt: data.archived ? new Date().toISOString() : undefined,
-    })
+    .set({ ...data, files: filesToSave.join(",") })
     .where(eq(itemsTable.id, id));
 
   revalidateTag("items");

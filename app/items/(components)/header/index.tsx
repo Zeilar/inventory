@@ -12,7 +12,6 @@ import {
   FormControlLabel,
   FormLabel,
   IconButton,
-  InputLabel,
   MenuItem,
   Radio,
   RadioGroup,
@@ -123,9 +122,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             <Pagination {...paginationProps} />
           </Box>
           <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
-            {searchField}
             <Button
-              color="secondary"
+              color="primary"
               variant="outlined"
               startIcon={!isFilterOpen ? <FilterAlt /> : <Close />}
               sx={{ height: 40 }}
@@ -133,56 +131,50 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             >
               Filter
             </Button>
+            {searchField}
             <form.AppField name="sortBy" validators={{ onChangeListenTo: ["status"] }}>
               {(field) => (
-                <FormControl size="small" sx={{ width: 250 }}>
-                  <InputLabel>Sort</InputLabel>
-                  <Select
-                    value={`${field.state.value || "id"},${
-                      form.getFieldValue("sortDirection") || "desc"
-                    }`}
-                    size="small"
-                    label="Sort"
-                    renderValue={(value) => {
-                      const [sortBy, sortDirection] = value.split(",");
-                      return renderSortLabel(sortBy as keyof Item, sortDirection as SortDirection);
-                    }}
-                    onChange={(e) => {
-                      const { value } = e.target;
-                      const [sortBy, sortDirection] = value.split(",");
-                      field.handleChange(sortBy);
-                      form.setFieldValue("sortDirection", sortDirection);
-                      form.handleSubmit();
-                    }}
+                <Select
+                  sx={{ width: 250 }}
+                  value={`${field.state.value || "id"},${
+                    form.getFieldValue("sortDirection") || "desc"
+                  }`}
+                  size="small"
+                  renderValue={(value) => {
+                    const [sortBy, sortDirection] = value.split(",");
+                    return renderSortLabel(sortBy as keyof Item, sortDirection as SortDirection);
+                  }}
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    const [sortBy, sortDirection] = value.split(",");
+                    field.handleChange(sortBy);
+                    form.setFieldValue("sortDirection", sortDirection);
+                    form.handleSubmit();
+                  }}
+                >
+                  <MenuItem value="id,desc">{renderSortLabel("id", "desc")}</MenuItem>
+                  <MenuItem value="id,asc">{renderSortLabel("id", "asc")}</MenuItem>
+                  <MenuItem value="quantity,asc">{renderSortLabel("quantity", "asc")}</MenuItem>
+                  <MenuItem value="quantity,desc">{renderSortLabel("quantity", "desc")}</MenuItem>
+                  <MenuItem value="title,asc">{renderSortLabel("title", "asc")}</MenuItem>
+                  <MenuItem value="title,desc">{renderSortLabel("title", "desc")}</MenuItem>
+                  <MenuItem value="createdAt,asc">{renderSortLabel("createdAt", "asc")}</MenuItem>
+                  <MenuItem value="createdAt,desc">{renderSortLabel("createdAt", "desc")}</MenuItem>
+                  <MenuItem
+                    value="archivedAt,asc"
+                    disabled={form.getFieldValue("status") === "published"}
                   >
-                    <MenuItem value="id,desc">{renderSortLabel("id", "desc")}</MenuItem>
-                    <MenuItem value="id,asc">{renderSortLabel("id", "asc")}</MenuItem>
-                    <MenuItem value="quantity,asc">{renderSortLabel("quantity", "asc")}</MenuItem>
-                    <MenuItem value="quantity,desc">{renderSortLabel("quantity", "desc")}</MenuItem>
-                    <MenuItem value="title,asc">{renderSortLabel("title", "asc")}</MenuItem>
-                    <MenuItem value="title,desc">{renderSortLabel("title", "desc")}</MenuItem>
-                    <MenuItem value="createdAt,asc">{renderSortLabel("createdAt", "asc")}</MenuItem>
-                    <MenuItem value="createdAt,desc">
-                      {renderSortLabel("createdAt", "desc")}
-                    </MenuItem>
-                    <MenuItem
-                      value="archivedAt,asc"
-                      disabled={form.getFieldValue("status") === "published"}
-                    >
-                      {renderSortLabel("archivedAt", "asc")}
-                    </MenuItem>
-                    <MenuItem
-                      value="archivedAt,desc"
-                      disabled={form.getFieldValue("status") === "published"}
-                    >
-                      {renderSortLabel("archivedAt", "desc")}
-                    </MenuItem>
-                    <MenuItem value="updatedAt,asc">{renderSortLabel("updatedAt", "asc")}</MenuItem>
-                    <MenuItem value="updatedAt,desc">
-                      {renderSortLabel("updatedAt", "desc")}
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+                    {renderSortLabel("archivedAt", "asc")}
+                  </MenuItem>
+                  <MenuItem
+                    value="archivedAt,desc"
+                    disabled={form.getFieldValue("status") === "published"}
+                  >
+                    {renderSortLabel("archivedAt", "desc")}
+                  </MenuItem>
+                  <MenuItem value="updatedAt,asc">{renderSortLabel("updatedAt", "asc")}</MenuItem>
+                  <MenuItem value="updatedAt,desc">{renderSortLabel("updatedAt", "desc")}</MenuItem>
+                </Select>
               )}
             </form.AppField>
           </Box>
@@ -277,11 +269,11 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             <form.SubmitButton size="medium">Apply</form.SubmitButton>
             <Button
               variant="outlined"
-              color="secondary"
+              color="primary"
               type="button"
               onClick={() => {
                 form.reset(defaultValues);
-                window.history.replaceState(null, "", "/items");
+                push("/items");
               }}
             >
               Reset
