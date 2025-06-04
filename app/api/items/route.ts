@@ -3,8 +3,8 @@ import { Item, itemsTable } from "@/features/db/schema";
 import { NextResponse } from "next/server";
 import { desc, like, or, between, sql, SQL, and, eq, asc } from "drizzle-orm";
 import type { GetItemsResponse } from "./types";
-import { getSettings } from "../settings/route";
 import { z } from "zod";
+import { getSettings } from "../settings/getSettings";
 
 export type SortDirection = "asc" | "desc";
 
@@ -112,7 +112,7 @@ export async function GET(req: Request) {
     }
 
     if (dateFrom instanceof Date && dateTo instanceof Date) {
-      filters.push(between(itemsTable.createdAt, dateFrom.toISOString(), dateTo.toISOString()));
+      filters.push(between(itemsTable.createdAt, dateFrom, dateTo));
     }
 
     if (filters.length > 0) {

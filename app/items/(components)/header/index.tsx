@@ -18,7 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useItemsPageContext } from "../../context";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { Breadcrumbs } from "@/components";
 import { Add, Close, FilterAlt } from "@mui/icons-material";
 import { useAppForm, useDisclosure } from "@/hooks";
@@ -316,7 +316,11 @@ export function ItemsHeader({ count, page, disablePagination }: ItemsHeaderProps
         disabled: disablePagination || isLoading,
         startTransition,
       }}
-      searchField={<ItemSearchField />}
+      searchField={
+        <Suspense fallback={<h1>LOADING SEARCH</h1>}>
+          <ItemSearchField />
+        </Suspense>
+      }
     />
   );
 }

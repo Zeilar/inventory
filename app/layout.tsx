@@ -4,8 +4,8 @@ import { Box } from "@mui/material";
 import classNames from "classnames";
 import { roboto } from "@/features/theme/fonts";
 import { Providers, Sidebar } from "./(components)";
-import { getSettings } from "./api/settings/route";
 import { SIDEBAR_WIDTH } from "@/features/theme";
+import { getSettings } from "./api/settings/getSettings";
 
 export const metadata: Metadata = {
   title: "Inventory",

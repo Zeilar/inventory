@@ -26,7 +26,7 @@ async function getDbSize(): Promise<number> {
 export default async function Page() {
   return (
     <Box width="100%">
-      <Typography variant="h4" mb={1.5}>
+      {/* <Typography variant="h4" mb={1.5}>
         Overview
       </Typography>
       <Box display="grid" gap={3} gridTemplateColumns="repeat(2, 1fr)">
@@ -97,7 +97,7 @@ export default async function Page() {
             {(value) => <ItemsTimeline value={value} />}
           </DashboardCard>
         </Suspense>
-      </Box>
+      </Box> */}
     </Box>
   );
 }

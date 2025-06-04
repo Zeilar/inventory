@@ -12,17 +12,18 @@ import {
   TableRow,
 } from "@mui/material";
 import { useItemsPageContext } from "../../context";
-import { ItemsCardsSkeletons } from "../../loading";
 import { ItemCard, type ItemCardProps } from "../card";
 import { CalendarMonth, Numbers, Public } from "@mui/icons-material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface ItemContainerLayoutProps {
   rows: ItemCardProps[];
+  isLoading?: boolean;
 }
 
 interface ItemsContainerProps {
   rows: ItemCardProps[];
+  isLoading?: boolean;
 }
 
 interface CellIconProps {
@@ -45,7 +46,7 @@ const headCellWithIconProps: TableCellProps = {
   width: 135,
 };
 
-export function ItemsContainerLayout({ rows }: ItemContainerLayoutProps) {
+export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutProps) {
   return (
     <TableContainer component={Paper} sx={{ maxHeight: "65svh" }}>
       <Table stickyHeader>
@@ -68,8 +69,8 @@ export function ItemsContainerLayout({ rows }: ItemContainerLayoutProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <ItemCard key={row.id} {...row} />
+          {rows.map(({ item }) => (
+            <ItemCard key={item.id} item={item} isLoading={isLoading} />
           ))}
         </TableBody>
       </Table>
@@ -83,9 +84,5 @@ export function ItemsContainerLayout({ rows }: ItemContainerLayoutProps) {
 export function ItemsContainer({ rows }: ItemsContainerProps) {
   const { isLoading } = useItemsPageContext();
 
-  return (
-    <ItemsContainerLayout rows={rows}>
-      {/* {!isLoading ? children : <ItemsCardsSkeletons />} */}
-    </ItemsContainerLayout>
-  );
+  return <ItemsContainerLayout rows={rows} isLoading={isLoading} />;
 }

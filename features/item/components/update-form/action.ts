@@ -14,7 +14,7 @@ export async function updateItem(
   files: File[],
   filesToRemove: string[]
 ): Promise<void> {
-  const currentItem = db.select().from(itemsTable).where(eq(itemsTable.id, id)).get();
+  const currentItem = (await db.select().from(itemsTable).where(eq(itemsTable.id, id))).at(0);
   if (!currentItem) {
     throw new Error(`Item with id ${id} not found`);
   }

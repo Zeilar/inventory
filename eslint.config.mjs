@@ -15,6 +15,7 @@ const eslintConfig = [
     rules: {
       "react/display-name": "off",
       "@next/next/no-duplicate-head": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
     },
   },
 ];

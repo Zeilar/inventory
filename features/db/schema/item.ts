@@ -1,31 +1,29 @@
-import { int, sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { pgTable, serial, text, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { type InferSelectModel, sql } from "drizzle-orm";
 
 export type Item = InferSelectModel<typeof itemsTable>;
 
-export const itemsTable = sqliteTable("items", {
-  id: int().primaryKey({ autoIncrement: true }),
-  title: text().notNull(),
+export const itemsTable = pgTable("items", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
   /**
    * Nullable. Doesn't refer to anything in the app.
    */
-  articleId: text(),
-  quantity: int().notNull().default(1),
+  articleId: text("article_id"),
+  quantity: integer("quantity").notNull().default(1),
   /**
    * Comma separated file paths.
    */
-  files: text().notNull().default(""),
-  archived: integer({ mode: "boolean" }).notNull().default(false),
+  files: text("files").notNull().default(""),
+  archived: boolean("archived").notNull().default(false),
   /**
    * Comma separated strings. These can be anything the user wants.
    */
-  tags: text().notNull().default(""),
-  archivedAt: text(),
-  createdAt: text()
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: text()
-    .default(sql`CURRENT_TIMESTAMP`)
+  tags: text("tags").notNull().default(""),
+  archivedAt: timestamp("archived_at", { withTimezone: false }),
+  createdAt: timestamp("created_at", { withTimezone: false }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: false })
+    .defaultNow()
     .notNull()
     .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });

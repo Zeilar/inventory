@@ -8,7 +8,7 @@ import { revalidateTag } from "next/cache";
 export async function toggleItemArchive(ids: number[]): Promise<boolean[]> {
   return Promise.all(
     ids.map(async (id) => {
-      const item = db.select().from(itemsTable).where(eq(itemsTable.id, id)).get();
+      const item = (await db.select().from(itemsTable).where(eq(itemsTable.id, id))).at(0);
 
       if (!item) {
         throw new Error(`Failed to toggle archive on item with id ${id}.`, { cause: item });

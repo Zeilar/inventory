@@ -1,32 +1,81 @@
 import { Link } from "@/components";
 import { Item } from "@/features/db/schema";
-import { Chip, TableCell, TableRow, Tooltip } from "@mui/material";
+import { Chip, Skeleton, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 
-export type ItemCardProps = Pick<
-  Item,
-  "id" | "title" | "archived" | "quantity" | "createdAt" | "archivedAt"
->;
+export interface ItemCardLoadingProps {
+  isLoading: boolean;
+}
 
-export function ItemCard({ id, title, archived, createdAt, quantity, archivedAt }: ItemCardProps) {
+export interface ItemCardProps {
+  item: Pick<Item, "id" | "title" | "archived" | "quantity" | "createdAt" | "archivedAt">;
+}
+
+function isLoadingProps(
+  props: ItemCardProps | ItemCardLoadingProps
+): props is ItemCardLoadingProps {
+  return "isLoading" in props && props.isLoading;
+}
+
+export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
+  const hasLoadingProps = isLoadingProps(props);
+
   return (
-    <TableRow key={id} sx={{ p: 1.5 }}>
-      <TableCell>{id}</TableCell>
+    <TableRow sx={{ p: 1.5 }}>
+      <TableCell>{!hasLoadingProps ? props.item.id : <Skeleton />}</TableCell>
       <TableCell>
-        <Link href={`/items/${id}`}>{title}</Link>
-      </TableCell>
-      <TableCell align="center">{quantity}</TableCell>
-      <TableCell align="center">{new Date(createdAt).toLocaleDateString("sv")}</TableCell>
-      <TableCell align="center">
-        {!archived ? (
-          <Chip variant="outlined" label="Published" color="success" />
+        {!hasLoadingProps ? (
+          <Link href={`/items/${props.item.id}`}>{props.item.title}</Link>
         ) : (
-          <Tooltip
-            title={new Date(archivedAt ?? "").toLocaleDateString("sv")}
-            placement="top"
-            disableInteractive
-          >
-            <Chip variant="outlined" label="Archived" color="warning" />
-          </Tooltip>
+          <Typography>
+            <Skeleton />
+          </Typography>
+        )}
+      </TableCell>
+      <TableCell align="center">
+        {!hasLoadingProps ? (
+          props.item.quantity
+        ) : (
+          <Typography>
+            <Skeleton />
+          </Typography>
+        )}
+      </TableCell>
+      <TableCell align="center">
+        {!hasLoadingProps ? (
+          new Date(props.item.createdAt).toLocaleDateString(process.env.NEXT_PUBLIC_LOCALE, {
+            timeZone: process.env.TZ,
+          })
+        ) : (
+          <Typography>
+            <Skeleton />
+          </Typography>
+        )}
+      </TableCell>
+      <TableCell align="center">
+        {!hasLoadingProps ? (
+          !props.item.archived ? (
+            <Chip variant="outlined" label="Published" color="success" />
+          ) : (
+            <Tooltip
+              title={
+                props.item.archivedAt
+                  ? new Date(props.item.archivedAt).toLocaleDateString(
+                      process.env.NEXT_PUBLIC_LOCALE,
+                      { timeZone: process.env.TZ }
+                    )
+                  : null
+              }
+              placement="top"
+              disableInteractive
+            >
+              <Chip variant="outlined" label="Archived" color="warning" />
+            </Tooltip>
+          )
+        ) : (
+          <Typography>
+            {/* Height should match the chip height. */}
+            <Skeleton height={32} />
+          </Typography>
         )}
       </TableCell>
     </TableRow>

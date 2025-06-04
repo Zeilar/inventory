@@ -2,10 +2,10 @@ import { SearchParams } from "../types";
 import type { GetItemsResponse } from "../api/items/types";
 import { ItemsContainer, ItemsHeader } from "./(components)";
 import { ItemsPageProvider } from "./context";
-import { getSettings } from "../api/settings/route";
 import { buildAppUrl } from "@/common";
 import type { ItemsSearchParams } from "../api/items/route";
 import { Typography } from "@mui/material";
+import { getSettings } from "../api/settings/getSettings";
 
 function getPaginationSummary(
   currentPage: number,
@@ -15,11 +15,11 @@ function getPaginationSummary(
   const start = (currentPage - 1) * itemsPerPage + 1;
   const end = Math.min(currentPage * itemsPerPage, totalItems);
 
-  if (totalItems === 0) {
+  if (totalItems === 0 || !start || !end) {
     return "Showing 0 of 0 results";
   }
 
-  return `Showing ${start}-${end} of ${totalItems} results`;
+  return `Showing ${start || 0}-${end || 0} of ${totalItems} results`;
 }
 
 export default async function Page({ searchParams }: SearchParams<ItemsSearchParams>) {
@@ -44,7 +44,7 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
         count={total ? Math.ceil(total / itemsPerPage) : 1}
         page={total ? parsedPage : 1}
       />
-      <ItemsContainer rows={items}></ItemsContainer>
+      <ItemsContainer rows={items.map((item) => ({ item }))}></ItemsContainer>
       <Typography mt={1.5}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Typography>
     </ItemsPageProvider>
   );

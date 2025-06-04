@@ -12,17 +12,22 @@ export async function createItem(
   data: InferInsertModel<typeof itemsTable>,
   files: File[]
 ): Promise<number> {
-  const { id } = db
+  const result = await db
     .insert(itemsTable)
     .values({
       ...data,
       files: files.map((file) => file.name).join(","),
-      archivedAt: data.archived ? new Date().toISOString() : undefined,
+      archivedAt: data.archived ? new Date() : undefined,
     })
-    .returning()
-    .get();
+    .returning();
 
-  const filesDir = resolve(process.cwd(), "files", `${id}`);
+  const item = result.at(0);
+
+  if (!item) {
+    throw new Error("An unexpected error occurred.", { cause: result });
+  }
+
+  const filesDir = resolve(process.cwd(), "files", `${item.id}`);
   if (!existsSync(filesDir)) {
     await mkdir(filesDir);
   }
@@ -40,5 +45,5 @@ export async function createItem(
 
   revalidateTag("items");
 
-  return id;
+  return item.id;
 }
