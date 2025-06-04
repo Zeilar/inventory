@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       fullUrl: process.env.NODE_ENV === "development",
     },
   },
+  output: "standalone",
 };
 
 export default nextConfig;

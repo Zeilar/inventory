@@ -22,6 +22,8 @@ function getPaginationSummary(
   return `Showing ${start || 0}-${end || 0} of ${totalItems} results`;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ searchParams }: SearchParams<ItemsSearchParams>) {
   const { itemsPerPage } = await getSettings();
 

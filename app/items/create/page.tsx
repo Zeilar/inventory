@@ -2,6 +2,8 @@ import { Breadcrumbs } from "@/components";
 import { CreateItemForm } from "@/features/item/components";
 import { Box, Divider, Typography } from "@mui/material";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   return (
     <Box display="flex" flexDirection="column" gap={1.5}>

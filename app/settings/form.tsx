@@ -1,6 +1,6 @@
 "use client";
 
-import { SettingsValues } from "@/features/db/schema";
+import type { SettingsValues } from "@/features/db/schema";
 import { useAppForm } from "@/hooks";
 import { saveSettings } from "./action";
 import { enqueueSnackbar } from "notistack";

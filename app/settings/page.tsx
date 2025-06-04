@@ -3,6 +3,8 @@ import { Breadcrumbs } from "@/components";
 import { Form } from "./form";
 import { getSettings } from "../api/settings/getSettings";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   return (
     <Box display="flex" flexDirection="column" gap={1.5}>
