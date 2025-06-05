@@ -11,21 +11,20 @@ services:
     networks:
       - inventory_network
     ports:
-      - :${DB_PORT}
+      - ${DB_PORT}:${DB_PORT}
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: inventory_app
+    image: inventory
     ports:
-      - 3000:3000
+      - ${PORT}:${PORT}
     networks:
       - inventory_network
     depends_on:
       - db
-    volumes:
-      - .:/app
 
 volumes:
   postgres_data:

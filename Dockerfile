@@ -1,21 +1,44 @@
-FROM node:24-alpine AS builder
+FROM node:24-alpine AS base
+
+FROM base AS deps
+
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-COPY . .
+COPY package.json yarn.lock* ./
 
-RUN yarn install --frozen-lockfile
+RUN yarn --frozen-lockfile
+
+FROM base AS builder
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
 RUN yarn build
 
-FROM node:24-slim
+FROM base AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app/.next/standalone .
+ENV NODE_ENV=production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+RUN yarn add -D drizzle-kit@0.31.1 drizzle-orm@0.44.1 pg@8.16.0
+
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/static .next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/drizzle.config.ts ./
+COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
+
+USER nextjs
 
 EXPOSE ${PORT}
+
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]
