@@ -52,7 +52,9 @@ export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutPro
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell {...headCellProps}>ID</TableCell>
+            <TableCell {...headCellProps} width={100}>
+              ID
+            </TableCell>
             <TableCell {...headCellProps}>Title</TableCell>
             <TableCell {...headCellWithIconProps}>
               <CellIcon icon={Numbers} />

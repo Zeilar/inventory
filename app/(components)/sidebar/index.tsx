@@ -10,23 +10,14 @@ export function Sidebar() {
 
   return (
     <Box borderRight="1px solid" borderColor="divider">
-      <Box
-        position="sticky"
-        top={0}
-        px={1.5}
-        py={3}
-        display="flex"
-        flexDirection="column"
-        gap={1.5}
-      >
+      <Box position="sticky" top={0} p={3} display="flex" flexDirection="column" gap={1.5}>
         <Typography
           fontWeight={600}
           variant="h5"
           display="flex"
           alignItems="center"
           gap={1.5}
-          px={1.5}
-          pb={1.5}
+          mb={0.75}
         >
           <Inventory2 color="primary" />
           Inventory

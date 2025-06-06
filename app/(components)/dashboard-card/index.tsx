@@ -1,4 +1,4 @@
-import { Box, Paper, type PaperProps, type SvgIconTypeMap, Typography } from "@mui/material";
+import { Alert, Box, Paper, type PaperProps, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { ReactNode } from "react";
 
@@ -53,11 +53,23 @@ export async function DashboardCard<T>({
   sibling,
   sx,
 }: DashboardCardProps<T>) {
-  const data = await promise;
+  try {
+    const data = await promise;
 
-  return (
-    <DashboardCardLayout icon={icon} title={title} sibling={sibling} sx={sx}>
-      {children(data)}
-    </DashboardCardLayout>
-  );
+    return (
+      <DashboardCardLayout icon={icon} title={title} sibling={sibling} sx={sx}>
+        {children(data)}
+      </DashboardCardLayout>
+    );
+  } catch (error) {
+    console.error(error);
+
+    return (
+      <DashboardCardLayout icon={icon} title={title} sibling={sibling} sx={sx}>
+        <Alert severity="error" sx={{ width: "fit-content" }}>
+          An unexpected error occurred.
+        </Alert>
+      </DashboardCardLayout>
+    );
+  }
 }

@@ -31,7 +31,7 @@ async function seedItems(count: number = 100): Promise<void> {
   });
   await db.insert(itemsTable).values(items);
   spinner.stop();
-  console.log("Seeded items");
+  console.log("✅ Seeded items");
 }
 
 async function seedSettings(): Promise<void> {
@@ -41,20 +41,20 @@ async function seedSettings(): Promise<void> {
   }).start();
   await db.insert(settingsTable).values({});
   spinner.stop();
-  console.log("Seeded settings");
+  console.log("✅ Seeded settings");
 }
 
 async function seed() {
   await seedItems();
   await seedSettings();
-  console.log("Successfully seeded database");
+  console.log("✅ Successfully seeded database");
   const spinner = ora({
     text: "Closing connection... press Ctrl+C if nothing the program does not exit",
     isEnabled: true,
   });
   await db.$client.end();
   spinner.stop();
-  console.log("Closed connection");
+  console.log("✅ Closed connection");
 }
 
 seed();

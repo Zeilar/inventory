@@ -21,18 +21,13 @@ export function Navlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
         width: "100%",
         gap: 1.5,
         justifyContent: "start",
-        px: 1.5,
         py: 0.75,
         color: isActive ? "primary.main" : "text.secondary",
         transition: (theme) =>
           theme.transitions.create("color", {
             duration: theme.transitions.duration.shortest,
           }),
-        "&:hover": !isActive
-          ? {
-              color: "text.primary",
-            }
-          : undefined,
+        "&:hover": !isActive ? { color: "text.primary" } : undefined,
       }}
     >
       <Icon color="inherit" />

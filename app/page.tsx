@@ -1,6 +1,5 @@
 import { CloudDownloadOutlined, Layers, Receipt, Timeline, Warehouse } from "@mui/icons-material";
 import { Box, Button, Skeleton, Typography } from "@mui/material";
-import prettyBytes from "pretty-bytes";
 import { DashboardCard, DashboardCardLayout } from "./(components)";
 import { Suspense } from "react";
 import { UnstyledLink } from "@/components";
@@ -74,7 +73,7 @@ export default async function Page() {
               </UnstyledLink>
             }
           >
-            {(dbSize) => prettyBytes(dbSize)}
+            {(dbSize) => dbSize}
           </DashboardCard>
         </Suspense>
         <Suspense
