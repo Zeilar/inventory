@@ -1,4 +1,11 @@
-import { CloudDownloadOutlined, Layers, Receipt, Timeline, Warehouse } from "@mui/icons-material";
+import {
+  CloudDownloadOutlined,
+  Layers,
+  Receipt,
+  Storage,
+  Timeline,
+  Warehouse,
+} from "@mui/icons-material";
 import { Box, Button, Skeleton, Typography } from "@mui/material";
 import { DashboardCard, DashboardCardLayout } from "./(components)";
 import { Suspense } from "react";
@@ -6,6 +13,7 @@ import { UnstyledLink } from "@/components";
 import { ItemsTimeline } from "./(components)/dashboard-card/items-timeline";
 import type { ItemsTimelineResponse } from "./api/items/timeline/route";
 import { buildAppUrl } from "@/common";
+import prettyBytes from "pretty-bytes";
 
 async function getItemsTimeline(): Promise<ItemsTimelineResponse> {
   const res = await fetch(buildAppUrl("/api/items/timeline"));
@@ -19,6 +27,11 @@ async function getTotalItems(): Promise<number> {
 
 async function getDbSize(): Promise<number> {
   const res = await fetch(buildAppUrl("/api/db/total"));
+  return res.json();
+}
+
+async function getStorageSize(): Promise<number> {
+  const res = await fetch(buildAppUrl("/api/files/total"));
   return res.json();
 }
 
@@ -94,6 +107,17 @@ export default async function Page() {
             sx={{ gridColumn: "span 2", alignItems: "start" }}
           >
             {(value) => <ItemsTimeline value={value} />}
+          </DashboardCard>
+        </Suspense>
+        <Suspense
+          fallback={
+            <DashboardCardLayout icon={Storage} title="Storage">
+              <Skeleton width={100} />
+            </DashboardCardLayout>
+          }
+        >
+          <DashboardCard<number> icon={Storage} title="Storage" promise={getStorageSize()}>
+            {(value) => prettyBytes(value)}
           </DashboardCard>
         </Suspense>
       </Box>
