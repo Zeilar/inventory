@@ -10,12 +10,12 @@ export function Seeder() {
   const { isLoading, mutate } = useMutation({
     mutationFn: install,
     onSuccess: () => {
-      enqueueSnackbar({ variant: "error", message: "Successfully installed app!" });
+      enqueueSnackbar({ variant: "success", message: "Successfully installed app!" });
     },
     onError: (error) => {
       console.error(error);
       enqueueSnackbar({
-        variant: "success",
+        variant: "error",
         message: "An unexpected error occurred. Try again.",
       });
     },
