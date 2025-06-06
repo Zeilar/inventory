@@ -31,6 +31,7 @@ export async function register() {
         );
         await migrate(db, { migrationsFolder: "./drizzle" });
         spinner.succeed("✅ Applied migrations");
+        return;
       } catch (error) {
         spinner.fail(
           `❌ Attempt ${attempt} failed: ${error instanceof Error ? error.message : String(error)}`
