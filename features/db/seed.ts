@@ -30,8 +30,7 @@ async function seedItems(count: number = 100): Promise<void> {
     };
   });
   await db.insert(itemsTable).values(items);
-  spinner.stop();
-  console.log("✅ Seeded items");
+  spinner.succeed("✅ Seeded items");
 }
 
 async function seedSettings(): Promise<void> {
@@ -40,8 +39,7 @@ async function seedSettings(): Promise<void> {
     isEnabled: true,
   }).start();
   await db.insert(settingsTable).values({});
-  spinner.stop();
-  console.log("✅ Seeded settings");
+  spinner.succeed("✅ Seeded settings");
 }
 
 async function seed() {
@@ -53,8 +51,7 @@ async function seed() {
     isEnabled: true,
   });
   await db.$client.end();
-  spinner.stop();
-  console.log("✅ Closed connection");
+  spinner.succeed("✅ Closed connection");
 }
 
 seed();
