@@ -49,7 +49,7 @@ async function seed() {
   await seedSettings();
   console.log("✅ Successfully seeded database");
   const spinner = ora({
-    text: "Closing connection... press Ctrl+C if nothing the program does not exit",
+    text: "Closing connection... press Ctrl+C if the program does not exit",
     isEnabled: true,
   });
   await db.$client.end();

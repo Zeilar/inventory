@@ -11,16 +11,11 @@ export const settingsNextConfig: NextFetchRequestConfig = {
 
 export const getSettings = unstable_cache(
   async (): Promise<SettingsValues> => {
-    // try {
     const settings = (await db.select().from(settingsTable).limit(1)).at(0);
     if (!settings) {
       throw new Error("Settings not found.");
     }
     return settings.value;
-    // } catch (error) {
-    //   console.error(error);
-    //   return { itemsPerPage: 10 };
-    // }
   },
   [settingsTag],
   settingsNextConfig

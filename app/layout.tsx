@@ -6,6 +6,8 @@ import { roboto } from "@/features/theme/fonts";
 import { Providers, Sidebar } from "./(components)";
 import { SIDEBAR_WIDTH } from "@/features/theme";
 import { getSettings } from "./api/settings/getSettings";
+import type { SettingsValues } from "@/features/db/schema";
+import { Seeder } from "./(seeder)";
 
 export const dynamic = "force-dynamic";
 
@@ -15,15 +17,26 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
+  let hasInstalled = false;
+  let settings: SettingsValues = { itemsPerPage: 0 };
+  try {
+    settings = await getSettings();
+    hasInstalled = true;
+  } catch {}
+
   return (
     <html lang="en" className={classNames(roboto.className)}>
       <body>
         <main style={{ height: "100svh" }}>
-          <Providers settings={await getSettings()}>
-            <Box display="grid" gridTemplateColumns={`${SIDEBAR_WIDTH}px 1fr`} height="100%">
-              <Sidebar />
-              <Box p={3}>{children}</Box>
-            </Box>
+          <Providers settings={settings}>
+            {hasInstalled ? (
+              <Box display="grid" gridTemplateColumns={`${SIDEBAR_WIDTH}px 1fr`} height="100%">
+                <Sidebar />
+                <Box p={3}>{children}</Box>
+              </Box>
+            ) : (
+              <Seeder />
+            )}
           </Providers>
         </main>
       </body>
