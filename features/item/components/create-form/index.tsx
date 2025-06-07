@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 
 interface Fields {
   title: string;
-  articleId?: string;
+  articleId: string;
   files: {
     accepted: File[];
     rejected: FileRejection[];
@@ -29,6 +29,8 @@ interface Fields {
   quantity: number;
   tags: string;
   archived: boolean;
+  originalPrice: string | null;
+  links: string;
 }
 
 function successSnackbar() {
@@ -48,10 +50,23 @@ export function CreateItemForm() {
       articleId: "",
       tags: "",
       archived: false,
+      originalPrice: "",
+      links: "",
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { files, quantity, title, articleId, tags } = value;
-      const id = await createItem({ title, articleId, files: "", quantity, tags }, files.accepted);
+      const { files, quantity, title, articleId, tags, links, originalPrice } = value;
+      const id = await createItem(
+        {
+          title,
+          articleId,
+          files: "",
+          quantity,
+          tags,
+          links,
+          originalPrice: originalPrice || null,
+        },
+        files.accepted
+      );
       form.resetField("files");
       successSnackbar();
       push(`/items/${id}`);
@@ -98,15 +113,12 @@ export function CreateItemForm() {
             </form.AppField>
           </Box>
           <Box display="flex" gap={3}>
-            <form.AppField
-              name="articleId"
-              validators={{
-                onChange: z.string({ message: "Title must be a string." }),
-              }}
-            >
+            <form.AppField name="articleId">
               {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
-            <Box width="100%" />
+            <form.AppField name="originalPrice">
+              {(field) => <field.TextField label="Original price" placeholder="50 SEK" />}
+            </form.AppField>
           </Box>
           <form.AppField name="files">
             {(field) => {
@@ -249,6 +261,21 @@ export function CreateItemForm() {
             }}
           </form.AppField>
           <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
+          <form.AppField
+            name="links"
+            validators={{
+              onChange: ({ value }) => {
+                const links = value.split(",").filter(Boolean);
+                for (const link of links) {
+                  if (!z.string().url().safeParse(link).success) {
+                    return "One or more URLs are invalid.";
+                  }
+                }
+              },
+            }}
+          >
+            {(field) => <field.TagsField label="Links" />}
+          </form.AppField>
         </Box>
         <Box display="flex" gap={1.5}>
           <form.SubmitButton>Save</form.SubmitButton>

@@ -20,6 +20,11 @@ export const itemsTable = pgTable("items", {
    * Comma separated strings. These can be anything the user wants.
    */
   tags: text("tags").notNull().default(""),
+  /**
+   * Comma separated strings. These can be anything the user wants.
+   */
+  links: text("links").notNull().default(""),
+  originalPrice: text("original_price"), // E.g "38 SEK".
   archivedAt: timestamp("archived_at", { withTimezone: false }),
   createdAt: timestamp("created_at", { withTimezone: false }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: false })

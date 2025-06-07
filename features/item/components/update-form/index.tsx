@@ -31,6 +31,8 @@ interface Fields {
   quantity: number;
   tags: string;
   archived: boolean;
+  originalPrice: string;
+  links: string;
 }
 
 interface UpdateFormProps {
@@ -41,6 +43,8 @@ interface UpdateFormProps {
   quantity: number;
   tags: string;
   archived: boolean;
+  originalPrice: string | null;
+  links: string;
 }
 
 function successSnackbar() {
@@ -58,6 +62,8 @@ export function UpdateItemForm({
   quantity,
   tags,
   archived,
+  links,
+  originalPrice,
 }: UpdateFormProps) {
   const { back } = useRouter();
   const form = useAppForm({
@@ -69,9 +75,12 @@ export function UpdateItemForm({
       filesToRemove: { left: files.split(",").filter(Boolean), right: [], checked: [] },
       tags,
       archived,
+      links,
+      originalPrice: originalPrice ?? "",
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { filesToRemove, quantity, articleId, files, title, tags } = value;
+      const { filesToRemove, quantity, articleId, files, title, tags, links, originalPrice } =
+        value;
       // If archiving, override the archivedAt. If unarchiving, remove it.
       const archivedAt = !archived && value.archived ? new Date() : null;
       await updateItem(
@@ -83,6 +92,8 @@ export function UpdateItemForm({
           tags,
           archived: value.archived,
           archivedAt,
+          links,
+          originalPrice: originalPrice || null,
         },
         files.accepted,
         filesToRemove.right
@@ -148,7 +159,9 @@ export function UpdateItemForm({
             >
               {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
-            <Box width="100%" />
+            <form.AppField name="originalPrice">
+              {(field) => <field.TextField label="Original price" placeholder="50 SEK" />}
+            </form.AppField>
           </Box>
           <form.AppField name="files">
             {(field) => {
@@ -302,6 +315,21 @@ export function UpdateItemForm({
           </form.AppField>
         </Box>
         <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
+        <form.AppField
+          name="links"
+          validators={{
+            onChange: ({ value }) => {
+              const links = value.split(",").filter(Boolean);
+              for (const link of links) {
+                if (!z.string().url().safeParse(link).success) {
+                  return "One or more URLs are invalid.";
+                }
+              }
+            },
+          }}
+        >
+          {(field) => <field.TagsField label="Links" />}
+        </form.AppField>
         <Box display="flex" gap={1.5}>
           <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
             Save

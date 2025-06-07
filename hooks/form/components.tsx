@@ -86,6 +86,7 @@ export function TagsField(props: MuiChipsInputProps) {
 
   return (
     <MuiChipsInput
+      autoComplete="off"
       error={Boolean(error)}
       size="small"
       validate={(value) => Boolean(value) && !tags.includes(value)}

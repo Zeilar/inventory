@@ -7,7 +7,10 @@ export interface ItemCardLoadingProps {
 }
 
 export interface ItemCardProps {
-  item: Pick<Item, "id" | "title" | "archived" | "quantity" | "createdAt" | "archivedAt">;
+  item: Pick<
+    Item,
+    "id" | "title" | "archived" | "quantity" | "createdAt" | "archivedAt" | "originalPrice"
+  >;
 }
 
 function isLoadingProps(
@@ -25,6 +28,15 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
       <TableCell>
         {!hasLoadingProps ? (
           <Link href={`/items/${props.item.id}`}>{props.item.title}</Link>
+        ) : (
+          <Typography>
+            <Skeleton />
+          </Typography>
+        )}
+      </TableCell>
+      <TableCell align="center">
+        {!hasLoadingProps ? (
+          props.item.originalPrice
         ) : (
           <Typography>
             <Skeleton />

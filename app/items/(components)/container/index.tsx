@@ -13,7 +13,12 @@ import {
 } from "@mui/material";
 import { useItemsPageContext } from "../../context";
 import { ItemCard, type ItemCardProps } from "../card";
-import { CalendarMonth, Numbers, Public } from "@mui/icons-material";
+import {
+  CalendarMonthOutlined,
+  NumbersOutlined,
+  PublicOutlined,
+  SellOutlined,
+} from "@mui/icons-material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface ItemContainerLayoutProps {
@@ -57,15 +62,19 @@ export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutPro
             </TableCell>
             <TableCell {...headCellProps}>Title</TableCell>
             <TableCell {...headCellWithIconProps}>
-              <CellIcon icon={Numbers} />
+              <CellIcon icon={SellOutlined} />
+              Price
+            </TableCell>
+            <TableCell {...headCellWithIconProps}>
+              <CellIcon icon={NumbersOutlined} />
               Quantity
             </TableCell>
             <TableCell {...headCellWithIconProps}>
-              <CellIcon icon={CalendarMonth} />
+              <CellIcon icon={CalendarMonthOutlined} />
               Deposited
             </TableCell>
             <TableCell {...headCellWithIconProps}>
-              <CellIcon icon={Public} />
+              <CellIcon icon={PublicOutlined} />
               Status
             </TableCell>
           </TableRow>
