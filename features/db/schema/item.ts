@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, boolean, timestamp, date } from "drizzle-orm/pg-core";
 import { type InferSelectModel, sql } from "drizzle-orm";
 
 export type Item = InferSelectModel<typeof itemsTable>;
@@ -25,9 +25,9 @@ export const itemsTable = pgTable("items", {
    */
   links: text("links").notNull().default(""),
   originalPrice: text("original_price"), // E.g "38 SEK".
-  archivedAt: timestamp("archived_at", { withTimezone: false }),
-  createdAt: timestamp("created_at", { withTimezone: false }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: false })
+  archivedAt: date("archived_at"),
+  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "string" })
     .defaultNow()
     .notNull()
     .$onUpdate(() => sql`CURRENT_TIMESTAMP`),

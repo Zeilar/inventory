@@ -1,6 +1,5 @@
 "use client";
 
-import { enqueueSnackbar } from "notistack";
 import { useAppForm } from "@/hooks";
 import { updateItem } from "./action";
 import {
@@ -47,13 +46,6 @@ interface UpdateFormProps {
   links: string;
 }
 
-function successSnackbar() {
-  enqueueSnackbar({
-    variant: "success",
-    message: "Updated item",
-  });
-}
-
 export function UpdateItemForm({
   id,
   title,
@@ -65,7 +57,7 @@ export function UpdateItemForm({
   links,
   originalPrice,
 }: UpdateFormProps) {
-  const { back } = useRouter();
+  const { back, push } = useRouter();
   const form = useAppForm({
     defaultValues: {
       title,
@@ -79,10 +71,19 @@ export function UpdateItemForm({
       originalPrice: originalPrice ?? "",
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { filesToRemove, quantity, articleId, files, title, tags, links, originalPrice } =
-        value;
+      const {
+        filesToRemove,
+        quantity,
+        articleId,
+        files,
+        title,
+        tags,
+        links,
+        originalPrice,
+        archived,
+      } = value;
       // If archiving, override the archivedAt. If unarchiving, remove it.
-      const archivedAt = !archived && value.archived ? new Date() : null;
+      const archivedAt = !archived && archived ? new Date().toISOString() : null;
       await updateItem(
         id,
         {
@@ -90,7 +91,7 @@ export function UpdateItemForm({
           quantity,
           articleId: articleId || null,
           tags,
-          archived: value.archived,
+          archived,
           archivedAt,
           links,
           originalPrice: originalPrice || null,
@@ -98,8 +99,7 @@ export function UpdateItemForm({
         files.accepted,
         filesToRemove.right
       );
-      form.resetField("files");
-      successSnackbar();
+      push(`/items/${id}`);
     },
   });
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

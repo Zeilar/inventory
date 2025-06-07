@@ -3,13 +3,16 @@ import { buildAppUrl } from "@/common";
 import { UnstyledLink, Breadcrumbs } from "@/components";
 import type { Item } from "@/features/db/schema";
 import {
-  Archive,
-  AttachFile,
-  DateRange,
+  ArchiveOutlined,
+  AttachFileOutlined,
+  DateRangeOutlined,
   Download,
-  Fingerprint,
-  Numbers,
-  Tag,
+  FingerprintOutlined,
+  LinkOutlined,
+  NumbersOutlined,
+  OpenInNewOutlined,
+  SellOutlined,
+  TagOutlined,
 } from "@mui/icons-material";
 import { Box, Button, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -24,12 +27,12 @@ interface InfoBoxProps extends PropsWithChildren {
 
 function InfoBox({ icon: Icon, children, title }: InfoBoxProps) {
   return (
-    <Box display="flex" flexDirection="column" gap={0.75}>
-      <Box display="flex" gap={0.75} alignItems="center">
+    <Box component={Paper} display="flex" gap={3} justifyContent="space-between" p={1.5}>
+      <Box display="flex" gap={1.5}>
         <Icon color="primary" />
-        <Typography variant="h6">{title}</Typography>
+        <Typography>{title}</Typography>
       </Box>
-      <Paper sx={{ p: 1.5, width: "fit-content", minWidth: 150 }}>{children}</Paper>
+      <Typography>{children}</Typography>
     </Box>
   );
 }
@@ -39,9 +42,20 @@ export default async function Page({ params }: Params<"id">) {
   const res = await fetch(buildAppUrl(`/api/items/${id}`), {
     next: { revalidate: 31_556_926, tags: [`items-${id}`] },
   });
-  const { title, quantity, articleId, files, archived, tags, createdAt }: Item = await res.json();
-
+  const {
+    title,
+    quantity,
+    articleId,
+    files,
+    archived,
+    tags,
+    createdAt,
+    originalPrice,
+    links,
+    archivedAt,
+  }: Item = await res.json();
   const parsedFiles = files.split(",").filter(Boolean);
+  const parsedLinks = links.split(",").filter(Boolean);
 
   return (
     <div>
@@ -54,7 +68,7 @@ export default async function Page({ params }: Params<"id">) {
           current={title}
         />
       </Box>
-      <Box display="flex" flexDirection="column" gap={3}>
+      <Box display="flex" flexDirection="column" gap={1.5}>
         <Box display="flex" gap={3} justifyContent="space-between" alignItems="center">
           <Typography variant="h4" overflow="hidden" textOverflow="ellipsis">
             {title}
@@ -64,16 +78,16 @@ export default async function Page({ params }: Params<"id">) {
           </UnstyledLink>
         </Box>
         <Divider />
-        <InfoBox icon={Numbers} title="Quantity">
+        <InfoBox icon={NumbersOutlined} title="Quantity">
           {quantity}
         </InfoBox>
-        <InfoBox icon={Fingerprint} title="Article id">
+        <InfoBox icon={FingerprintOutlined} title="Article id">
           {articleId || "N/A"}
         </InfoBox>
-        <InfoBox icon={Archive} title="Archived">
-          {archived ? "Yes" : "No"}
+        <InfoBox icon={ArchiveOutlined} title="Archived">
+          {archived && archivedAt ? new Date(archivedAt).toISOString() : "No"}
         </InfoBox>
-        <InfoBox icon={Tag} title="Tags">
+        <InfoBox icon={TagOutlined} title="Tags">
           {tags
             .split(",")
             .filter(Boolean)
@@ -81,18 +95,36 @@ export default async function Page({ params }: Params<"id">) {
               <span key={tag}>{tag} </span>
             ))}
         </InfoBox>
-        <InfoBox icon={AttachFile} title="Files">
-          <Box display="flex" flexDirection="column" gap={0.75}>
+        <InfoBox icon={AttachFileOutlined} title="Files">
+          <Box component="span" display="flex" flexDirection="column" gap={0.75} alignItems="end">
             {parsedFiles.length
               ? parsedFiles.map((file, i) => (
                   <UnstyledLink key={`${file}-${i}`} href={`/api/file/${id}/${file}`} download>
-                    <Button startIcon={<Download />}>{file}</Button>
+                    <Button startIcon={<Download />} sx={{ textTransform: "none" }}>
+                      {file}
+                    </Button>
                   </UnstyledLink>
                 ))
               : "N/A"}
           </Box>
         </InfoBox>
-        <InfoBox icon={DateRange} title="Deposited at">
+        <InfoBox icon={SellOutlined} title="Original price">
+          {originalPrice || "N/A"}
+        </InfoBox>
+        <InfoBox icon={LinkOutlined} title="Links">
+          <Box component="span" display="flex" flexDirection="column" gap={0.75} alignItems="end">
+            {parsedLinks.length
+              ? parsedLinks.map((link, i) => (
+                  <UnstyledLink key={`${link}-${i}`} href={link} target="_blank">
+                    <Button startIcon={<OpenInNewOutlined />} sx={{ textTransform: "none" }}>
+                      {link}
+                    </Button>
+                  </UnstyledLink>
+                ))
+              : "N/A"}
+          </Box>
+        </InfoBox>
+        <InfoBox icon={DateRangeOutlined} title="Deposited at">
           {new Date(createdAt).toLocaleString("se")}
         </InfoBox>
       </Box>

@@ -17,7 +17,7 @@ export async function createItem(
     .values({
       ...data,
       files: files.map((file) => file.name).join(","),
-      archivedAt: data.archived ? new Date() : undefined,
+      archivedAt: data.archived ? new Date().toISOString() : undefined,
     })
     .returning();
 

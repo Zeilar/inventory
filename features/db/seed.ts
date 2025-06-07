@@ -23,9 +23,9 @@ async function seedItems(count: number = 100): Promise<void> {
       title: faker.commerce.productName(),
       articleId: faker.string.alphanumeric({ length: 15 }),
       quantity: faker.number.int({ min: 0, max: 5 }),
-      createdAt: faker.date.recent({ days: 50 }),
+      createdAt: faker.date.recent({ days: 50 }).toISOString(),
       archived,
-      archivedAt: archived ? faker.date.recent({ days: 50 }) : undefined,
+      archivedAt: archived ? faker.date.recent({ days: 50 }).toISOString() : undefined,
       tags: [...new Set(tags)].join(","), // Tags must be unique.
     };
   });
