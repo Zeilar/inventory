@@ -26,7 +26,7 @@ export async function GET() {
         createdAt: itemsTable.createdAt,
       })
       .from(itemsTable)
-      .where(gt(itemsTable.createdAt, startDate));
+      .where(gt(itemsTable.createdAt, startDate.toISOString()));
 
     /**
      * We want to display how many items were added the last 7 days (including today).
@@ -45,7 +45,7 @@ export async function GET() {
     const data: number[] = Array(7).fill(0);
     items.forEach((element) => {
       // Parse month and day from ISO string.
-      const [, month, day] = element.createdAt.toISOString().split("T")[0].split("-");
+      const [, month, day] = element.createdAt.split("T")[0].split("-");
       const daysIndex = days.indexOf(`${day}/${month}`); // Match DD/MM.
       if (daysIndex < 0) {
         return;

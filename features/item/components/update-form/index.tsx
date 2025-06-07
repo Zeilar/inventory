@@ -71,19 +71,10 @@ export function UpdateItemForm({
       originalPrice: originalPrice ?? "",
     } as Fields,
     onSubmit: async ({ value }) => {
-      const {
-        filesToRemove,
-        quantity,
-        articleId,
-        files,
-        title,
-        tags,
-        links,
-        originalPrice,
-        archived,
-      } = value;
+      const { filesToRemove, quantity, articleId, files, title, tags, links, originalPrice } =
+        value;
       // If archiving, override the archivedAt. If unarchiving, remove it.
-      const archivedAt = !archived && archived ? new Date().toISOString() : null;
+      const archivedAt = !archived && value.archived ? new Date().toISOString() : null;
       await updateItem(
         id,
         {
@@ -91,7 +82,7 @@ export function UpdateItemForm({
           quantity,
           articleId: articleId || null,
           tags,
-          archived,
+          archived: value.archived,
           archivedAt,
           links,
           originalPrice: originalPrice || null,

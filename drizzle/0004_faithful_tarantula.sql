@@ -1,0 +1,1 @@
+ALTER TABLE "items" ALTER COLUMN "archived_at" SET DATA TYPE timestamp;

@@ -85,7 +85,9 @@ export default async function Page({ params }: Params<"id">) {
           {articleId || "N/A"}
         </InfoBox>
         <InfoBox icon={ArchiveOutlined} title="Archived">
-          {archived && archivedAt ? new Date(archivedAt).toISOString() : "No"}
+          {archived && archivedAt
+            ? new Date(archivedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)
+            : "No"}
         </InfoBox>
         <InfoBox icon={TagOutlined} title="Tags">
           {tags
@@ -125,7 +127,7 @@ export default async function Page({ params }: Params<"id">) {
           </Box>
         </InfoBox>
         <InfoBox icon={DateRangeOutlined} title="Deposited at">
-          {new Date(createdAt).toLocaleString("se")}
+          {new Date(createdAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
         </InfoBox>
       </Box>
     </div>

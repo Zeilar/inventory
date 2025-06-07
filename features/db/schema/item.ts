@@ -25,7 +25,7 @@ export const itemsTable = pgTable("items", {
    */
   links: text("links").notNull().default(""),
   originalPrice: text("original_price"), // E.g "38 SEK".
-  archivedAt: date("archived_at"),
+  archivedAt: timestamp("archived_at", { mode: "string" }),
   createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "string" })
     .defaultNow()
