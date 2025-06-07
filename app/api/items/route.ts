@@ -72,6 +72,8 @@ export async function GET(req: Request) {
         archivedAt: itemsTable.archivedAt,
         tags: itemsTable.tags,
         total: sql<number>`count(*) OVER ()`.as("total"),
+        originalPrice: itemsTable.originalPrice,
+        links: itemsTable.links,
       })
       .from(itemsTable);
 
@@ -112,7 +114,7 @@ export async function GET(req: Request) {
     }
 
     if (dateFrom instanceof Date && dateTo instanceof Date) {
-      filters.push(between(itemsTable.createdAt, dateFrom, dateTo));
+      filters.push(between(itemsTable.createdAt, dateFrom.toISOString(), dateTo.toISOString()));
     }
 
     if (filters.length > 0) {
