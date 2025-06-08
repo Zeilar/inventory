@@ -44,7 +44,7 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
         count={total ? Math.ceil(total / itemsPerPage) : 1}
         page={total ? parsedPage : 1}
       />
-      <ItemsContainer rows={items.map((item) => ({ item }))}></ItemsContainer>
+      <ItemsContainer rows={items.map((item) => ({ item }))} />
       <Typography mt={1.5}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Typography>
     </ItemsPageProvider>
   );
