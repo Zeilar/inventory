@@ -1,7 +1,7 @@
-import { Params } from "@/app/types";
+import { Params, SearchParams } from "@/app/types";
 import { buildAppUrl } from "@/common";
 import { UnstyledLink, Breadcrumbs } from "@/components";
-import type { Item } from "@/features/db/schema";
+import type { Item, ItemHistory } from "@/features/db/schema";
 import {
   ArchiveOutlined,
   AttachFileOutlined,
@@ -14,9 +14,21 @@ import {
   SellOutlined,
   TagOutlined,
 } from "@mui/icons-material";
-import { Box, Button, Chip, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  FormControl,
+  InputLabel,
+  Paper,
+  type SvgIconTypeMap,
+  Typography,
+} from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { PropsWithChildren, ReactNode } from "react";
+import { VersionSelect } from "./version-select";
+import { notFound } from "next/navigation";
 
 interface InfoBoxProps extends PropsWithChildren {
   icon: OverridableComponent<SvgIconTypeMap<object, "svg">> & {
@@ -37,23 +49,31 @@ function InfoBox({ icon: Icon, children, title }: InfoBoxProps) {
   );
 }
 
-export default async function Page({ params }: Params<"id">) {
+export default async function Page({
+  params,
+  searchParams,
+}: Params<"id"> & SearchParams<"version">) {
   const { id } = await params;
+  const { version = "" } = await searchParams;
   const res = await fetch(buildAppUrl(`/api/items/${id}`), {
     next: { revalidate: 31_556_926, tags: [`items-${id}`] },
   });
-  const {
-    title,
-    quantity,
-    articleId,
-    files,
-    archived,
-    tags,
-    createdAt,
-    price,
-    links,
-    archivedAt,
-  }: Item = await res.json();
+  const item: Item = await res.json();
+
+  if (!res.ok) {
+    notFound();
+  }
+
+  const historyRes = await fetch(buildAppUrl(`/api/items/${id}/history`), {
+    next: { revalidate: 31_556_926, tags: [`items-history-${id}`] },
+  });
+  const history: ItemHistory[] = await historyRes.json();
+
+  const versionToRender = history.find(({ createdAt }) => createdAt === version) ?? item;
+
+  const { archived, archivedAt, articleId, createdAt, files, links, price, quantity, tags, title } =
+    versionToRender;
+
   const parsedFiles = files.split(",").filter(Boolean);
   const parsedLinks = links.split(",").filter(Boolean);
 
@@ -73,9 +93,20 @@ export default async function Page({ params }: Params<"id">) {
           <Typography variant="h4" overflow="hidden" textOverflow="ellipsis">
             {title}
           </Typography>
-          <UnstyledLink href={`/items/${id}/update`}>
-            <Button variant="contained">Edit</Button>
-          </UnstyledLink>
+          <Box display="flex" gap={1.5}>
+            <FormControl sx={{ width: 200 }} size="small">
+              <InputLabel>Version</InputLabel>
+              <VersionSelect
+                options={history.flatMap(({ createdAt }) => createdAt)}
+                value={version}
+              />
+            </FormControl>
+            <UnstyledLink href={`/items/${id}/update`}>
+              <Button variant="contained" sx={{ height: 40 }}>
+                Edit
+              </Button>
+            </UnstyledLink>
+          </Box>
         </Box>
         <Divider />
         <InfoBox icon={NumbersOutlined} title="Quantity">

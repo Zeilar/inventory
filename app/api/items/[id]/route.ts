@@ -1,5 +1,5 @@
 import { db } from "@/features/db";
-import { Item, itemsTable } from "@/features/db/schema";
+import { type Item, itemsTable } from "@/features/db/schema";
 import { NextResponse } from "next/server";
 import { eq, sql } from "drizzle-orm";
 import type { Params } from "@/app/types";
@@ -18,14 +18,20 @@ export async function GET(_req: Request, { params }: Params<"id">) {
             sql<string>`to_char(${itemsTable.archivedAt}, 'YYYY-MM-DD"T"HH24:MI:SS.MSZ')`.as(
               "archivedAt"
             ),
+          createdAt:
+            sql<string>`to_char(${itemsTable.createdAt}, 'YYYY-MM-DD"T"HH24:MI:SS.MSZ')`.as(
+              "createdAt"
+            ),
+          updatedAt:
+            sql<string>`to_char(${itemsTable.updatedAt}, 'YYYY-MM-DD"T"HH24:MI:SS.MSZ')`.as(
+              "updatedAt"
+            ),
           id: itemsTable.id,
           title: itemsTable.title,
           articleId: itemsTable.articleId,
           quantity: itemsTable.quantity,
           files: itemsTable.files,
           archived: itemsTable.archived,
-          createdAt: itemsTable.createdAt,
-          updatedAt: itemsTable.updatedAt,
           tags: itemsTable.tags,
           price: itemsTable.price,
           links: itemsTable.links,

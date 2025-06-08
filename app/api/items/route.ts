@@ -117,7 +117,6 @@ export async function GET(req: Request) {
     }
 
     if (links?.length) {
-      console.log({ links });
       filters.push(
         or(
           ...links.map(

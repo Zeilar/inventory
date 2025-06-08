@@ -1,6 +1,5 @@
 "use client";
 
-import { enqueueSnackbar } from "notistack";
 import { useAppForm } from "@/hooks";
 import { createItem } from "./action";
 import {
@@ -33,13 +32,6 @@ interface Fields {
   links: string;
 }
 
-function successSnackbar() {
-  enqueueSnackbar({
-    variant: "success",
-    message: "Created item",
-  });
-}
-
 export function CreateItemForm() {
   const { back, push } = useRouter();
   const form = useAppForm({
@@ -68,7 +60,6 @@ export function CreateItemForm() {
         files.accepted
       );
       form.resetField("files");
-      successSnackbar();
       push(`/items/${id}`);
     },
   });

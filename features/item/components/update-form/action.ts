@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/features/db";
-import { Item, itemsTable } from "@/features/db/schema";
+import { Item, itemsHistoryTable, itemsTable } from "@/features/db/schema";
 import { eq } from "drizzle-orm";
 import { existsSync } from "fs";
 import { mkdir, rm, writeFile } from "fs/promises";
@@ -56,11 +56,24 @@ export async function updateItem(
   filesToSave.push(...uploadedFiles);
   filesToSave = filesToSave.filter(Boolean); // Remove empty strings due to comma at the front.
 
-  await db
-    .update(itemsTable)
-    .set({ ...data, files: filesToSave.join(",") })
-    .where(eq(itemsTable.id, id));
+  // Add current (not previous) version to history. Copy everything except auto generated columns.
+  await Promise.all([
+    db
+      .insert(itemsHistoryTable)
+      .values({
+        itemId: id,
+        ...currentItem,
+        createdAt: undefined,
+        updatedAt: undefined,
+        id: undefined,
+      }),
+    db
+      .update(itemsTable)
+      .set({ ...data, files: filesToSave.join(",") })
+      .where(eq(itemsTable.id, id)),
+  ]);
 
   revalidateTag("items");
   revalidateTag(`items-${id}`);
+  revalidateTag(`items-history-${id}`);
 }

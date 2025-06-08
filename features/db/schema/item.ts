@@ -3,7 +3,9 @@ import { type InferSelectModel, sql } from "drizzle-orm";
 
 export type Item = InferSelectModel<typeof itemsTable>;
 
-export const itemsTable = pgTable("items", {
+export type ItemHistory = InferSelectModel<typeof itemsHistoryTable>;
+
+const itemsTableSchema = {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   /**
@@ -31,4 +33,11 @@ export const itemsTable = pgTable("items", {
     .defaultNow()
     .notNull()
     .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
+};
+
+export const itemsTable = pgTable("items", itemsTableSchema);
+
+export const itemsHistoryTable = pgTable("items_history", {
+  ...itemsTableSchema,
+  itemId: integer("item_id").notNull(),
 });
