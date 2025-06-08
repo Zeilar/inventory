@@ -16,7 +16,8 @@ export type ItemsFilterParams =
   | "status"
   | "tags"
   | "sortBy"
-  | "sortDirection";
+  | "sortDirection"
+  | "links";
 
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
@@ -63,6 +64,11 @@ export async function GET(req: Request) {
       ?.trim()
       .split(",")
       .filter(Boolean);
+    const links = url.searchParams
+      .get("links" satisfies ItemsSearchParams)
+      ?.trim()
+      .split(",")
+      .filter(Boolean);
     const sortBy = (url.searchParams.get("sortBy" satisfies ItemsSearchParams) ??
       "id") as keyof Item;
     const sortDirection =
@@ -102,6 +108,12 @@ export async function GET(req: Request) {
     if (tags?.length) {
       filters.push(
         or(...tags.map((tag) => sql`instr(',' || tags || ',', ',' || ${tag} || ',') > 0`))
+      );
+    }
+
+    if (links?.length) {
+      filters.push(
+        or(...links.map((link) => sql`instr(',' || tags || ',', ',' || ${link} || ',') > 0`))
       );
     }
 
