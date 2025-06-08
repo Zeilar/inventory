@@ -28,7 +28,7 @@ export function Navlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
           fontWeight: 500,
           fontSize: "medium",
           fontFamily: "var(--font-roboto)",
-          transition: transitions.create("background-color", {
+          transition: transitions.create(["background-color", "color"], {
             duration: transitions.duration.shortest,
           }),
           "&:hover": !isActive ? { backgroundColor: "grey.700" } : undefined,
