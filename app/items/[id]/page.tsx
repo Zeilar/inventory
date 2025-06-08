@@ -14,17 +14,7 @@ import {
   SellOutlined,
   TagOutlined,
 } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  FormControl,
-  InputLabel,
-  Paper,
-  type SvgIconTypeMap,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Chip, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { PropsWithChildren, ReactNode } from "react";
 import { VersionSelect } from "./version-select";
@@ -69,10 +59,11 @@ export default async function Page({
   });
   const history: ItemHistory[] = await historyRes.json();
 
-  const versionToRender = history.find(({ createdAt }) => createdAt === version) ?? item;
+  const foundPastVersion = history.find(({ createdAt }) => createdAt === version);
+  const itemToRender = foundPastVersion ?? item;
 
   const { archived, archivedAt, articleId, createdAt, files, links, price, quantity, tags, title } =
-    versionToRender;
+    itemToRender;
 
   const parsedFiles = files.split(",").filter(Boolean);
   const parsedLinks = links.split(",").filter(Boolean);
@@ -94,13 +85,10 @@ export default async function Page({
             {title}
           </Typography>
           <Box display="flex" gap={1.5}>
-            <FormControl sx={{ width: 200 }} size="small">
-              <InputLabel>Version</InputLabel>
-              <VersionSelect
-                options={history.flatMap(({ createdAt }) => createdAt)}
-                value={version}
-              />
-            </FormControl>
+            <VersionSelect
+              options={history.flatMap(({ createdAt }) => createdAt)}
+              value={version}
+            />
             <UnstyledLink href={`/items/${id}/update`}>
               <Button variant="contained" sx={{ height: 40 }}>
                 Edit
@@ -134,8 +122,18 @@ export default async function Page({
           <Box component="span" display="flex" flexDirection="column" gap={0.75} alignItems="end">
             {parsedFiles.length
               ? parsedFiles.map((file, i) => (
-                  <UnstyledLink key={`${file}-${i}`} href={`/api/file/${id}/${file}`} download>
-                    <Button startIcon={<Download />} sx={{ textTransform: "none" }}>
+                  <UnstyledLink
+                    key={`${file}-${i}`}
+                    href={`/api/file/${id}/${file}`}
+                    download
+                    as={foundPastVersion ? "span" : undefined}
+                    sx={{ cursor: foundPastVersion ? "not-allowed" : undefined }}
+                  >
+                    <Button
+                      startIcon={<Download />}
+                      sx={{ textTransform: "none" }}
+                      disabled={!!foundPastVersion}
+                    >
                       {file}
                     </Button>
                   </UnstyledLink>
