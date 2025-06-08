@@ -85,7 +85,7 @@ export default async function Page({
             { href: "/", label: "Home" },
             { href: "/items", label: "Items" },
           ]}
-          current={title}
+          current={item.title}
         />
       </Box>
       <Box display="flex" flexDirection="column" gap={1.5}>
