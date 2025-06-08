@@ -112,7 +112,8 @@ export async function GET(req: Request) {
           like(itemsTable.title, lowerCaseSearch),
           like(itemsTable.articleId, lowerCaseSearch),
           like(itemsTable.id, lowerCaseSearch),
-          like(itemsTable.quantity, lowerCaseSearch)
+          like(itemsTable.quantity, lowerCaseSearch),
+          like(itemsTable.originalPrice, lowerCaseSearch)
         )
       );
     }
