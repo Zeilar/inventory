@@ -116,7 +116,18 @@ export default async function Page() {
             </DashboardCardLayout>
           }
         >
-          <DashboardCard<number> icon={Storage} title="Storage" promise={getStorageSize()}>
+          <DashboardCard<number>
+            icon={Storage}
+            title="Storage"
+            promise={getStorageSize()}
+            sibling={
+              <UnstyledLink href="/api/files/backup" download sx={{ ml: "auto" }}>
+                <Button variant="outlined" startIcon={<CloudDownloadOutlined />}>
+                  Download
+                </Button>
+              </UnstyledLink>
+            }
+          >
             {(value) => prettyBytes(value)}
           </DashboardCard>
         </Suspense>
