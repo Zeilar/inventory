@@ -95,7 +95,7 @@ export default async function Page({ params }: Params<"id">) {
               .split(",")
               .filter(Boolean)
               .map((tag) => (
-                <Chip key={tag} label={tag} />
+                <Chip component="span" key={tag} label={tag} />
               ))}
           </Box>
         </InfoBox>
