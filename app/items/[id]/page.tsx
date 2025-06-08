@@ -112,7 +112,7 @@ export default async function Page({ params }: Params<"id">) {
               : "-"}
           </Box>
         </InfoBox>
-        <InfoBox icon={SellOutlined} title="Original price">
+        <InfoBox icon={SellOutlined} title="Price">
           {price || "-"}
         </InfoBox>
         <InfoBox icon={LinkOutlined} title="Links">

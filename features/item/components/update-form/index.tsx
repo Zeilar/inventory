@@ -160,7 +160,7 @@ export function UpdateItemForm({
               {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
             <form.AppField name="price">
-              {(field) => <field.TextField label="Original price" placeholder="50 SEK" />}
+              {(field) => <field.TextField label="Price" placeholder="50 SEK" />}
             </form.AppField>
           </Box>
           <form.AppField name="files">
