@@ -17,7 +17,8 @@ export type ItemsFilterParams =
   | "tags"
   | "sortBy"
   | "sortDirection"
-  | "links";
+  | "links"
+  | "originalPrice";
 
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
@@ -86,6 +87,7 @@ export async function GET(req: Request) {
 
     const itemsQuery = db
       .select({
+        total: sql<number>`count(*) OVER ()`.as("total"),
         id: itemsTable.id,
         title: itemsTable.title,
         articleId: itemsTable.articleId,
@@ -96,7 +98,6 @@ export async function GET(req: Request) {
         updatedAt: itemsTable.updatedAt,
         archivedAt: itemsTable.archivedAt,
         tags: itemsTable.tags,
-        total: sql<number>`count(*) OVER ()`.as("total"),
         originalPrice: itemsTable.originalPrice,
         links: itemsTable.links,
       })
@@ -107,13 +108,22 @@ export async function GET(req: Request) {
 
     if (tags?.length) {
       filters.push(
-        or(...tags.map((tag) => sql`instr(',' || tags || ',', ',' || ${tag} || ',') > 0`))
+        or(
+          ...tags.map(
+            (tag) => sql`(',' || tags || ',') LIKE ${sql.join([`%,${tag},%`], sql.raw(" OR "))}`
+          )
+        )
       );
     }
 
     if (links?.length) {
+      console.log({ links });
       filters.push(
-        or(...links.map((link) => sql`instr(',' || tags || ',', ',' || ${link} || ',') > 0`))
+        or(
+          ...links.map(
+            (link) => sql`(',' || tags || ',') LIKE ${sql.join([`%,${link},%`], sql.raw(" OR "))}`
+          )
+        )
       );
     }
 
@@ -125,7 +135,8 @@ export async function GET(req: Request) {
           like(itemsTable.articleId, lowerCaseSearch),
           like(itemsTable.id, lowerCaseSearch),
           like(itemsTable.quantity, lowerCaseSearch),
-          like(itemsTable.originalPrice, lowerCaseSearch)
+          like(itemsTable.originalPrice, lowerCaseSearch),
+          like(itemsTable.links, lowerCaseSearch)
         )
       );
     }

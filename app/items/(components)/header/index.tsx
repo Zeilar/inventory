@@ -50,6 +50,8 @@ const defaultValues: DefaultValues = {
   tags: "",
   sortBy: "id" satisfies keyof Item,
   sortDirection: "desc" satisfies SortDirection,
+  links: "",
+  originalPrice: "",
 };
 
 function renderSortLabel(property: keyof Item, direction: SortDirection): string {
@@ -85,10 +87,11 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
       const newSearchParams = new URLSearchParams(searchParams);
       for (const property in value) {
         const param = value[property as keyof typeof value];
-        if (!param) {
-          continue;
+        if (param) {
+          newSearchParams.set(property, param);
+        } else {
+          newSearchParams.delete(property);
         }
-        newSearchParams.set(property, param);
       }
       push(`?${newSearchParams}`);
     },
@@ -274,16 +277,23 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             </Box>
           </FormControl>
           <Divider />
-          <Box width="100%">
-            <form.AppField name="tags">
-              {(field) => (
-                <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
-                  <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
-                  <field.TagsField />
-                </FormControl>
-              )}
-            </form.AppField>
-          </Box>
+          <form.AppField name="tags">
+            {(field) => (
+              <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
+                <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
+                <field.TagsField />
+              </FormControl>
+            )}
+          </form.AppField>
+          <Divider />
+          <form.AppField name="links">
+            {(field) => (
+              <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
+                <FormLabel sx={{ mb: 0.75 }}>Links</FormLabel>
+                <field.TagsField />
+              </FormControl>
+            )}
+          </form.AppField>
           <Divider />
           <Box display="flex" gap={1.5}>
             <form.SubmitButton size="medium">Apply</form.SubmitButton>
