@@ -92,8 +92,8 @@ export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutPro
 /**
  * Do not use in loading.tsx.
  */
-export function ItemsContainer({ rows }: ItemsContainerProps) {
-  const { isLoading } = useItemsPageContext();
+export function ItemsContainer({ rows, isLoading }: ItemsContainerProps) {
+  const itemPageContext = useItemsPageContext();
 
-  return <ItemsContainerLayout rows={rows} isLoading={isLoading} />;
+  return <ItemsContainerLayout rows={rows} isLoading={isLoading || itemPageContext.isLoading} />;
 }
