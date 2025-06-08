@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { Box } from "@mui/material";
 import classNames from "classnames";
-import { roboto } from "@/features/theme/fonts";
+import { openSans, roboto } from "@/features/theme/fonts";
 import { Providers, Sidebar } from "./(components)";
 import { SIDEBAR_WIDTH } from "@/features/theme";
 import { getSettings } from "./api/settings/getSettings";
@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   } catch {}
 
   return (
-    <html lang="en" className={classNames(roboto.className)}>
+    <html lang="en" className={classNames(roboto.className, openSans.className)}>
       <body>
         <main style={{ height: "100svh" }}>
           <Providers settings={settings}>

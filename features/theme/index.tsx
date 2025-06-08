@@ -1,5 +1,4 @@
-import { Color, createTheme } from "@mui/material";
-import { roboto } from "./fonts/roboto";
+import { type Color, createTheme } from "@mui/material";
 
 export let theme = createTheme();
 
@@ -47,30 +46,18 @@ theme = createTheme({
     },
     text: {
       primary: "hsl(210, 9%, 90%)",
+      secondary: "hsl(210, 9%, 0%)",
     },
   },
+  cssVariables: true,
   typography: {
-    allVariants: {
-      fontFamily: roboto.style.fontFamily,
-    },
-    h1: {
-      fontWeight: 600,
-    },
-    h2: {
-      fontWeight: 600,
-    },
-    h3: {
-      fontWeight: 600,
-    },
-    h4: {
-      fontWeight: 600,
-    },
-    h5: {
-      fontWeight: 500,
-    },
-    h6: {
-      fontWeight: 500,
-    },
+    h1: { fontWeight: 600, fontFamily: "var(--font-open-sans)" },
+    h2: { fontWeight: 600, fontFamily: "var(--font-open-sans)" },
+    h3: { fontWeight: 600, fontFamily: "var(--font-open-sans)" },
+    h4: { fontWeight: 600, fontFamily: "var(--font-open-sans)" },
+    h5: { fontWeight: 500, fontFamily: "var(--font-open-sans)" },
+    h6: { fontWeight: 500, fontFamily: "var(--font-open-sans)" },
+    button: { fontFamily: "var(--font-roboto)" },
   },
   components: {
     MuiCssBaseline: {
