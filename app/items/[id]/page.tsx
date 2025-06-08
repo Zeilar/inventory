@@ -50,7 +50,7 @@ export default async function Page({ params }: Params<"id">) {
     archived,
     tags,
     createdAt,
-    originalPrice,
+    price,
     links,
     archivedAt,
   }: Item = await res.json();
@@ -113,7 +113,7 @@ export default async function Page({ params }: Params<"id">) {
           </Box>
         </InfoBox>
         <InfoBox icon={SellOutlined} title="Original price">
-          {originalPrice || "-"}
+          {price || "-"}
         </InfoBox>
         <InfoBox icon={LinkOutlined} title="Links">
           <Box component="span" display="flex" flexDirection="column" gap={0.75} alignItems="end">

@@ -27,7 +27,7 @@ export async function GET(_req: Request, { params }: Params<"id">) {
           createdAt: itemsTable.createdAt,
           updatedAt: itemsTable.updatedAt,
           tags: itemsTable.tags,
-          originalPrice: itemsTable.originalPrice,
+          price: itemsTable.price,
           links: itemsTable.links,
         })
         .from(itemsTable)

@@ -29,7 +29,7 @@ interface Fields {
   quantity: number;
   tags: string;
   archived: boolean;
-  originalPrice: string | null;
+  price: string | null;
   links: string;
 }
 
@@ -50,11 +50,11 @@ export function CreateItemForm() {
       articleId: "",
       tags: "",
       archived: false,
-      originalPrice: "",
+      price: "",
       links: "",
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { files, quantity, title, articleId, tags, links, originalPrice } = value;
+      const { files, quantity, title, articleId, tags, links, price } = value;
       const id = await createItem(
         {
           title,
@@ -63,7 +63,7 @@ export function CreateItemForm() {
           quantity,
           tags,
           links,
-          originalPrice: originalPrice || null,
+          price: price || null,
         },
         files.accepted
       );
@@ -116,7 +116,7 @@ export function CreateItemForm() {
             <form.AppField name="articleId">
               {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
-            <form.AppField name="originalPrice">
+            <form.AppField name="price">
               {(field) => <field.TextField label="Original price" placeholder="50 SEK" />}
             </form.AppField>
           </Box>

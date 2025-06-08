@@ -18,7 +18,7 @@ export type ItemsFilterParams =
   | "sortBy"
   | "sortDirection"
   | "links"
-  | "originalPrice";
+  | "price";
 
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
@@ -98,7 +98,7 @@ export async function GET(req: Request) {
         updatedAt: itemsTable.updatedAt,
         archivedAt: itemsTable.archivedAt,
         tags: itemsTable.tags,
-        originalPrice: itemsTable.originalPrice,
+        price: itemsTable.price,
         links: itemsTable.links,
       })
       .from(itemsTable)
@@ -135,7 +135,7 @@ export async function GET(req: Request) {
           like(itemsTable.articleId, lowerCaseSearch),
           like(itemsTable.id, lowerCaseSearch),
           like(itemsTable.quantity, lowerCaseSearch),
-          like(itemsTable.originalPrice, lowerCaseSearch),
+          like(itemsTable.price, lowerCaseSearch),
           like(itemsTable.links, lowerCaseSearch)
         )
       );

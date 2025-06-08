@@ -24,7 +24,7 @@ export const itemsTable = pgTable("items", {
    * Comma separated strings. These can be anything the user wants.
    */
   links: text("links").notNull().default(""),
-  originalPrice: text("original_price"), // E.g "38 SEK".
+  price: text("price"), // E.g "38 SEK".
   archivedAt: timestamp("archived_at", { mode: "string", withTimezone: true }),
   createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "string" })

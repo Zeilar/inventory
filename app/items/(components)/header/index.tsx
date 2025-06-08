@@ -51,7 +51,7 @@ const defaultValues: DefaultValues = {
   sortBy: "id" satisfies keyof Item,
   sortDirection: "desc" satisfies SortDirection,
   links: "",
-  originalPrice: "",
+  price: "",
 };
 
 function renderSortLabel(property: keyof Item, direction: SortDirection): string {
@@ -62,6 +62,8 @@ function renderSortLabel(property: keyof Item, direction: SortDirection): string
       return `Quantity (${direction === "asc" ? "lowest" : "highest"})`;
     case "title":
       return `Title (${direction === "asc" ? "A-Z" : "Z-A"})`;
+    case "price":
+      return `Price (${direction === "asc" ? "lowest" : "highest"})`;
     case "updatedAt":
       return `Updated (${direction === "asc" ? "oldest" : "newest"})`;
     case "createdAt":
@@ -166,6 +168,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                   <MenuItem value="quantity,desc">{renderSortLabel("quantity", "desc")}</MenuItem>
                   <MenuItem value="title,asc">{renderSortLabel("title", "asc")}</MenuItem>
                   <MenuItem value="title,desc">{renderSortLabel("title", "desc")}</MenuItem>
+                  <MenuItem value="price,desc">{renderSortLabel("price", "desc")}</MenuItem>
+                  <MenuItem value="price,asc">{renderSortLabel("price", "asc")}</MenuItem>
                   <MenuItem value="createdAt,desc">{renderSortLabel("createdAt", "desc")}</MenuItem>
                   <MenuItem value="createdAt,asc">{renderSortLabel("createdAt", "asc")}</MenuItem>
                   <MenuItem

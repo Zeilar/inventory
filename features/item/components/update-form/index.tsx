@@ -30,7 +30,7 @@ interface Fields {
   quantity: number;
   tags: string;
   archived: boolean;
-  originalPrice: string;
+  price: string;
   links: string;
 }
 
@@ -42,7 +42,7 @@ interface UpdateFormProps {
   quantity: number;
   tags: string;
   archived: boolean;
-  originalPrice: string | null;
+  price: string | null;
   links: string;
 }
 
@@ -55,7 +55,7 @@ export function UpdateItemForm({
   tags,
   archived,
   links,
-  originalPrice,
+  price,
 }: UpdateFormProps) {
   const { back, push } = useRouter();
   const form = useAppForm({
@@ -68,11 +68,10 @@ export function UpdateItemForm({
       tags,
       archived,
       links,
-      originalPrice: originalPrice ?? "",
+      price: price ?? "",
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { filesToRemove, quantity, articleId, files, title, tags, links, originalPrice } =
-        value;
+      const { filesToRemove, quantity, articleId, files, title, tags, links, price } = value;
 
       let archivedAt: string | null | undefined;
       // Archiving.
@@ -94,7 +93,7 @@ export function UpdateItemForm({
           archived: value.archived,
           archivedAt,
           links,
-          originalPrice: originalPrice || null,
+          price: price || null,
         },
         files.accepted,
         filesToRemove.right
@@ -160,7 +159,7 @@ export function UpdateItemForm({
             >
               {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
-            <form.AppField name="originalPrice">
+            <form.AppField name="price">
               {(field) => <field.TextField label="Original price" placeholder="50 SEK" />}
             </form.AppField>
           </Box>
