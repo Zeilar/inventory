@@ -14,7 +14,7 @@ import {
   SellOutlined,
   TagOutlined,
 } from "@mui/icons-material";
-import { Box, Button, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { PropsWithChildren, ReactNode } from "react";
 
@@ -82,7 +82,7 @@ export default async function Page({ params }: Params<"id">) {
           {quantity}
         </InfoBox>
         <InfoBox icon={FingerprintOutlined} title="Article id">
-          {articleId || "N/A"}
+          {articleId || "-"}
         </InfoBox>
         <InfoBox icon={ArchiveOutlined} title="Archived">
           {archived && archivedAt
@@ -90,12 +90,14 @@ export default async function Page({ params }: Params<"id">) {
             : "No"}
         </InfoBox>
         <InfoBox icon={TagOutlined} title="Tags">
-          {tags
-            .split(",")
-            .filter(Boolean)
-            .map((tag) => (
-              <span key={tag}>{tag} </span>
-            ))}
+          <Box component="span" display="flex" gap={1.5} flexWrap="wrap" justifyContent="end">
+            {tags
+              .split(",")
+              .filter(Boolean)
+              .map((tag) => (
+                <Chip key={tag} label={tag} />
+              ))}
+          </Box>
         </InfoBox>
         <InfoBox icon={AttachFileOutlined} title="Files">
           <Box component="span" display="flex" flexDirection="column" gap={0.75} alignItems="end">
@@ -107,11 +109,11 @@ export default async function Page({ params }: Params<"id">) {
                     </Button>
                   </UnstyledLink>
                 ))
-              : "N/A"}
+              : "-"}
           </Box>
         </InfoBox>
         <InfoBox icon={SellOutlined} title="Original price">
-          {originalPrice || "N/A"}
+          {originalPrice || "-"}
         </InfoBox>
         <InfoBox icon={LinkOutlined} title="Links">
           <Box component="span" display="flex" flexDirection="column" gap={0.75} alignItems="end">
@@ -123,7 +125,7 @@ export default async function Page({ params }: Params<"id">) {
                     </Button>
                   </UnstyledLink>
                 ))
-              : "N/A"}
+              : "-"}
           </Box>
         </InfoBox>
         <InfoBox icon={DateRangeOutlined} title="Deposited at">

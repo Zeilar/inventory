@@ -36,7 +36,7 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
       </TableCell>
       <TableCell align="center">
         {!hasLoadingProps ? (
-          props.item.originalPrice
+          props.item.originalPrice || "-"
         ) : (
           <Typography>
             <Skeleton />
