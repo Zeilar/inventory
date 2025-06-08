@@ -46,7 +46,6 @@ theme = createTheme({
     },
     text: {
       primary: "hsl(210, 9%, 90%)",
-      secondary: "hsl(210, 9%, 0%)",
     },
   },
   cssVariables: true,

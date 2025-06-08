@@ -10,7 +10,7 @@ export function Sidebar() {
 
   return (
     <Box borderRight="1px solid" borderColor="divider">
-      <Box position="sticky" top={0} p={3} display="flex" flexDirection="column" gap={1.5}>
+      <Box position="sticky" top={0} p={3} display="flex" flexDirection="column" gap={0.75}>
         <Typography
           fontWeight={600}
           variant="h5"
