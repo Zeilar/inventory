@@ -137,12 +137,13 @@ export function UpdateItemForm({
               name="quantity"
               validators={{
                 onChange: z
-                  .number({ message: "Quantity must be a number." })
+                  .number({ message: "Quantity must be a number.", coerce: true })
                   .min(0, "Quantity must be 0 or bigger."),
               }}
             >
               {(field) => (
                 <field.TextField
+                  type="number"
                   label="Quantity"
                   placeholder="1"
                   slotProps={{ htmlInput: { min: 0 } }}

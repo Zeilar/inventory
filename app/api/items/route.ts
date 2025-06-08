@@ -20,6 +20,8 @@ export type ItemsFilterParams =
 
 export type ItemsSearchParams = ItemsFilterParams | "search" | "page";
 
+const MAX_SAFE_DB_INT = 2147483647;
+
 export async function GET(req: Request) {
   try {
     const settings = await getSettings();
@@ -30,34 +32,51 @@ export async function GET(req: Request) {
 
     const { itemsPerPage } = settings;
     const url = new URL(req.url);
-    const filters: Array<SQL | undefined> = [];
     const search = url.searchParams.get("search" satisfies ItemsSearchParams)?.trim();
     const page = url.searchParams.get("page" satisfies ItemsSearchParams)?.trim() ?? "1";
     const status =
       url.searchParams.get("status" satisfies ItemsSearchParams)?.trim() ?? "published";
-    const quantityFrom = z
-      .number({ coerce: true })
-      .optional()
-      .parse(url.searchParams.get("quantityFrom" satisfies ItemsSearchParams)?.trim());
-    const quantityTo = z
-      .number({ coerce: true })
-      .optional()
-      .parse(url.searchParams.get("quantityTo" satisfies ItemsSearchParams)?.trim());
-    const dateFrom = z
-      .date({ coerce: true })
-      .optional()
-      .parse(url.searchParams.get("dateFrom" satisfies ItemsSearchParams)?.trim());
-    const dateTo = z
-      .date({ coerce: true })
-      .optional()
-      .parse(url.searchParams.get("dateTo" satisfies ItemsSearchParams)?.trim());
+    const quantityFrom =
+      z
+        .number({ coerce: true })
+        .optional()
+        .parse(url.searchParams.get("quantityFrom" satisfies ItemsSearchParams)?.trim()) ?? 0;
+    const quantityTo =
+      z
+        .number({ coerce: true })
+        .optional()
+        .parse(url.searchParams.get("quantityTo" satisfies ItemsSearchParams)?.trim()) ??
+      MAX_SAFE_DB_INT;
+    const dateFrom =
+      z
+        .date({ coerce: true })
+        .optional()
+        .parse(url.searchParams.get("dateFrom" satisfies ItemsSearchParams)?.trim()) ?? new Date(0);
+    const dateTo =
+      z
+        .date({ coerce: true })
+        .optional()
+        .parse(url.searchParams.get("dateTo" satisfies ItemsSearchParams)?.trim()) ??
+      new Date(Date.now() * 2);
     const tags = url.searchParams
       .get("tags" satisfies ItemsSearchParams)
       ?.trim()
       .split(",")
       .filter(Boolean);
-    const sortBy = url.searchParams.get("sortBy" satisfies ItemsSearchParams) as keyof Item | null;
-    const sortDirection = url.searchParams.get("sortDirection" satisfies ItemsSearchParams);
+    const sortBy = (url.searchParams.get("sortBy" satisfies ItemsSearchParams) ??
+      "id") as keyof Item;
+    const sortDirection =
+      url.searchParams.get("sortDirection" satisfies ItemsSearchParams) ?? "desc";
+
+    const filters: Array<SQL | undefined> = [
+      between(
+        itemsTable.quantity,
+        Math.max(0, quantityFrom),
+        Math.min(quantityTo, MAX_SAFE_DB_INT)
+      ),
+      between(itemsTable.createdAt, dateFrom.toISOString(), dateTo.toISOString()),
+      between(itemsTable.quantity, Math.max(0, quantityFrom), Math.min(quantityTo, Infinity)),
+    ];
 
     const itemsQuery = db
       .select({
@@ -75,15 +94,10 @@ export async function GET(req: Request) {
         originalPrice: itemsTable.originalPrice,
         links: itemsTable.links,
       })
-      .from(itemsTable);
-
-    if (sortBy && sortDirection) {
-      itemsQuery.orderBy((item) =>
-        sortDirection === "asc" ? asc(item[sortBy]) : desc(item[sortBy])
-      );
-    } else {
-      itemsQuery.orderBy((item) => desc(item.id));
-    }
+      .from(itemsTable)
+      .orderBy((item) => (sortDirection === "asc" ? asc(item[sortBy]) : desc(item[sortBy])))
+      .limit(itemsPerPage)
+      .offset((parseInt(page) - 1) * itemsPerPage);
 
     if (tags?.length) {
       filters.push(
@@ -109,19 +123,9 @@ export async function GET(req: Request) {
       filters.push(eq(itemsTable.archived, true));
     }
 
-    if (typeof quantityFrom === "number" && typeof quantityTo === "number") {
-      filters.push(between(itemsTable.quantity, quantityFrom, quantityTo));
-    }
-
-    if (dateFrom instanceof Date && dateTo instanceof Date) {
-      filters.push(between(itemsTable.createdAt, dateFrom.toISOString(), dateTo.toISOString()));
-    }
-
     if (filters.length > 0) {
       itemsQuery.where(and(...filters));
     }
-
-    itemsQuery.limit(itemsPerPage).offset((parseInt(page) - 1) * itemsPerPage); // Paginate.
 
     const items = await itemsQuery;
 
