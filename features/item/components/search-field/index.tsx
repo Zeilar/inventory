@@ -31,8 +31,10 @@ export function ItemSearchFieldLayout({
         onSubmit?.();
       }}
       height="100%"
+      width="100%"
     >
       <OutlinedInput
+        sx={{ width: ["100%", "auto"] }}
         value={value}
         onChange={onChange}
         size="small"

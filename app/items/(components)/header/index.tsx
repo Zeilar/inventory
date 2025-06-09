@@ -127,11 +127,24 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
       </Box>
       <Divider sx={{ mb: 3 }} />
       <Box display="flex" flexDirection="column" gap={3} mb={3}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" gap={3}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems={["start", "center"]}
+          gap={3}
+          flexDirection={["column", "row"]}
+        >
           <Box mr="auto">
             <Pagination {...paginationProps} />
           </Box>
-          <Box display="flex" alignItems="center" justifyContent="end" gap={1.5}>
+          <Box
+            display="flex"
+            alignItems={["start", "center"]}
+            justifyContent="end"
+            gap={1.5}
+            flexDirection={["column", "row"]}
+            width={["100%", "auto"]}
+          >
             <Button
               color="primary"
               variant="outlined"
@@ -145,7 +158,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             <form.AppField name="sortBy" validators={{ onChangeListenTo: ["status"] }}>
               {(field) => (
                 <Select
-                  sx={{ width: 250 }}
+                  sx={{ width: ["100%", 250] }}
                   value={`${field.state.value || "id"},${
                     form.getFieldValue("sortDirection") || "desc"
                   }`}
