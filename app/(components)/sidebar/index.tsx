@@ -59,7 +59,7 @@ export function Sidebar() {
       </Box>
 
       {/* Mobile. */}
-      <Box display={["contents", "none"]} borderRight="1px solid" borderColor="divider">
+      <Box display={["contents", "none"]}>
         <AppBar
           position="fixed"
           color="primary"
@@ -70,6 +70,9 @@ export function Sidebar() {
             flexDirection: "row",
             gap: 3,
             py: 0.375,
+            borderBottom: 0,
+            borderLeft: 0,
+            borderRight: 0,
           }}
         >
           <AppBarNavlink
