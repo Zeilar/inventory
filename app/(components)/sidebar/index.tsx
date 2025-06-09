@@ -20,7 +20,16 @@ export function Sidebar() {
     <>
       {/* Desktop. */}
       <Box display={["none", "contents"]}>
-        <Box position="sticky" top={0} p={3} display="flex" flexDirection="column" gap={0.75}>
+        <Box
+          position="sticky"
+          top={0}
+          p={3}
+          display="flex"
+          flexDirection="column"
+          gap={0.75}
+          borderRight="1px solid"
+          borderColor="divider"
+        >
           <Typography
             fontWeight={600}
             variant="h5"

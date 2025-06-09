@@ -92,11 +92,16 @@ export default async function Page({
         />
       </Box>
       <Box display="flex" flexDirection="column" gap={1.5}>
-        <Box display="flex" gap={3} justifyContent="space-between" alignItems="center">
+        <Box
+          display="flex"
+          gap={3}
+          justifyContent="space-between"
+          flexDirection={["column", "row"]}
+        >
           <Typography variant="h4" overflow="hidden" textOverflow="ellipsis">
             {title}
           </Typography>
-          <Box display="flex" gap={1.5}>
+          <Box display="flex" gap={1.5} justifyContent="space-between">
             <VersionSelect
               options={history.flatMap(({ createdAt }) => createdAt)}
               value={version}
