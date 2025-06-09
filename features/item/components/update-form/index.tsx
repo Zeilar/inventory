@@ -335,7 +335,9 @@ export function UpdateItemForm({
           <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
             Save
           </Button>
-          <Button onClick={back}>Cancel</Button>
+          <Button onClick={back} variant="outlined">
+            Cancel
+          </Button>
         </Box>
       </form.Form>
     </form.AppForm>
