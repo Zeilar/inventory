@@ -332,10 +332,16 @@ export function UpdateItemForm({
           {(field) => <field.TagsField label="Links" />}
         </form.AppField>
         <Box display="flex" gap={1.5}>
-          <Button type="submit" variant="contained" loading={form.state.isSubmitting} size="large">
+          <Button
+            type="submit"
+            variant="contained"
+            loading={form.state.isSubmitting}
+            size="large"
+            sx={{ width: ["100%", "auto"] }}
+          >
             Save
           </Button>
-          <Button onClick={back} variant="outlined">
+          <Button onClick={back} variant="outlined" sx={{ width: ["100%", "auto"] }}>
             Cancel
           </Button>
         </Box>

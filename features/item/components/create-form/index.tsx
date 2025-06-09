@@ -270,8 +270,8 @@ export function CreateItemForm() {
           </form.AppField>
         </Box>
         <Box display="flex" gap={1.5}>
-          <form.SubmitButton>Save</form.SubmitButton>
-          <Button variant="outlined" onClick={back}>
+          <form.SubmitButton sx={{ width: ["100%", "auto"] }}>Save</form.SubmitButton>
+          <Button variant="outlined" onClick={back} sx={{ width: ["100%", "auto"] }}>
             Cancel
           </Button>
         </Box>
