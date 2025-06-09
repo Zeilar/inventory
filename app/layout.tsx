@@ -8,6 +8,7 @@ import { SIDEBAR_WIDTH } from "@/features/theme";
 import { getSettings } from "./api/settings/getSettings";
 import type { SettingsValues } from "@/features/db/schema";
 import { Seeder } from "./(seeder)";
+import { APP_BAR_HEIGHT } from "./(components)/sidebar/config";
 
 export const dynamic = "force-dynamic";
 
@@ -27,13 +28,14 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={classNames(roboto.className, openSans.className)}>
       <body>
-        <main style={{ height: "100svh" }}>
+        <main style={{ minHeight: "100svh" }}>
           <Providers settings={settings}>
             {hasInstalled ? (
               <Box
                 display="grid"
                 gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
                 height="100%"
+                pb={[`${APP_BAR_HEIGHT}px`, 0]}
               >
                 <Sidebar />
                 <Box p={3}>{children}</Box>

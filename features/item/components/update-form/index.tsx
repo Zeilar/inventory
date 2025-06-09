@@ -121,7 +121,7 @@ export function UpdateItemForm({
       <form.Form display="flex" flexDirection="column" gap={3}>
         <Box display="flex" flexDirection="column" gap={3}>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
-          <Box display="flex" gap={3}>
+          <Box display="flex" gap={3} flexDirection={["column", "row"]}>
             <form.AppField
               name="title"
               validators={{
@@ -150,7 +150,7 @@ export function UpdateItemForm({
               )}
             </form.AppField>
           </Box>
-          <Box display="flex" gap={3}>
+          <Box display="flex" gap={3} flexDirection={["column", "row"]}>
             <form.AppField
               name="articleId"
               validators={{
@@ -169,7 +169,7 @@ export function UpdateItemForm({
 
               return (
                 <FormControl sx={{ gap: 1.5 }}>
-                  <FormLabel>Files</FormLabel>
+                  <FormLabel component="span">Files</FormLabel>
                   <Box
                     {...getRootProps()}
                     borderRadius={1}
@@ -178,6 +178,7 @@ export function UpdateItemForm({
                     height={200}
                     display="flex"
                     sx={{ cursor: "pointer" }}
+                    p={3}
                   >
                     <Box
                       m="auto"
@@ -191,12 +192,12 @@ export function UpdateItemForm({
                         flexDirection="column"
                         variant="h6"
                         alignItems="center"
-                        gap={0.25}
+                        gap={0.75}
                       >
                         <Upload color="primary" />
                         Drop your files here
                       </Typography>
-                      <Typography variant="subtitle2" fontWeight={400}>
+                      <Typography variant="subtitle2" fontWeight={400} mt={0.75}>
                         Or click anywhere in the area
                       </Typography>
                       <Typography color="textSecondary" variant="caption" mt={1.5}>
@@ -298,7 +299,7 @@ export function UpdateItemForm({
 
               return (
                 <FormControl sx={{ gap: 1.5 }}>
-                  <FormLabel>Existing files</FormLabel>
+                  <FormLabel component="span">Existing files</FormLabel>
                   <Paper sx={{ p: 1.5 }}>
                     <FilesTransferList
                       checked={checked}

@@ -12,6 +12,7 @@ import {
 import { AppBar, Box, Divider, Typography } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { AppBarNavlink, DesktopNavlink } from "./navlink";
+import { APP_BAR_HEIGHT } from "./config";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -69,10 +70,11 @@ export function Sidebar() {
             justifyContent: "center",
             flexDirection: "row",
             gap: 3,
-            py: 0.375,
+            alignItems: "center",
             borderBottom: 0,
             borderLeft: 0,
             borderRight: 0,
+            height: APP_BAR_HEIGHT,
           }}
         >
           <AppBarNavlink

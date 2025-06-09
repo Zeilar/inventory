@@ -114,7 +114,13 @@ export function FilesTransferList({
   }
 
   return (
-    <Box display="flex" gap={1.5} alignItems="center" justifyContent="center">
+    <Box
+      display="flex"
+      gap={1.5}
+      alignItems="center"
+      justifyContent="center"
+      flexDirection={["column", "row"]}
+    >
       <CustomList
         title={
           <>
@@ -126,7 +132,7 @@ export function FilesTransferList({
         checked={checked}
         handleToggle={handleToggle}
       />
-      <Box display="flex" flexDirection="column" gap={1.5}>
+      <Box display="flex" flexDirection={["row-reverse", "column"]} gap={1.5}>
         <Button
           variant="outlined"
           size="small"
