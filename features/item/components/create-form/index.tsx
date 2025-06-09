@@ -75,7 +75,7 @@ export function CreateItemForm() {
       <form.Form display="flex" flexDirection="column" gap={3}>
         <Box display="flex" flexDirection="column" gap={3}>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
-          <Box display="flex" gap={3}>
+          <Box display="flex" gap={3} flexDirection={["column", "row"]}>
             <form.AppField
               name="title"
               validators={{
@@ -103,7 +103,7 @@ export function CreateItemForm() {
               )}
             </form.AppField>
           </Box>
-          <Box display="flex" gap={3}>
+          <Box display="flex" gap={3} flexDirection={["column", "row"]}>
             <form.AppField name="articleId">
               {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
@@ -125,6 +125,7 @@ export function CreateItemForm() {
                     borderColor={isDragActive ? "primary.main" : "grey.400"}
                     height={200}
                     display="flex"
+                    p={3}
                     sx={{ cursor: "pointer" }}
                   >
                     <Box
@@ -139,12 +140,12 @@ export function CreateItemForm() {
                         flexDirection="column"
                         variant="h6"
                         alignItems="center"
-                        gap={0.25}
+                        gap={0.75}
                       >
                         <Upload color="primary" />
                         Drop your files here
                       </Typography>
-                      <Typography variant="subtitle2" fontWeight={400}>
+                      <Typography variant="subtitle2" fontWeight={400} mt={1.5}>
                         Or click anywhere in the area
                       </Typography>
                       <Typography color="textSecondary" variant="caption" mt={1.5}>
