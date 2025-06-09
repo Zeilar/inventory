@@ -114,10 +114,10 @@ export function ArchivedToggler() {
         handleChange(value);
       }}
     >
-      <ToggleButton color="success" value={false}>
+      <ToggleButton color="success" value={false} sx={{ width: ["100%", "auto"] }}>
         Published
       </ToggleButton>
-      <ToggleButton color="warning" value={true}>
+      <ToggleButton color="warning" value={true} sx={{ width: ["100%", "auto"] }}>
         Archived
       </ToggleButton>
     </ToggleButtonGroup>
