@@ -30,7 +30,11 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         <main style={{ height: "100svh" }}>
           <Providers settings={settings}>
             {hasInstalled ? (
-              <Box display="grid" gridTemplateColumns={`${SIDEBAR_WIDTH}px 1fr`} height="100%">
+              <Box
+                display="grid"
+                gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
+                height="100%"
+              >
                 <Sidebar />
                 <Box p={3}>{children}</Box>
               </Box>

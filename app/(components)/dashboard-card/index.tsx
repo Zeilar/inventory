@@ -32,7 +32,13 @@ export function DashboardCardLayout({
       <Box p={1} bgcolor="grey.500" display="flex" borderRadius={2}>
         <Icon color="primary" fontSize="large" />
       </Box>
-      <Box display="flex" alignItems="center" gap={3} width="100%">
+      <Box
+        display="flex"
+        gap={3}
+        width="100%"
+        alignItems={["start", "center"]}
+        flexDirection={["column", "row"]}
+      >
         <Box width="100%">
           <Typography variant="overline" color="primary" fontWeight={500}>
             {title}

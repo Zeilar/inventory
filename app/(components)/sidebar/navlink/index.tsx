@@ -1,5 +1,5 @@
 import { UnstyledLink } from "@/components/ui";
-import { ButtonBase, useTheme, type SvgIconTypeMap } from "@mui/material";
+import { ButtonBase, IconButton, useTheme, type SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type { ReactNode } from "react";
 
@@ -9,10 +9,20 @@ interface NavlinkProps {
   icon: OverridableComponent<SvgIconTypeMap<object, "svg">> & {
     muiName: string;
   };
-  label: ReactNode;
+  label?: ReactNode;
 }
 
-export function Navlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
+export function AppBarNavlink({ href, icon: Icon, isActive }: NavlinkProps) {
+  return (
+    <UnstyledLink href={href}>
+      <IconButton>
+        <Icon fontSize="large" color={isActive ? "primary" : "secondary"} />
+      </IconButton>
+    </UnstyledLink>
+  );
+}
+
+export function DesktopNavlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
   const { transitions } = useTheme();
 
   return (

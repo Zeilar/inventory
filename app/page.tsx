@@ -41,7 +41,7 @@ export default async function Page() {
       <Typography variant="h4" mb={1.5}>
         Overview
       </Typography>
-      <Box display="grid" gap={3} gridTemplateColumns="repeat(2, 1fr)">
+      <Box display="grid" gap={3} gridTemplateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]}>
         <Suspense
           fallback={
             <DashboardCardLayout icon={Receipt} title="Item count">
@@ -79,7 +79,7 @@ export default async function Page() {
             icon={Layers}
             promise={getDbSize()}
             sibling={
-              <UnstyledLink href="/api/db/backup" download sx={{ ml: "auto" }}>
+              <UnstyledLink href="/api/db/backup" download sx={{ ml: [0, "auto"] }}>
                 <Button variant="outlined" startIcon={<CloudDownloadOutlined />}>
                   Download
                 </Button>
@@ -89,26 +89,28 @@ export default async function Page() {
             {(dbSize) => dbSize}
           </DashboardCard>
         </Suspense>
-        <Suspense
-          fallback={
-            <DashboardCardLayout
-              icon={Timeline}
+        <Box display={["none", "contents"]}>
+          <Suspense
+            fallback={
+              <DashboardCardLayout
+                icon={Timeline}
+                title="Deposits"
+                sx={{ gridColumn: "span 2", alignItems: "start" }}
+              >
+                <Skeleton height={250} sx={{ transform: "none" }} />
+              </DashboardCardLayout>
+            }
+          >
+            <DashboardCard<ItemsTimelineResponse>
               title="Deposits"
+              icon={Timeline}
+              promise={getItemsTimeline()}
               sx={{ gridColumn: "span 2", alignItems: "start" }}
             >
-              <Skeleton height={250} sx={{ transform: "none" }} />
-            </DashboardCardLayout>
-          }
-        >
-          <DashboardCard<ItemsTimelineResponse>
-            title="Deposits"
-            icon={Timeline}
-            promise={getItemsTimeline()}
-            sx={{ gridColumn: "span 2", alignItems: "start" }}
-          >
-            {(value) => <ItemsTimeline value={value} />}
-          </DashboardCard>
-        </Suspense>
+              {(value) => <ItemsTimeline value={value} />}
+            </DashboardCard>
+          </Suspense>
+        </Box>
         <Suspense
           fallback={
             <DashboardCardLayout icon={Storage} title="Storage">
@@ -121,7 +123,7 @@ export default async function Page() {
             title="Storage"
             promise={getStorageSize()}
             sibling={
-              <UnstyledLink href="/api/files/backup" download sx={{ ml: "auto" }}>
+              <UnstyledLink href="/api/files/backup" download sx={{ ml: [0, "auto"] }}>
                 <Button variant="outlined" startIcon={<CloudDownloadOutlined />}>
                   Download
                 </Button>
