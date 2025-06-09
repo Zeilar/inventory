@@ -13,6 +13,7 @@ import {
   OpenInNewOutlined,
   SellOutlined,
   TagOutlined,
+  UpdateOutlined,
 } from "@mui/icons-material";
 import { Box, Button, Chip, Divider, Paper, type SvgIconTypeMap, Typography } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -62,8 +63,19 @@ export default async function Page({
   const foundPastVersion = history.find(({ createdAt }) => createdAt === version);
   const itemToRender = foundPastVersion ?? item;
 
-  const { archived, archivedAt, articleId, createdAt, files, links, price, quantity, tags, title } =
-    itemToRender;
+  const {
+    archived,
+    archivedAt,
+    articleId,
+    createdAt,
+    files,
+    links,
+    price,
+    quantity,
+    tags,
+    title,
+    updatedAt,
+  } = itemToRender;
 
   const parsedFiles = files.split(",").filter(Boolean);
   const parsedLinks = links.split(",").filter(Boolean);
@@ -157,8 +169,11 @@ export default async function Page({
               : "-"}
           </Box>
         </InfoBox>
-        <InfoBox icon={DateRangeOutlined} title="Deposited at">
+        <InfoBox icon={DateRangeOutlined} title="Deposited">
           {new Date(createdAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
+        </InfoBox>
+        <InfoBox icon={UpdateOutlined} title="Updated">
+          {new Date(updatedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
         </InfoBox>
       </Box>
     </div>
