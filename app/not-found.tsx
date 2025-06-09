@@ -1,3 +1,9 @@
+import { Typography } from "@mui/material";
+
 export default function Page() {
-  return <h1>404</h1>;
+  return (
+    <Typography variant="h2" color="warning">
+      404
+    </Typography>
+  );
 }
