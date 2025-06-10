@@ -28,23 +28,23 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={classNames(roboto.className, openSans.className)}>
       <body>
-        <main style={{ minHeight: "100svh" }}>
-          <Providers settings={settings}>
-            {hasInstalled ? (
-              <Box
-                display="grid"
-                gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
-                height="100%"
-                pb={[`${APP_BAR_HEIGHT}px`, 0]}
-              >
-                <Sidebar />
-                <Box p={3}>{children}</Box>
-              </Box>
-            ) : (
-              <Seeder />
-            )}
-          </Providers>
-        </main>
+        <Providers settings={settings}>
+          {hasInstalled ? (
+            <Box
+              component="main"
+              minHeight="100svh"
+              display="grid"
+              gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
+              height="100%"
+              pb={[`${APP_BAR_HEIGHT}px`, 0]}
+            >
+              <Sidebar />
+              <Box p={3}>{children}</Box>
+            </Box>
+          ) : (
+            <Seeder />
+          )}
+        </Providers>
       </body>
     </html>
   );

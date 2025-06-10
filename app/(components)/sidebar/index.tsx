@@ -23,6 +23,7 @@ export function Sidebar() {
       <Box display={["none", "contents"]}>
         <Box
           position="sticky"
+          height="100svh"
           top={0}
           p={3}
           display="flex"
