@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "🚀 Running local GitHub Actions with act..."
+
+# Simulate a GitHub 'push' event
+act -e push || {
+  echo "❌ CI failed — aborting push"
+  exit 1
+}
+
+echo "✅ CI passed — continuing push"
