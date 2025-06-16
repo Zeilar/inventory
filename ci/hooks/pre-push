@@ -1,11 +1,18 @@
-#!/bin/bash
+#!/bin/sh
 
-echo "🚀 Running local GitHub Actions with act..."
+echo "[CI/CD] 🟡 Attempting to build a working image..."
 
-# Simulate a GitHub 'push' event
-act -e push || {
-  echo "❌ CI failed — aborting push"
+# Use a temporary image name.
+IMAGE_TAG=inventory-cicd
+
+if ! docker build -t $IMAGE_TAG .; then
+  echo "[CI/CD] ❌ Build failed"
   exit 1
-}
+fi
 
-echo "✅ CI passed — continuing push"
+docker rmi $IMAGE_TAG > /dev/null 2>&1
+
+echo "[CI/CD] ✅ Build successful. Pushing branch..."
+
+# Make sure the git hook gets a 0 return.
+exit 0

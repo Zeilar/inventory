@@ -1,8 +1,6 @@
-FROM node:24-alpine AS base
+FROM node:24-slim AS base
 
 FROM base AS deps
-
-RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -27,6 +25,7 @@ ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+
 RUN yarn add -D drizzle-kit@0.31.1 drizzle-orm@0.44.1 pg@8.16.0
 
 COPY --from=builder /app/public ./public
