@@ -113,7 +113,17 @@ export default async function Page() {
         </Box>
         <Suspense
           fallback={
-            <DashboardCardLayout icon={Storage} title="Storage">
+            <DashboardCardLayout
+              icon={Storage}
+              title="Storage"
+              sibling={
+                <UnstyledLink href="/api/files/backup" download sx={{ ml: [0, "auto"] }}>
+                  <Button variant="outlined" startIcon={<CloudDownloadOutlined />}>
+                    Download
+                  </Button>
+                </UnstyledLink>
+              }
+            >
               <Skeleton width={100} />
             </DashboardCardLayout>
           }
