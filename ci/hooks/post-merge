@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "[CI/CD] 🟡 Restarting containers..."
+
+if ! docker compose restart; then
+  echo "[CI/CD] ❌ Restart failed"
+  exit 1
+fi
+
+echo "[CI/CD] ✅ Restart successful"
+
+# Make sure the git hook gets a 0 return.
+exit 0
