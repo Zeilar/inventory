@@ -6,7 +6,7 @@ const customConfig = defineConfig({
     body: {
       fontFamily: roboto.style.fontFamily,
       _dark: {
-        bgColor: "black",
+        bgColor: "#080808",
       },
       _light: {
         bgColor: "gray.100",
@@ -16,6 +16,17 @@ const customConfig = defineConfig({
   theme: {
     semanticTokens: defineSemanticTokens({
       colors: {
+        bg: {
+          panel: {
+            value: {
+              _light: "{colors.white}",
+              _dark: "#0e0e0e",
+            },
+          },
+        },
+        black: {
+          value: "#080808", // Based on teal surface.
+        },
         fg: {
           DEFAULT: {
             value: {

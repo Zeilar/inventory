@@ -21,7 +21,7 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
   const hasLoadingProps = isLoadingProps(props);
 
   return (
-    <Table.Row p={2} _last={{ "& td": { borderBottom: 0 } }}>
+    <Table.Row p={2} bgColor="bg.subtle" _last={{ "& td": { borderBottom: 0 } }}>
       <Table.Cell>{!hasLoadingProps ? props.item.id : <Skeleton />}</Table.Cell>
       <Table.Cell>
         {!hasLoadingProps ? (
