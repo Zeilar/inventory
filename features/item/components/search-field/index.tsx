@@ -1,10 +1,9 @@
 "use client";
 
-import { useItemsPageContext } from "@/app/items/context";
-import { Clear, Search } from "@mui/icons-material";
-import { Box, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import { Input, InputGroup, Box, CloseButton, Icon } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ChangeEventHandler, useCallback, useEffect, useState } from "react";
+import { MdSearch } from "react-icons/md";
 
 interface ItemSearchFieldLayoutProps {
   value?: string;
@@ -25,44 +24,37 @@ export function ItemSearchFieldLayout({
 }: ItemSearchFieldLayoutProps) {
   return (
     <Box
-      component="form"
+      as="form"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit?.();
       }}
       height="100%"
-      width={["100%", "auto"]}
     >
-      <OutlinedInput
-        sx={{ width: ["100%", "auto"] }}
-        value={value}
-        onChange={onChange}
-        size="small"
-        placeholder="Cable"
-        disabled={isLoading}
-        startAdornment={
-          <InputAdornment position="start">
-            <Search color="disabled" />
-          </InputAdornment>
+      <InputGroup
+        w={250}
+        startElement={
+          <Icon size="md">
+            <MdSearch />
+          </Icon>
         }
-        endAdornment={
-          <InputAdornment
-            position="end"
-            sx={{ cursor: "pointer", opacity: value?.trim() || search ? 1 : 0 }}
-            onClick={onClear}
-          >
-            <IconButton size="small">
-              <Clear fontSize="small" />
-            </IconButton>
-          </InputAdornment>
+        endElement={
+          (value?.trim() || search) && <CloseButton variant="plain" onClick={onClear} mr={-1.5} />
         }
-      />
+      >
+        <Input
+          colorPalette="teal"
+          value={value}
+          onChange={onChange}
+          disabled={isLoading}
+          placeholder="Search"
+        />
+      </InputGroup>
     </Box>
   );
 }
 
 export function ItemSearchField() {
-  const { isLoading, startTransition } = useItemsPageContext();
   const { push } = useRouter();
   const searchParams = useSearchParams();
   const search = searchParams.get("search")?.trim() ?? "";
@@ -79,9 +71,9 @@ export function ItemSearchField() {
       const _searchParams = new URLSearchParams(searchParams);
       _searchParams.set("search", search);
       _searchParams.delete("page"); // Always reset to page 1 when searching to avoid empty result.
-      startTransition(() => push(search ? `?${_searchParams}` : window.location.pathname));
+      push(search ? `?${_searchParams}` : window.location.pathname);
     },
-    [value, searchParams, push, startTransition]
+    [value, searchParams, push]
   );
 
   useEffect(() => {
@@ -90,7 +82,6 @@ export function ItemSearchField() {
 
   return (
     <ItemSearchFieldLayout
-      isLoading={isLoading}
       onChange={(e) => setValue(e.target.value)}
       onSubmit={onSubmit}
       value={value}
@@ -98,6 +89,9 @@ export function ItemSearchField() {
         onSubmit("");
         setValue("");
         const newSearchParams = new URLSearchParams(searchParams);
+        if (!newSearchParams.has("search")) {
+          return; // If there was no previous search, there's no reason to push when clearing the field.
+        }
         newSearchParams.delete("search");
         push(`/items?${newSearchParams}`);
       }}

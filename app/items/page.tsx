@@ -1,11 +1,12 @@
 import { SearchParams } from "../types";
 import type { GetItemsResponse } from "../api/items/types";
 import { ItemsContainer, ItemsHeader } from "./(components)";
-import { ItemsPageProvider } from "./context";
 import { buildAppUrl } from "@/common";
 import type { ItemsSearchParams } from "../api/items/route";
 import { Typography } from "@mui/material";
 import { getSettings } from "../api/settings/getSettings";
+import { Card } from "@chakra-ui/react";
+import { A11yBar } from "@/components";
 
 function getPaginationSummary(
   currentPage: number,
@@ -39,13 +40,17 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
   const parsedPage = parseInt(page) || 1;
 
   return (
-    <ItemsPageProvider>
-      <ItemsHeader
-        count={total ? Math.ceil(total / itemsPerPage) : 1}
-        page={total ? parsedPage : 1}
-      />
-      <ItemsContainer rows={items.map((item) => ({ item }))} />
-      <Typography mt={1.5}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Typography>
-    </ItemsPageProvider>
+    <>
+      <A11yBar breadcrumbsProps={{ hrefs: [{ href: "/", label: "Home" }], current: "Items" }} />
+      <Card.Root m={4}>
+        <Card.Header>
+          <ItemsHeader count={total} page={total ? parsedPage : 1} />
+        </Card.Header>
+        <Card.Body pt={2}>
+          <ItemsContainer rows={items.map((item) => ({ item }))} />
+          <Typography mt={2}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Typography>
+        </Card.Body>
+      </Card.Root>
+    </>
   );
 }

@@ -29,21 +29,22 @@ export function Form({ settings }: FormProps) {
 
   return (
     <form.AppForm>
-      <form.Form display="flex" flexDirection="column" gap={3}>
+      <form.Form display="flex" flexDirection="column" gap={4}>
         <form.AppField name="itemsPerPage">
           {(field) => (
-            <field.TextField
+            <field.Field
               onChange={(e) => field.handleChange(parseInt(e.target.value) || MIN_ITEMS_PER_PAGE)}
               type="number"
               label="Items per page"
-              sx={{ width: ["100%", 200] }}
-              slotProps={{ htmlInput: { min: MIN_ITEMS_PER_PAGE, max: MAX_ITEMS_PER_PAGE } }}
+              w={["100%", 200]}
+              min={MIN_ITEMS_PER_PAGE}
+              max={MAX_ITEMS_PER_PAGE}
               required
             />
           )}
         </form.AppField>
         <div>
-          <form.SubmitButton sx={{ width: ["100%", "auto"] }}>Save</form.SubmitButton>
+          <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
         </div>
       </form.Form>
     </form.AppForm>

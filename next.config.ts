@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "100MB",
     },
+    optimizePackageImports: ["@chakra-ui/react"],
   },
   logging: {
     fetches: {

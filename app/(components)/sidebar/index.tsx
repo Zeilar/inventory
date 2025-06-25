@@ -1,18 +1,21 @@
 "use client";
 
-import {
-  Home,
-  HomeOutlined,
-  Inventory2,
-  Settings,
-  SettingsOutlined,
-  Warehouse,
-  WarehouseOutlined,
-} from "@mui/icons-material";
-import { AppBar, Box, Divider, Typography } from "@mui/material";
+import { AppBar } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { AppBarNavlink, DesktopNavlink } from "./navlink";
 import { APP_BAR_HEIGHT } from "./config";
+import { Box, Flex, Heading, Icon } from "@chakra-ui/react";
+import {
+  MdHome,
+  MdOutlineHome,
+  MdInventory2,
+  MdOutlineWarehouse,
+  MdSettings,
+  MdWarehouse,
+  MdOutlineSettings,
+  MdPostAdd,
+  MdOutlinePostAdd,
+} from "react-icons/md";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -25,38 +28,50 @@ export function Sidebar() {
           position="sticky"
           height="100svh"
           top={0}
-          p={3}
           display="flex"
           flexDirection="column"
-          gap={0.75}
+          gap={1}
           borderRight="1px solid"
-          borderColor="divider"
+          borderRightColor="border"
+          bgColor="bg.panel"
         >
-          <Typography
+          <Heading
             fontWeight={600}
-            variant="h5"
+            as="h3"
+            size="2xl"
             display="flex"
             alignItems="center"
-            gap={1.5}
-            mb={0.75}
+            color="teal.fg"
+            gap={2}
+            px={6}
+            my={8}
           >
-            <Inventory2 color="primary" />
+            <Icon size="xl">
+              <MdInventory2 />
+            </Icon>
             Inventory
-          </Typography>
-          <Divider sx={{ my: 0.75 }} />
-          <DesktopNavlink href="/" icon={Home} isActive={pathname === "/"} label="Overview" />
-          <DesktopNavlink
-            href="/items"
-            icon={Warehouse}
-            isActive={pathname === "/items"}
-            label="Items"
-          />
-          <DesktopNavlink
-            href="/settings"
-            icon={Settings}
-            isActive={pathname === "/settings"}
-            label="Settings"
-          />
+          </Heading>
+          <Flex flexDir="column" p={4} gap={1}>
+            <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Overview" />
+            <DesktopNavlink
+              href="/items"
+              icon={MdWarehouse}
+              isActive={pathname === "/items"}
+              label="Items"
+            />
+            <DesktopNavlink
+              href="/items/create"
+              icon={MdPostAdd}
+              isActive={pathname === "/items/create"}
+              label="Deposit"
+            />
+            <DesktopNavlink
+              href="/settings"
+              icon={MdSettings}
+              isActive={pathname === "/settings"}
+              label="Settings"
+            />
+          </Flex>
         </Box>
       </Box>
 
@@ -80,17 +95,22 @@ export function Sidebar() {
         >
           <AppBarNavlink
             href="/"
-            icon={pathname === "/" ? Home : HomeOutlined}
+            icon={pathname === "/" ? MdHome : MdOutlineHome}
             isActive={pathname === "/"}
           />
           <AppBarNavlink
             href="/items"
-            icon={pathname === "/items" ? Warehouse : WarehouseOutlined}
+            icon={pathname === "/items" ? MdWarehouse : MdOutlineWarehouse}
             isActive={pathname === "/items"}
           />
           <AppBarNavlink
+            href="/items/create"
+            icon={pathname === "/items/create" ? MdPostAdd : MdOutlinePostAdd}
+            isActive={pathname === "/items/create"}
+          />
+          <AppBarNavlink
             href="/settings"
-            icon={pathname === "/settings" ? Settings : SettingsOutlined}
+            icon={pathname === "/settings" ? MdSettings : MdOutlineSettings}
             isActive={pathname === "/settings"}
           />
         </AppBar>

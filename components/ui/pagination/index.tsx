@@ -1,46 +1,95 @@
 "use client";
 
-import { Pagination as MuiPagination, paginationClasses } from "@mui/material";
-import { useRouter, useSearchParams } from "next/navigation";
-import type { TransitionStartFunction } from "react";
+import {
+  ButtonGroup,
+  Pagination as ChakraPagination,
+  IconButton,
+  IconButtonProps,
+  usePaginationContext,
+} from "@chakra-ui/react";
+import { useSettings } from "@/app/(components)/providers/settings";
+import { UnstyledLink } from "../link";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
+import { useSearchParams } from "next/navigation";
 
 export interface PaginationProps {
   count: number;
   page: number;
   disabled?: boolean;
-  startTransition?: TransitionStartFunction;
 }
 
-export function Pagination({ count, page, disabled, startTransition }: PaginationProps) {
-  const { push } = useRouter();
-  const searchParams = useSearchParams();
+const PaginationLink = ({
+  page,
+  children,
+  disabled,
+  ...props
+}: IconButtonProps & { page?: "prev" | "next" | number }) => {
+  const searchParams = new URLSearchParams(useSearchParams());
+  const pagination = usePaginationContext();
+  let pageValue: number | string | null | undefined = page;
+  if (page === "prev") {
+    pageValue = pagination.previousPage;
+  }
+  if (page === "next") {
+    pageValue = pagination.nextPage;
+  }
+  searchParams.set("page", `${pageValue || 1}`);
+  const isDisabled = disabled || !pageValue;
 
   return (
-    <MuiPagination
-      color="primary"
-      count={count}
+    <IconButton
+      asChild
+      outline={0}
+      variant="surface"
+      disabled={isDisabled}
+      // Make it effectively disabled but don't affect styles.
+      pointerEvents={pagination.page === page ? "none" : undefined}
+      _selected={{ borderColor: "teal.emphasized", bgColor: "teal.subtle" }}
+      {...props}
+    >
+      <UnstyledLink
+        href={`?${searchParams}`}
+        _selected={{ color: "teal.fg" }}
+        pointerEvents={isDisabled ? "none" : undefined}
+      >
+        {children}
+      </UnstyledLink>
+    </IconButton>
+  );
+};
+
+export function Pagination({ count, page, disabled }: PaginationProps) {
+  const { itemsPerPage } = useSettings();
+
+  return (
+    // The fallback is just to make page 1 button always render.
+    <ChakraPagination.Root
+      count={count || 1}
+      defaultPage={1}
+      pageSize={itemsPerPage}
       page={page}
-      onChange={(_e, newPage) => {
-        // We don't need to do anything if they click on the active page button.
-        if (newPage === page) {
-          return;
-        }
-
-        const _searchParams = new URLSearchParams(searchParams);
-        _searchParams.set("page", `${newPage}`);
-
-        function navigate() {
-          push(`?${_searchParams}`);
-        }
-
-        if (startTransition) {
-          startTransition(() => navigate());
-        } else {
-          navigate();
-        }
+      css={{
+        // It acts like a button, but is non-interactive. So let's treat it for what it is; an icon.
+        '& [data-part="ellipsis"]': {
+          pointerEvents: "none",
+        },
       }}
-      disabled={disabled}
-      sx={{ [`.${paginationClasses.ul}`]: { flexWrap: "nowrap" } }}
-    />
+    >
+      <ButtonGroup variant="ghost" size="sm">
+        <PaginationLink disabled={disabled || !count} page="prev">
+          <HiChevronLeft />
+        </PaginationLink>
+        <ChakraPagination.Items
+          render={({ value }) => (
+            <PaginationLink disabled={disabled} page={value}>
+              {value}
+            </PaginationLink>
+          )}
+        />
+        <PaginationLink disabled={disabled || !count} page="next">
+          <HiChevronRight />
+        </PaginationLink>
+      </ButtonGroup>
+    </ChakraPagination.Root>
   );
 }

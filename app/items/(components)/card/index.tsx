@@ -1,6 +1,7 @@
 import { Link } from "@/components";
 import { Item } from "@/features/db/schema";
-import { Chip, Skeleton, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+import { Badge, Table } from "@chakra-ui/react";
+import { Skeleton, Tooltip, Typography } from "@mui/material";
 
 export interface ItemCardLoadingProps {
   isLoading: boolean;
@@ -20,9 +21,9 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
   const hasLoadingProps = isLoadingProps(props);
 
   return (
-    <TableRow sx={{ p: 1.5 }}>
-      <TableCell>{!hasLoadingProps ? props.item.id : <Skeleton />}</TableCell>
-      <TableCell>
+    <Table.Row p={2} _last={{ "& td": { borderBottom: 0 } }}>
+      <Table.Cell>{!hasLoadingProps ? props.item.id : <Skeleton />}</Table.Cell>
+      <Table.Cell>
         {!hasLoadingProps ? (
           <Link href={`/items/${props.item.id}`}>{props.item.title}</Link>
         ) : (
@@ -30,8 +31,8 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
             <Skeleton />
           </Typography>
         )}
-      </TableCell>
-      <TableCell align="center">
+      </Table.Cell>
+      <Table.Cell textAlign="center">
         {!hasLoadingProps ? (
           props.item.price || "-"
         ) : (
@@ -39,8 +40,8 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
             <Skeleton />
           </Typography>
         )}
-      </TableCell>
-      <TableCell align="center">
+      </Table.Cell>
+      <Table.Cell textAlign="center">
         {!hasLoadingProps ? (
           props.item.quantity
         ) : (
@@ -48,8 +49,8 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
             <Skeleton />
           </Typography>
         )}
-      </TableCell>
-      <TableCell align="center">
+      </Table.Cell>
+      <Table.Cell textAlign="center">
         {!hasLoadingProps ? (
           new Date(props.item.createdAt).toLocaleDateString(process.env.NEXT_PUBLIC_LOCALE, {
             timeZone: process.env.TZ,
@@ -59,11 +60,11 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
             <Skeleton />
           </Typography>
         )}
-      </TableCell>
-      <TableCell align="center">
+      </Table.Cell>
+      <Table.Cell textAlign="center">
         {!hasLoadingProps ? (
           !props.item.archived ? (
-            <Chip variant="outlined" label="Published" color="success" />
+            <Badge colorPalette="green">Published</Badge>
           ) : (
             <Tooltip
               title={
@@ -77,7 +78,7 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
               placement="top"
               disableInteractive
             >
-              <Chip variant="outlined" label="Archived" color="warning" />
+              <Badge colorPalette="orange">Archived</Badge>
             </Tooltip>
           )
         ) : (
@@ -86,7 +87,7 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
             <Skeleton height={32} />
           </Typography>
         )}
-      </TableCell>
-    </TableRow>
+      </Table.Cell>
+    </Table.Row>
   );
 }

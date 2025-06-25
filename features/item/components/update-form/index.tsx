@@ -130,7 +130,7 @@ export function UpdateItemForm({
                   .min(1, "Title is required."),
               }}
             >
-              {(field) => <field.TextField label="Title" placeholder="IKEA" />}
+              {(field) => <field.Field label="Title" placeholder="IKEA" />}
             </form.AppField>
             <form.AppField
               name="quantity"
@@ -141,7 +141,7 @@ export function UpdateItemForm({
               }}
             >
               {(field) => (
-                <field.TextField
+                <field.Field
                   type="number"
                   label="Quantity"
                   placeholder="1"
@@ -157,10 +157,10 @@ export function UpdateItemForm({
                 onChange: z.string({ message: "Title must be a string." }),
               }}
             >
-              {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
+              {(field) => <field.Field label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
             <form.AppField name="price">
-              {(field) => <field.TextField label="Price" placeholder="50 SEK" />}
+              {(field) => <field.Field label="Price" placeholder="50 SEK" />}
             </form.AppField>
           </Box>
           <form.AppField name="files">

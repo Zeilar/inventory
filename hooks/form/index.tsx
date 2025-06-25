@@ -1,12 +1,12 @@
 "use client";
 
 import { createFormHook } from "@tanstack/react-form";
-import { Checkbox, Form, SubmitButton, TagsField, TextField, ArchivedToggler } from "./components";
+import { Checkbox, Form, SubmitButton, TagsField, Field, ArchivedToggler } from "./components";
 import { fieldContext, formContext } from "./context";
 
 export const { useAppForm } = createFormHook({
   fieldComponents: {
-    TextField,
+    Field,
     Checkbox,
     TagsField,
     ArchivedToggler,

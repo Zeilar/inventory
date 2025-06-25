@@ -1,52 +1,50 @@
 import { UnstyledLink } from "@/components/ui";
-import { ButtonBase, IconButton, useTheme, type SvgIconTypeMap } from "@mui/material";
-import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import { Button, Icon, IconButton } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+import type { IconType } from "react-icons/lib";
 
 interface NavlinkProps {
   isActive: boolean;
   href: string;
-  icon: OverridableComponent<SvgIconTypeMap<object, "svg">> & {
-    muiName: string;
-  };
+  icon: IconType;
   label?: ReactNode;
 }
 
-export function AppBarNavlink({ href, icon: Icon, isActive }: NavlinkProps) {
+export function AppBarNavlink({ href, icon: IconComponent, isActive }: NavlinkProps) {
   return (
     <UnstyledLink href={href}>
       <IconButton>
-        <Icon fontSize="large" color={isActive ? "primary" : "secondary"} />
+        <Icon color={isActive ? "primary" : "secondary"} transition="colors">
+          <IconComponent />
+        </Icon>
       </IconButton>
     </UnstyledLink>
   );
 }
 
 export function DesktopNavlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
-  const { transitions } = useTheme();
-
   return (
-    <UnstyledLink href={href}>
-      <ButtonBase
-        sx={{
-          width: "100%",
-          justifyContent: "start",
-          gap: 1.5,
-          p: 1.5,
-          bgcolor: isActive ? "primary.main" : undefined,
-          color: isActive ? "grey.900" : undefined,
-          fontWeight: 500,
-          fontSize: "medium",
-          fontFamily: "var(--font-roboto)",
-          transition: transitions.create(["background-color", "color"], {
-            duration: transitions.duration.shortest,
-          }),
-          "&:hover": !isActive ? { backgroundColor: "grey.700" } : undefined,
-        }}
+    <UnstyledLink href={href} rounded="sm">
+      <Button
+        rounded="sm"
+        width="100%"
+        justifyContent="start"
+        px={4}
+        py={3}
+        gap={3}
+        bgColor={isActive ? "teal.subtle" : "transparent"}
+        color={isActive ? "teal.fg" : "fg"}
+        fontWeight={500}
+        fontSize="medium"
+        transition="colors"
+        transitionDuration="fast"
+        height="auto"
+        border={0}
+        _hover={!isActive ? { backgroundColor: "gray.subtle" } : undefined}
       >
         <Icon color="inherit" />
         {label}
-      </ButtonBase>
+      </Button>
     </UnstyledLink>
   );
 }

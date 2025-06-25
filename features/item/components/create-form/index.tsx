@@ -2,21 +2,12 @@
 
 import { useAppForm } from "@/hooks";
 import { createItem } from "./action";
-import {
-  Alert,
-  Box,
-  Button,
-  Divider,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Paper,
-  Typography,
-} from "@mui/material";
 import z from "zod";
 import { type FileRejection, useDropzone } from "react-dropzone";
-import { Clear, Upload } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { Button, Box, Text, Icon, Flex, IconButton, Alert } from "@chakra-ui/react";
+import { Heading } from "@/components";
+import { MdClear, MdUpload } from "react-icons/md";
 
 interface Fields {
   title: string;
@@ -72,10 +63,10 @@ export function CreateItemForm() {
 
   return (
     <form.AppForm>
-      <form.Form display="flex" flexDirection="column" gap={3}>
-        <Box display="flex" flexDirection="column" gap={3}>
+      <form.Form display="flex" flexDir="column" gap={4}>
+        <Box display="flex" flexDir="column" gap={4}>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
-          <Box display="flex" gap={3} flexDirection={["column", "row"]}>
+          <Box display="flex" gap={4} flexDir={["column", "row"]}>
             <form.AppField
               name="title"
               validators={{
@@ -84,7 +75,7 @@ export function CreateItemForm() {
                   .min(1, "Title is required."),
               }}
             >
-              {(field) => <field.TextField label="Title" placeholder="IKEA" />}
+              {(field) => <field.Field label="Title" placeholder="IKEA" />}
             </form.AppField>
             <form.AppField
               name="quantity"
@@ -94,21 +85,15 @@ export function CreateItemForm() {
                   .min(0, "Quantity must be 0 or bigger."),
               }}
             >
-              {(field) => (
-                <field.TextField
-                  label="Quantity"
-                  placeholder="1"
-                  slotProps={{ htmlInput: { min: 0 } }}
-                />
-              )}
+              {(field) => <field.Field label="Quantity" placeholder="1" min={0} />}
             </form.AppField>
           </Box>
-          <Box display="flex" gap={3} flexDirection={["column", "row"]}>
+          <Box display="flex" gap={4} flexDir={["column", "row"]}>
             <form.AppField name="articleId">
-              {(field) => <field.TextField label="Article id" placeholder="dG8rm4nVC7dfj57" />}
+              {(field) => <field.Field label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
             <form.AppField name="price">
-              {(field) => <field.TextField label="Price" placeholder="50 SEK" />}
+              {(field) => <field.Field label="Price" placeholder="50 SEK" />}
             </form.AppField>
           </Box>
           <form.AppField name="files">
@@ -116,139 +101,89 @@ export function CreateItemForm() {
               const { accepted, rejected } = field.state.value;
 
               return (
-                <FormControl sx={{ gap: 1.5 }}>
-                  <FormLabel>Files</FormLabel>
-                  <Box
+                <Flex gap={2} flexDir="column">
+                  <Text textStyle="label">Files</Text>
+                  <Flex
                     {...getRootProps()}
-                    borderRadius={1}
+                    borderRadius="md"
                     border="2px dashed"
-                    borderColor={isDragActive ? "primary.main" : "grey.400"}
-                    height={200}
-                    display="flex"
-                    p={3}
-                    sx={{ cursor: "pointer" }}
+                    borderColor={isDragActive ? "teal.fg" : "border"}
+                    h={200}
+                    p={4}
+                    cursor="pointer"
                   >
-                    <Box
-                      m="auto"
-                      display="flex"
-                      flexDirection="column"
-                      textAlign="center"
-                      sx={{ pointerEvents: "none" }}
-                    >
-                      <Typography
+                    <Flex m="auto" flexDir="column" textAlign="center" pointerEvents="none">
+                      <Heading
                         display="flex"
-                        flexDirection="column"
-                        variant="h6"
+                        flexDir="column"
+                        size="xl"
+                        as="h6"
                         alignItems="center"
-                        gap={0.75}
+                        gap={1}
                       >
-                        <Upload color="primary" />
-                        Drop your files here
-                      </Typography>
-                      <Typography variant="subtitle2" fontWeight={400} mt={1.5}>
-                        Or click anywhere in the area
-                      </Typography>
-                      <Typography color="textSecondary" variant="caption" mt={1.5}>
+                        <Icon color="teal.fg">
+                          <MdUpload />
+                        </Icon>
+                        <Text>Drop your files here</Text>
+                      </Heading>
+                      <Text mt={1}>Or click anywhere in the area</Text>
+                      <Text mt={2} color="fg.muted" fontSize="sm">
                         Max 10 files, up to 10MB per file. Filenames must be unique.
-                      </Typography>
+                      </Text>
                       <input {...getInputProps()} />
-                    </Box>
-                  </Box>
-                  <Paper>
-                    <Typography
-                      variant="subtitle2"
-                      p={1.5}
-                      color={accepted.length === 0 ? "textDisabled" : undefined}
-                    >
+                    </Flex>
+                  </Flex>
+                  <Box border="1px solid {colors.border}" rounded="sm">
+                    <Text p={3} color={accepted.length === 0 ? "fg.muted" : undefined}>
                       Accepted ({accepted.length})
-                    </Typography>
+                    </Text>
                     {accepted.length > 0 ? (
-                      <>
-                        <Divider />
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          gap={1.5}
-                          overflow="auto"
-                          maxHeight={250}
-                          p={1.5}
-                        >
-                          {accepted.map((file, i) => (
-                            <Box key={i} display="flex" gap={1.5}>
-                              <Alert
-                                variant="outlined"
-                                severity="success"
-                                sx={{ py: 0, px: 1, width: "100%" }}
-                              >
-                                <Typography
-                                  whiteSpace="nowrap"
-                                  overflow="hidden"
-                                  textOverflow="ellipsis"
-                                  variant="subtitle2"
-                                >
-                                  {file.name}
-                                </Typography>
-                              </Alert>
-                              <IconButton
-                                onClick={() =>
-                                  field.setValue(({ accepted, rejected }) => ({
-                                    accepted: accepted.filter((element) => element !== file),
-                                    rejected,
-                                  }))
-                                }
-                              >
-                                <Clear />
-                              </IconButton>
-                            </Box>
-                          ))}
-                        </Box>
-                      </>
-                    ) : null}
-                  </Paper>
-                  <Paper>
-                    <Typography
-                      variant="subtitle2"
-                      p={1.5}
-                      color={rejected.length === 0 ? "textDisabled" : undefined}
-                    >
-                      Rejected ({rejected.length})
-                    </Typography>
-                    {rejected.length > 0 ? (
-                      <>
-                        <Divider />
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          gap={1.5}
-                          overflow="auto"
-                          maxHeight={250}
-                          p={1.5}
-                        >
-                          {rejected.map((rejection, i) => (
-                            <Alert
-                              key={i}
-                              variant="outlined"
-                              severity="error"
-                              sx={{ mr: "2px", py: 0, px: 1 }}
+                      <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
+                        {accepted.map((file, i) => (
+                          <Flex key={i} gap={2} align="center">
+                            <Alert.Root variant="surface" w="full" status="success">
+                              <Alert.Indicator />
+                              <Alert.Content>
+                                <Alert.Title>
+                                  <Text truncate>{file.name}</Text>
+                                </Alert.Title>
+                              </Alert.Content>
+                            </Alert.Root>
+                            <IconButton
+                              variant="ghost"
+                              onClick={() =>
+                                field.setValue(({ accepted, rejected }) => ({
+                                  accepted: accepted.filter((element) => element !== file),
+                                  rejected,
+                                }))
+                              }
                             >
-                              <Typography
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                variant="subtitle2"
-                              >
-                                {rejection.file.name}
-                              </Typography>
-                              <Typography variant="subtitle2" fontWeight={400}>
-                                {rejection.errors.at(0)?.message}
-                              </Typography>
-                            </Alert>
-                          ))}
-                        </Box>
-                      </>
+                              <MdClear />
+                            </IconButton>
+                          </Flex>
+                        ))}
+                      </Flex>
                     ) : null}
-                  </Paper>
-                </FormControl>
+                  </Box>
+                  <Box border="1px solid {colors.border}" rounded="sm">
+                    <Text p={3} color={rejected.length === 0 ? "fg.muted" : undefined}>
+                      Rejected ({rejected.length})
+                    </Text>
+                    {rejected.length > 0 ? (
+                      <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
+                        {rejected.map((rejection, i) => (
+                          <Alert.Root key={i} variant="surface" status="error">
+                            <Alert.Indicator />
+                            <Alert.Content mr="2px">
+                              <Text truncate>{rejection.file.name}</Text>
+                              <Text>{rejection.errors.at(0)?.message}</Text>
+                            </Alert.Content>
+                          </Alert.Root>
+                        ))}
+                      </Flex>
+                    ) : null}
+                  </Box>
+                </Flex>
               );
             }}
           </form.AppField>
@@ -269,12 +204,12 @@ export function CreateItemForm() {
             {(field) => <field.TagsField label="Links" />}
           </form.AppField>
         </Box>
-        <Box display="flex" gap={1.5}>
-          <form.SubmitButton sx={{ width: ["100%", "auto"] }}>Save</form.SubmitButton>
-          <Button variant="outlined" onClick={back} sx={{ width: ["100%", "auto"] }}>
+        <Flex gap={2}>
+          <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
+          <Button variant="outline" onClick={back} w={["100%", "auto"]}>
             Cancel
           </Button>
-        </Box>
+        </Flex>
       </form.Form>
     </form.AppForm>
   );

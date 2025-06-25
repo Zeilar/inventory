@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { Box } from "@mui/material";
 import classNames from "classnames";
 import { openSans, roboto } from "@/features/theme/fonts";
 import { Providers, Sidebar } from "./(components)";
-import { SIDEBAR_WIDTH } from "@/features/theme";
 import { getSettings } from "./api/settings/getSettings";
 import type { SettingsValues } from "@/features/db/schema";
 import { Seeder } from "./(seeder)";
 import { APP_BAR_HEIGHT } from "./(components)/sidebar/config";
-
-export const dynamic = "force-dynamic";
+import { Box } from "@chakra-ui/react";
+import { SIDEBAR_WIDTH } from "@/features/theme/constants";
 
 export const metadata: Metadata = {
   title: "Inventory",
@@ -23,29 +21,36 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   try {
     settings = await getSettings();
     hasInstalled = true;
-  } catch {}
-
-  return (
-    <html lang="en" className={classNames(roboto.className, openSans.className)}>
-      <body>
-        <Providers settings={settings}>
-          {hasInstalled ? (
-            <Box
-              component="main"
-              minHeight="100svh"
-              display="grid"
-              gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
-              height="100%"
-              pb={[`${APP_BAR_HEIGHT}px`, 0]}
-            >
-              <Sidebar />
-              <Box p={3}>{children}</Box>
-            </Box>
-          ) : (
-            <Seeder />
-          )}
-        </Providers>
-      </body>
-    </html>
-  );
+  } catch (e) {
+    console.warn(e);
+    console.log("No settings detected, redirecting to onboarding page...");
+  } finally {
+    return (
+      <html
+        lang="en"
+        className={classNames(roboto.className, openSans.className)}
+        suppressHydrationWarning
+      >
+        <body>
+          <Providers settings={settings}>
+            {hasInstalled ? (
+              <Box
+                as="main"
+                minHeight="100svh"
+                display="grid"
+                gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
+                height="100%"
+                pb={[`${APP_BAR_HEIGHT}px`, 0]}
+              >
+                <Sidebar />
+                <div>{children}</div>
+              </Box>
+            ) : (
+              <Seeder />
+            )}
+          </Providers>
+        </body>
+      </html>
+    );
+  }
 }

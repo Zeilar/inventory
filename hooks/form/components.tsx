@@ -1,37 +1,52 @@
 "use client";
 
+import { CheckboxProps, Checkbox as MuiCheckbox } from "@mui/material";
+import { useFieldContext, useFormContext } from "./context";
+import type { ZodIssueBase } from "zod";
 import {
   Box,
   type BoxProps,
   Button,
   type ButtonProps,
-  CheckboxProps,
-  Checkbox as MuiCheckbox,
-  TextField as MuiTextField,
-  type TextFieldProps,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
-import { useFieldContext, useFormContext } from "./context";
-import { FormEvent } from "react";
-import { MuiChipsInput, type MuiChipsInputProps } from "mui-chips-input";
-import type { ZodIssueBase } from "zod";
+  Field as ChakraField,
+  Input,
+  type InputProps,
+  SegmentGroup,
+  Tag,
+} from "@chakra-ui/react";
+import { useState, type ReactNode } from "react";
 
-export function TextField(props: TextFieldProps) {
-  const { handleBlur, handleChange, state } = useFieldContext();
+interface TagsFieldProps {
+  label?: ReactNode;
+}
+
+export function Field({ label, children, required, ...props }: InputProps & { label?: ReactNode }) {
+  const { handleBlur, handleChange, state } = useFieldContext<string | number>();
   const error: ZodIssueBase | string | undefined = state.meta.errors.at(0);
+  const hasError = Boolean(error);
 
   return (
-    <MuiTextField
-      onBlur={handleBlur}
-      size="small"
-      onChange={(e) => handleChange(e.target.value)}
-      value={state.value}
-      error={Boolean(error)}
-      helperText={typeof error === "string" ? error : error?.message}
-      fullWidth
-      {...props}
-    />
+    <ChakraField.Root invalid={hasError} required={required}>
+      {label && (
+        <ChakraField.Label>
+          {label} {required && <ChakraField.RequiredIndicator />}
+        </ChakraField.Label>
+      )}
+      <Input
+        colorPalette="teal"
+        required={required}
+        value={state.value}
+        onBlur={handleBlur}
+        onChange={(e) => handleChange(e.target.value)}
+        {...props}
+      />
+      {children}
+      {hasError && (
+        <ChakraField.ErrorText>
+          {typeof error === "string" ? error : error?.message}
+        </ChakraField.ErrorText>
+      )}
+    </ChakraField.Root>
   );
 }
 
@@ -48,15 +63,17 @@ export function Checkbox(props: CheckboxProps) {
   );
 }
 
-export function SubmitButton(props: ButtonProps) {
+export function SubmitButton({ disabled, ...props }: ButtonProps) {
   const { state } = useFormContext();
 
   return (
     <Button
-      variant="contained"
+      w="100%"
+      variant="surface"
+      colorPalette="teal"
       type="submit"
-      size="large"
       loading={state.isSubmitting}
+      disabled={disabled || state.isSubmitting}
       {...props}
     />
   );
@@ -67,8 +84,8 @@ export function Form(props: BoxProps) {
 
   return (
     <Box
-      component="form"
-      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+      as="form"
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         handleSubmit();
@@ -78,25 +95,49 @@ export function Form(props: BoxProps) {
   );
 }
 
-export function TagsField(props: MuiChipsInputProps) {
-  const { state, handleBlur, handleChange } = useFieldContext<string>();
-  const { meta, value } = state;
-  const tags = value.split(",").filter(Boolean);
-  const error = meta.errors.at(0);
+/**
+ * Should handle a comma separated string.
+ */
+export function TagsField({ label }: TagsFieldProps) {
+  const [input, setInput] = useState<string>("");
+  const { state, handleChange } = useFieldContext<string>();
+  const tags = state.value.split(",").filter(Boolean);
 
   return (
-    <MuiChipsInput
+    <Field
+      label={label}
       autoComplete="off"
-      error={Boolean(error)}
-      size="small"
-      validate={(value) => Boolean(value) && !tags.includes(value)}
-      value={tags}
-      onBlur={handleBlur}
-      onChange={(value) => handleChange(value.join(","))}
-      placeholder={undefined}
-      helperText={error}
-      {...props}
-    />
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+        }
+        if (e.key !== "Enter" || tags.includes(input)) {
+          return;
+        }
+        setInput("");
+        handleChange([...tags, input].join(","));
+      }}
+    >
+      {tags.length > 0 ? (
+        <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+          {tags.map((tag) => (
+            <Tag.Root key={tag}>
+              <Tag.Label>{tag}</Tag.Label>
+              <Tag.EndElement>
+                <Tag.CloseTrigger
+                  cursor="pointer"
+                  onClick={() => {
+                    handleChange(tags.filter((element) => element !== tag).join(","));
+                  }}
+                />
+              </Tag.EndElement>
+            </Tag.Root>
+          ))}
+        </Box>
+      ) : null}
+    </Field>
   );
 }
 
@@ -104,22 +145,41 @@ export function ArchivedToggler() {
   const { state, handleChange } = useFieldContext<boolean>();
 
   return (
-    <ToggleButtonGroup
-      value={state.value}
-      exclusive
-      onChange={(_e, value) => {
-        if (value == null) {
-          return;
-        }
-        handleChange(value);
-      }}
-    >
-      <ToggleButton color="success" value={false} sx={{ width: ["100%", "auto"] }}>
+    <SegmentGroup.Root value={`${state.value}`} w="fit">
+      <SegmentGroup.Item
+        roundedRight="none"
+        roundedLeft="sm"
+        w="100%"
+        cursor="pointer"
+        onClick={() => handleChange(false)}
+        value={`${false}`}
+        border="1px solid"
+        borderColor="border"
+        mr="-1px"
+        _checked={{
+          color: "green.fg",
+          bgColor: "green.subtle",
+        }}
+        css={{ "&::before": { display: "none" } }}
+      >
         Published
-      </ToggleButton>
-      <ToggleButton color="warning" value={true} sx={{ width: ["100%", "auto"] }}>
+      </SegmentGroup.Item>
+      <SegmentGroup.Item
+        rounded="none"
+        w="100%"
+        cursor="pointer"
+        onClick={() => handleChange(true)}
+        value={`${true}`}
+        border="1px solid"
+        borderColor="border"
+        _checked={{
+          color: "orange.fg",
+          bgColor: "orange.subtle",
+        }}
+        css={{ "&::before": { display: "none" } }}
+      >
         Archived
-      </ToggleButton>
-    </ToggleButtonGroup>
+      </SegmentGroup.Item>
+    </SegmentGroup.Root>
   );
 }

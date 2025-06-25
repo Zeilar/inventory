@@ -1,28 +1,11 @@
 "use client";
 
-import {
-  Divider,
-  Paper,
-  SvgIconTypeMap,
-  Table,
-  TableBody,
-  TableCell,
-  TableCellProps,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { useItemsPageContext } from "../../context";
 import { ItemCard, type ItemCardProps } from "../card";
-import {
-  CalendarMonthOutlined,
-  NumbersOutlined,
-  PublicOutlined,
-  SellOutlined,
-} from "@mui/icons-material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Link } from "@/components";
 import { Fragment } from "react";
+import { Card, Flex, Icon, Separator, Table, TableCellProps } from "@chakra-ui/react";
+import { MdSell, MdNumbers, MdCalendarMonth, MdPublic } from "react-icons/md";
+import type { IconType } from "react-icons/lib";
 
 interface ItemContainerLayoutProps {
   rows: ItemCardProps[];
@@ -35,71 +18,83 @@ interface ItemsContainerProps {
 }
 
 interface CellIconProps {
-  icon: OverridableComponent<SvgIconTypeMap<Record<never, never>, "svg">> & {
-    muiName: string;
-  };
+  icon: IconType;
 }
 
-function CellIcon({ icon: Icon }: CellIconProps) {
-  return <Icon fontSize="small" sx={{ verticalAlign: "middle", mr: 0.75 }} color="primary" />;
+function CellIcon({ icon: IconComponent }: CellIconProps) {
+  return (
+    <Icon mr={1.5} color="teal.solid">
+      <IconComponent />
+    </Icon>
+  );
 }
 
 const headCellProps: TableCellProps = {
-  sx: { bgcolor: "grey.600" },
+  bgColor: "gray.subtle",
 };
 
 const headCellWithIconProps: TableCellProps = {
   ...headCellProps,
-  align: "center",
+  textAlign: "center",
   width: 135,
 };
 
 export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutProps) {
   return (
     <>
-      <Paper sx={{ display: ["flex", "none"], flexDirection: "column" }}>
-        {rows.map(({ item }, i) => (
-          <Fragment key={item.id}>
-            <Link key={item.id} href={`/items/${item.id}`} sx={{ p: 1.5 }}>
-              {item.title}
-            </Link>
-            {i !== rows.length - 1 && <Divider />}
-          </Fragment>
-        ))}
-      </Paper>
-      <TableContainer component={Paper} sx={{ maxHeight: "65svh", display: ["none", "block"] }}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell {...headCellProps} width={100}>
+      <Card.Root display={["flex", "none"]} flexDir="column">
+        <Card.Body>
+          {rows.map(({ item }, i) => (
+            <Fragment key={item.id}>
+              <Link key={item.id} href={`/items/${item.id}`} p={1.5}>
+                {item.title}
+              </Link>
+              {i !== rows.length - 1 && <Separator />}
+            </Fragment>
+          ))}
+        </Card.Body>
+      </Card.Root>
+      <Table.ScrollArea borderWidth="1px" rounded="sm" maxH="65vh" display={["none", "block"]}>
+        <Table.Root size="lg" stickyHeader>
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader {...headCellProps} width={100}>
                 ID
-              </TableCell>
-              <TableCell {...headCellProps}>Title</TableCell>
-              <TableCell {...headCellWithIconProps}>
-                <CellIcon icon={SellOutlined} />
-                Price
-              </TableCell>
-              <TableCell {...headCellWithIconProps}>
-                <CellIcon icon={NumbersOutlined} />
-                Quantity
-              </TableCell>
-              <TableCell {...headCellWithIconProps}>
-                <CellIcon icon={CalendarMonthOutlined} />
-                Deposited
-              </TableCell>
-              <TableCell {...headCellWithIconProps}>
-                <CellIcon icon={PublicOutlined} />
-                Status
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+              </Table.ColumnHeader>
+              <Table.ColumnHeader {...headCellProps}>Title</Table.ColumnHeader>
+              <Table.ColumnHeader {...headCellWithIconProps}>
+                <Flex alignItems="center" justify="center">
+                  <CellIcon icon={MdSell} />
+                  Price
+                </Flex>
+              </Table.ColumnHeader>
+              <Table.ColumnHeader {...headCellWithIconProps}>
+                <Flex alignItems="center" justify="center">
+                  <CellIcon icon={MdNumbers} />
+                  Quantity
+                </Flex>
+              </Table.ColumnHeader>
+              <Table.ColumnHeader {...headCellWithIconProps}>
+                <Flex alignItems="center" justify="center">
+                  <CellIcon icon={MdCalendarMonth} />
+                  Deposited
+                </Flex>
+              </Table.ColumnHeader>
+              <Table.ColumnHeader {...headCellWithIconProps}>
+                <Flex alignItems="center" justify="center">
+                  <CellIcon icon={MdPublic} />
+                  Status
+                </Flex>
+              </Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {rows.map(({ item }) => (
               <ItemCard key={item.id} item={item} isLoading={isLoading} />
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>
     </>
   );
 }
@@ -108,7 +103,5 @@ export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutPro
  * Do not use in loading.tsx.
  */
 export function ItemsContainer({ rows, isLoading }: ItemsContainerProps) {
-  const itemPageContext = useItemsPageContext();
-
-  return <ItemsContainerLayout rows={rows} isLoading={isLoading || itemPageContext.isLoading} />;
+  return <ItemsContainerLayout rows={rows} isLoading={isLoading} />;
 }

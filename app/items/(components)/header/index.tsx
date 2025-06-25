@@ -1,32 +1,28 @@
 "use client";
 
-import { Pagination, UnstyledLink, type PaginationProps } from "@/components";
+import { Heading, Pagination, UnstyledLink, type PaginationProps } from "@/components";
 import { ItemSearchField } from "@/features/item/components";
-import {
-  Box,
-  Button,
-  capitalize,
-  Divider,
-  Drawer,
-  FormControl,
-  FormLabel,
-  IconButton,
-  MenuItem,
-  Select,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
-import { useItemsPageContext } from "../../context";
 import { Suspense, type ReactNode } from "react";
-import { Breadcrumbs } from "@/components";
-import { Add, Close, FilterAlt } from "@mui/icons-material";
 import { useAppForm, useDisclosure } from "@/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ItemsFilterParams, SortDirection } from "@/app/api/items/route";
 import { Item } from "@/features/db/schema";
-import { SIDEBAR_WIDTH } from "@/features/theme";
 import isEqual from "lodash/isEqual";
+import capitalize from "lodash/capitalize";
+import {
+  Box,
+  Button,
+  createListCollection,
+  Field,
+  Flex,
+  IconButton,
+  Portal,
+  SegmentGroup,
+  Select,
+  Separator,
+} from "@chakra-ui/react";
+import { MdAdd, MdClose, MdFilterAlt } from "react-icons/md";
+import { SIDEBAR_WIDTH } from "@/features/theme/constants";
 
 interface ItemsHeaderProps {
   page: number;
@@ -75,6 +71,25 @@ function renderSortLabel(property: keyof Item, direction: SortDirection): string
   }
 }
 
+const sortCollection = createListCollection({
+  items: [
+    { value: "id,desc", label: renderSortLabel("id", "desc") },
+    { value: "id,asc", label: renderSortLabel("id", "asc") },
+    { value: "quantity,asc", label: renderSortLabel("quantity", "asc") },
+    { value: "quantity,desc", label: renderSortLabel("quantity", "desc") },
+    { value: "title,asc", label: renderSortLabel("title", "asc") },
+    { value: "title,desc", label: renderSortLabel("title", "desc") },
+    { value: "price,desc", label: renderSortLabel("price", "desc") },
+    { value: "price,asc", label: renderSortLabel("price", "asc") },
+    { value: "createdAt,desc", label: renderSortLabel("createdAt", "desc") },
+    { value: "createdAt,asc", label: renderSortLabel("createdAt", "asc") },
+    { value: "archivedAt,desc", label: renderSortLabel("archivedAt", "desc") },
+    { value: "archivedAt,asc", label: renderSortLabel("archivedAt", "asc") },
+    { value: "updatedAt,desc", label: renderSortLabel("updatedAt", "desc") },
+    { value: "updatedAt,asc", label: renderSortLabel("updatedAt", "asc") },
+  ] satisfies Array<{ value: string; label: string }>,
+});
+
 export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderLayoutProps) {
   const { push } = useRouter();
   const searchParams = useSearchParams();
@@ -114,141 +129,182 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
 
   return (
     <form.AppForm>
-      <Breadcrumbs hrefs={[{ href: "/", label: "Home" }]} current="Items" />
-      <Box display="flex" alignItems="center" justifyContent="space-between" gap={3}>
-        <Typography variant="h4" mt={1.5} mb={3}>
-          Items
-        </Typography>
-        <UnstyledLink href="/items/create">
-          <Button variant="contained" startIcon={<Add />}>
-            Create
-          </Button>
-        </UnstyledLink>
-      </Box>
-      <Divider sx={{ mb: 3 }} />
-      <Box display="flex" flexDirection="column" gap={3} mb={3}>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems={["start", "center"]}
-          gap={3}
-          flexDirection={["column", "row"]}
-        >
-          <Box mr="auto">
-            <Pagination {...paginationProps} />
-          </Box>
+      <Box>
+        <Flex justifyContent="space-between" gap={4} mb={4}>
+          <Heading size="3xl" as="h1">
+            Items
+          </Heading>
+          <UnstyledLink href="/items/create">
+            <Button colorPalette="teal" variant="surface">
+              <MdAdd />
+              Create
+            </Button>
+          </UnstyledLink>
+        </Flex>
+        <Box display="flex" flexDir="column" gap={2}>
           <Box
             display="flex"
+            justifyContent="space-between"
             alignItems={["start", "center"]}
-            justifyContent="end"
-            gap={1.5}
-            flexDirection={["column", "row"]}
-            width={["100%", "auto"]}
+            gap={2}
+            flexDir={["column", "row"]}
           >
-            <Button
-              color="primary"
-              variant="outlined"
-              startIcon={!isFilterOpen ? <FilterAlt /> : <Close />}
-              sx={{ height: 40 }}
-              onClick={filter.toggle}
+            <Box mr="auto">
+              <Pagination {...paginationProps} />
+            </Box>
+            <Box
+              display="flex"
+              alignItems={["start", "center"]}
+              justifyContent="end"
+              flexDir={["column", "row"]}
+              width={["100%", "auto"]}
+              h="40px"
+              gap={2}
             >
-              Filter
-            </Button>
-            {searchField}
-            <form.AppField name="sortBy" validators={{ onChangeListenTo: ["status"] }}>
-              {(field) => (
-                <Select
-                  sx={{ width: ["100%", 250] }}
-                  value={`${field.state.value || "id"},${
-                    form.getFieldValue("sortDirection") || "desc"
-                  }`}
-                  size="small"
-                  renderValue={(value) => {
-                    const [sortBy, sortDirection] = value.split(",");
-                    return renderSortLabel(sortBy as keyof Item, sortDirection as SortDirection);
-                  }}
-                  onChange={(e) => {
-                    const { value } = e.target;
-                    const [sortBy, sortDirection] = value.split(",");
-                    field.handleChange(sortBy);
-                    form.setFieldValue("sortDirection", sortDirection);
-                    form.handleSubmit();
-                  }}
-                >
-                  <MenuItem value="id,desc">{renderSortLabel("id", "desc")}</MenuItem>
-                  <MenuItem value="id,asc">{renderSortLabel("id", "asc")}</MenuItem>
-                  <MenuItem value="quantity,asc">{renderSortLabel("quantity", "asc")}</MenuItem>
-                  <MenuItem value="quantity,desc">{renderSortLabel("quantity", "desc")}</MenuItem>
-                  <MenuItem value="title,asc">{renderSortLabel("title", "asc")}</MenuItem>
-                  <MenuItem value="title,desc">{renderSortLabel("title", "desc")}</MenuItem>
-                  <MenuItem value="price,desc">{renderSortLabel("price", "desc")}</MenuItem>
-                  <MenuItem value="price,asc">{renderSortLabel("price", "asc")}</MenuItem>
-                  <MenuItem value="createdAt,desc">{renderSortLabel("createdAt", "desc")}</MenuItem>
-                  <MenuItem value="createdAt,asc">{renderSortLabel("createdAt", "asc")}</MenuItem>
-                  <MenuItem
-                    value="archivedAt,desc"
-                    disabled={form.getFieldValue("status") === "published"}
-                  >
-                    {renderSortLabel("archivedAt", "desc")}
-                  </MenuItem>
-                  <MenuItem
-                    value="archivedAt,asc"
-                    disabled={form.getFieldValue("status") === "published"}
-                  >
-                    {renderSortLabel("archivedAt", "asc")}
-                  </MenuItem>
-                  <MenuItem value="updatedAt,desc">{renderSortLabel("updatedAt", "desc")}</MenuItem>
-                  <MenuItem value="updatedAt,asc">{renderSortLabel("updatedAt", "asc")}</MenuItem>
-                </Select>
-              )}
-            </form.AppField>
+              <Button onClick={filter.toggle} variant="surface">
+                {!isFilterOpen ? <MdFilterAlt /> : <MdClose />}
+                Filter
+              </Button>
+              {searchField}
+              <form.AppField name="sortBy" validators={{ onChangeListenTo: ["status"] }}>
+                {(field) => {
+                  return (
+                    <Select.Root
+                      colorPalette="teal"
+                      collection={sortCollection}
+                      width={320}
+                      value={[
+                        `${field.state.value || "id"},${
+                          form.getFieldValue("sortDirection") || "desc"
+                        }`,
+                      ]}
+                      onValueChange={({ value }) => {
+                        const [sortBy, sortDirection] = value[0].split(",");
+                        field.handleChange(sortBy);
+                        form.setFieldValue("sortDirection", sortDirection);
+                        form.handleSubmit();
+                      }}
+                    >
+                      <Select.HiddenSelect />
+                      <Select.Control>
+                        <Select.Trigger>
+                          <Select.ValueText placeholder="Select sort" />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                          <Select.Indicator />
+                        </Select.IndicatorGroup>
+                      </Select.Control>
+                      <Portal>
+                        <Select.Positioner>
+                          <Select.Content>
+                            {sortCollection.items.map((item) => (
+                              <Select.Item item={item} key={item.value}>
+                                {item.label}
+                                <Select.ItemIndicator color="teal.fg" />
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select.Positioner>
+                      </Portal>
+                    </Select.Root>
+                  );
+                }}
+              </form.AppField>
+            </Box>
           </Box>
         </Box>
       </Box>
-      <Drawer
-        open={isFilterOpen}
-        onClose={filter.close}
-        slotProps={{ paper: { sx: { borderBottom: 0, borderTop: 0, borderLeft: 0 } } }}
-        variant="persistent"
+      <Box
+        as="nav"
+        pos="fixed"
+        top={0}
+        left={isFilterOpen ? 0 : -SIDEBAR_WIDTH}
+        w={SIDEBAR_WIDTH}
+        h="100%"
+        p={4}
+        shadow="lg"
+        zIndex="overlay"
+        bgColor="bg.panel"
+        transition="position"
       >
-        <form.Form display="flex" flexDirection="column" gap={3} p={3} width={SIDEBAR_WIDTH}>
-          <Box display="flex" gap={3} justifyContent="space-between">
-            <Typography variant="h4">Filters</Typography>
-            <IconButton onClick={filter.close}>
-              <Close />
+        <form.Form display="flex" flexDir="column" gap={4}>
+          <Box display="flex" justifyContent="space-between" alignItems="center" gap={4}>
+            <Heading as="h2" size="2xl">
+              Filters
+            </Heading>
+            <IconButton variant="ghost" onClick={filter.close}>
+              <MdClose />
             </IconButton>
           </Box>
-          <Divider />
+          <Separator />
           <form.AppField name="status">
             {(field) => (
-              <FormControl>
-                <FormLabel sx={{ mb: 0.75 }}>Status</FormLabel>
-                <ToggleButtonGroup
-                  color="primary"
-                  value={field.state.value}
-                  exclusive
-                  onChange={(_e, value: string) => {
-                    if (value == null) {
-                      return;
-                    }
-                    field.handleChange(value);
-                  }}
-                >
-                  <ToggleButton value="published" color="success">
+              <div>
+                <Field.Root mb={2}>
+                  <Field.Label>Status</Field.Label>
+                </Field.Root>
+                <SegmentGroup.Root value={field.state.value} w="100%">
+                  <SegmentGroup.Item
+                    roundedRight="none"
+                    roundedLeft="sm"
+                    w="100%"
+                    cursor="pointer"
+                    onClick={() => field.handleChange("published")}
+                    value="published"
+                    border="1px solid {colors.border}"
+                    mr="-1px"
+                    _checked={{
+                      color: "green.fg",
+                      bgColor: "green.subtle",
+                    }}
+                    css={{ "&::before": { display: "none" } }}
+                  >
                     Published
-                  </ToggleButton>
-                  <ToggleButton value="archived" color="warning">
+                  </SegmentGroup.Item>
+                  <SegmentGroup.Item
+                    rounded="none"
+                    w="100%"
+                    cursor="pointer"
+                    onClick={() => field.handleChange("archived")}
+                    value="archived"
+                    border="1px solid"
+                    borderColor="border"
+                    mr="-1px"
+                    _checked={{
+                      color: "orange.fg",
+                      bgColor: "orange.subtle",
+                    }}
+                    css={{ "&::before": { display: "none" } }}
+                  >
                     Archived
-                  </ToggleButton>
-                  <ToggleButton value="all">All</ToggleButton>
-                </ToggleButtonGroup>
-              </FormControl>
+                  </SegmentGroup.Item>
+                  <SegmentGroup.Item
+                    roundedRight="sm"
+                    roundedLeft="none"
+                    w="100%"
+                    cursor="pointer"
+                    onClick={() => field.handleChange("all")}
+                    value="all"
+                    border="1px solid"
+                    borderColor="border"
+                    _checked={{
+                      color: "teal.fg",
+                      bgColor: "teal.subtle",
+                    }}
+                    css={{ "&::before": { content: "none" } }}
+                  >
+                    All
+                  </SegmentGroup.Item>
+                </SegmentGroup.Root>
+              </div>
             )}
           </form.AppField>
-          <Divider />
-          <FormControl sx={{ bgcolor: "transparent" }}>
-            <FormLabel sx={{ mb: 0.75 }}>Quantity</FormLabel>
-            <Box display="flex" gap={1.5} alignItems="center">
+          <Separator />
+          <div>
+            <Field.Root mb={2}>
+              <Field.Label>Quantity</Field.Label>
+            </Field.Root>
+            <Box display="flex" gap={2} alignItems="center">
               <form.AppField
                 name="quantityFrom"
                 validators={{
@@ -256,7 +312,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     parseInt(value) < 0 ? "Must not be a negative number." : undefined,
                 }}
               >
-                {(field) => <field.TextField type="number" slotProps={{ htmlInput: { min: 0 } }} />}
+                {(field) => <field.Field type="number" min={0} />}
               </form.AppField>
               <span>-</span>
               <form.AppField
@@ -266,57 +322,32 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     parseInt(value) < 0 ? "Must not be a negative number." : undefined,
                 }}
               >
-                {(field) => <field.TextField type="number" slotProps={{ htmlInput: { min: 0 } }} />}
+                {(field) => <field.Field type="number" min={0} />}
               </form.AppField>
             </Box>
-          </FormControl>
-          <Divider />
-          <FormControl sx={{ bgcolor: "transparent" }}>
-            <FormLabel sx={{ mb: 0.75 }}>Date</FormLabel>
-            <Box display="flex" gap={1.5} flexDirection="column" alignItems="center">
-              <form.AppField name="dateFrom">
-                {(field) => (
-                  <field.TextField
-                    type="datetime-local"
-                    slotProps={{ inputLabel: { shrink: true } }}
-                  />
-                )}
-              </form.AppField>
-              <span>to</span>
-              <form.AppField name="dateTo">
-                {(field) => (
-                  <field.TextField
-                    type="datetime-local"
-                    slotProps={{ inputLabel: { shrink: true } }}
-                  />
-                )}
-              </form.AppField>
-            </Box>
-          </FormControl>
-          <Divider />
-          <form.AppField name="tags">
-            {(field) => (
-              <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
-                <FormLabel sx={{ mb: 0.75 }}>Tags</FormLabel>
-                <field.TagsField />
-              </FormControl>
-            )}
-          </form.AppField>
-          <Divider />
-          <form.AppField name="links">
-            {(field) => (
-              <FormControl sx={{ bgcolor: "transparent" }} fullWidth>
-                <FormLabel sx={{ mb: 0.75 }}>Links</FormLabel>
-                <field.TagsField />
-              </FormControl>
-            )}
-          </form.AppField>
-          <Divider />
-          <Box display="flex" gap={1.5}>
-            <form.SubmitButton size="medium">Apply</form.SubmitButton>
+          </div>
+          <Separator />
+          <Box display="flex" gap={2} flexDir="column" alignItems="center">
+            <Field.Root>
+              <Field.Label>Deposited at</Field.Label>
+            </Field.Root>
+            <form.AppField name="dateFrom">
+              {(field) => <field.Field type="datetime-local" />}
+            </form.AppField>
+            <span>to</span>
+            <form.AppField name="dateTo">
+              {(field) => <field.Field type="datetime-local" />}
+            </form.AppField>
+          </Box>
+          <Separator />
+          <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
+          <Separator />
+          <form.AppField name="links">{(field) => <field.TagsField label="Links" />}</form.AppField>
+          <Separator />
+          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={4}>
+            <form.SubmitButton>Apply</form.SubmitButton>
             <Button
-              variant="outlined"
-              color="primary"
+              variant="surface"
               type="button"
               onClick={() => {
                 form.reset(defaultValues);
@@ -327,21 +358,18 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             </Button>
           </Box>
         </form.Form>
-      </Drawer>
+      </Box>
     </form.AppForm>
   );
 }
 
 export function ItemsHeader({ count, page, disablePagination }: ItemsHeaderProps) {
-  const { isLoading, startTransition } = useItemsPageContext();
-
   return (
     <ItemsHeaderLayout
       paginationProps={{
         count,
         page,
-        disabled: disablePagination || isLoading,
-        startTransition,
+        disabled: disablePagination,
       }}
       searchField={
         <Suspense fallback={<h1>LOADING SEARCH</h1>}>

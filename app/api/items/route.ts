@@ -102,7 +102,11 @@ export async function GET(req: Request) {
         links: itemsTable.links,
       })
       .from(itemsTable)
-      .orderBy((item) => (sortDirection === "asc" ? asc(item[sortBy]) : desc(item[sortBy])))
+      .orderBy((item) =>
+        sortDirection === "asc"
+          ? [asc(item[sortBy]), asc(item.id)]
+          : [desc(item[sortBy]), desc(item.id)]
+      )
       .limit(itemsPerPage)
       .offset((parseInt(page) - 1) * itemsPerPage);
 
