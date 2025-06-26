@@ -10,6 +10,7 @@ export const Link = ({ children, href = "#", ...props }: LinkProps) => (
     _dark={{ color: "teal.solid", _hover: { color: "teal.fg" } }}
     _light={{ color: "teal.solid", _hover: { color: "teal.focusRing" } }}
     transition="colors"
+    outline={0}
     {...props}
   >
     <NextLink href={href}>{children}</NextLink>
@@ -17,7 +18,7 @@ export const Link = ({ children, href = "#", ...props }: LinkProps) => (
 );
 
 export const UnstyledLink = ({ children, href = "#", ...props }: LinkProps) => (
-  <ChakraLink asChild textDecor="none" {...props}>
+  <ChakraLink asChild textDecor="none" outline={0} {...props}>
     <NextLink href={href}>{children}</NextLink>
   </ChakraLink>
 );
