@@ -344,7 +344,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           <Separator />
           <form.AppField name="links">{(field) => <field.TagsField label="Links" />}</form.AppField>
           <Separator />
-          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={4}>
+          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
             <form.SubmitButton>Apply</form.SubmitButton>
             <Button
               variant="surface"
