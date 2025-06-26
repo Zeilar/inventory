@@ -1,7 +1,7 @@
 "use client";
 
-import { CircularProgress } from "@mui/material";
+import { Spinner } from "@chakra-ui/react";
 
 export default function Loading() {
-  return <CircularProgress />;
+  return <Spinner />;
 }

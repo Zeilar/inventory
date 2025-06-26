@@ -1,6 +1,5 @@
 "use client";
 
-import { CheckboxProps, Checkbox as MuiCheckbox } from "@mui/material";
 import { useFieldContext, useFormContext } from "./context";
 import type { ZodIssueBase } from "zod";
 import {
@@ -47,19 +46,6 @@ export function Field({ label, children, required, ...props }: InputProps & { la
         </ChakraField.ErrorText>
       )}
     </ChakraField.Root>
-  );
-}
-
-export function Checkbox(props: CheckboxProps) {
-  const { handleBlur, handleChange, state } = useFieldContext();
-
-  return (
-    <MuiCheckbox
-      onBlur={handleBlur}
-      onChange={(e) => handleChange(e.target.checked)}
-      value={state.value}
-      {...props}
-    />
   );
 }
 

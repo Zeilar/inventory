@@ -55,9 +55,8 @@ export default async function Page({
     notFound();
   }
 
-  const historyRes = await fetch(buildAppUrl(`/api/items/${id}/history`), {
-    next: { revalidate: 31_556_926, tags: [`items-history-${id}`] },
-  });
+  // For some reason clearing the cache in the update action doesn't work with this fetch.
+  const historyRes = await fetch(buildAppUrl(`/api/items/${id}/history`));
   const history: ItemHistory[] = await historyRes.json();
 
   const foundPastVersion = history.find(({ createdAt }) => createdAt === version);

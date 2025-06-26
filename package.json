@@ -17,16 +17,13 @@
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
+    "@chakra-ui/charts": "^3.21.0",
     "@chakra-ui/react": "^3.21.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/server": "11.11.0",
     "@emotion/styled": "^11.14.0",
     "@faker-js/faker": "^9.6.0",
-    "@mui/icons-material": "^7.0.1",
-    "@mui/material": "^7.0.1",
-    "@mui/material-nextjs": "^7.0.0",
-    "@mui/x-charts": "^8.1.0",
     "@tanstack/react-form": "^1.2.3",
     "archiver": "^7.0.1",
     "babel-plugin-react-compiler": "^19.0.0-beta-aeaed83-20250323",
@@ -45,6 +42,7 @@
     "react-dropzone": "^14.3.8",
     "react-icons": "^5.5.0",
     "react-query": "^3.39.3",
+    "recharts": "^3.0.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {

@@ -1,7 +1,6 @@
-import { Link } from "@/components";
+import { Link, Tooltip } from "@/components";
 import { Item } from "@/features/db/schema";
-import { Badge, Table } from "@chakra-ui/react";
-import { Skeleton, Tooltip, Typography } from "@mui/material";
+import { Badge, Skeleton, Table, Text } from "@chakra-ui/react";
 
 export interface ItemCardLoadingProps {
   isLoading: boolean;
@@ -27,27 +26,27 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
         {!hasLoadingProps ? (
           <Link href={`/items/${props.item.id}`}>{props.item.title}</Link>
         ) : (
-          <Typography>
+          <Text>
             <Skeleton />
-          </Typography>
+          </Text>
         )}
       </Table.Cell>
       <Table.Cell textAlign="center">
         {!hasLoadingProps ? (
           props.item.price || "-"
         ) : (
-          <Typography>
+          <Text>
             <Skeleton />
-          </Typography>
+          </Text>
         )}
       </Table.Cell>
       <Table.Cell textAlign="center">
         {!hasLoadingProps ? (
           props.item.quantity
         ) : (
-          <Typography>
+          <Text>
             <Skeleton />
-          </Typography>
+          </Text>
         )}
       </Table.Cell>
       <Table.Cell textAlign="center">
@@ -56,9 +55,9 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
             timeZone: process.env.TZ,
           })
         ) : (
-          <Typography>
+          <Text>
             <Skeleton />
-          </Typography>
+          </Text>
         )}
       </Table.Cell>
       <Table.Cell textAlign="center">
@@ -67,7 +66,7 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
             <Badge colorPalette="green">Published</Badge>
           ) : (
             <Tooltip
-              title={
+              content={
                 props.item.archivedAt
                   ? new Date(props.item.archivedAt).toLocaleDateString(
                       process.env.NEXT_PUBLIC_LOCALE,
@@ -75,17 +74,15 @@ export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
                     )
                   : null
               }
-              placement="top"
-              disableInteractive
             >
               <Badge colorPalette="orange">Archived</Badge>
             </Tooltip>
           )
         ) : (
-          <Typography>
+          <Text>
             {/* Height should match the chip height. */}
             <Skeleton height={32} />
-          </Typography>
+          </Text>
         )}
       </Table.Cell>
     </Table.Row>

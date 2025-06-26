@@ -1,9 +1,9 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { Breadcrumbs, type BreadcrumbsProps } from "../breadcrumbs";
 import { ColorModeButton } from "../color-mode";
 
 interface A11yBarProps {
-  breadcrumbsProps: BreadcrumbsProps;
+  breadcrumbsProps?: BreadcrumbsProps;
 }
 
 export function A11yBar({ breadcrumbsProps }: A11yBarProps) {
@@ -11,14 +11,17 @@ export function A11yBar({ breadcrumbsProps }: A11yBarProps) {
     <Flex
       justify="space-between"
       gap={4}
-      p={4}
+      py={2}
+      px={4}
       borderBottom="1px solid"
       borderBottomColor="border"
       bgColor="bg.panel"
       alignItems="center"
     >
-      <Breadcrumbs {...breadcrumbsProps} />
-      <ColorModeButton />
+      {breadcrumbsProps && <Breadcrumbs {...breadcrumbsProps} />}
+      <Box ml="auto">
+        <ColorModeButton />
+      </Box>
     </Flex>
   );
 }

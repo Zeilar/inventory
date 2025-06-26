@@ -3,9 +3,8 @@ import type { GetItemsResponse } from "../api/items/types";
 import { ItemsContainer, ItemsHeader } from "./(components)";
 import { buildAppUrl } from "@/common";
 import type { ItemsSearchParams } from "../api/items/route";
-import { Typography } from "@mui/material";
 import { getSettings } from "../api/settings/getSettings";
-import { Card } from "@chakra-ui/react";
+import { Card, Text } from "@chakra-ui/react";
 import { A11yBar } from "@/components";
 
 function getPaginationSummary(
@@ -48,7 +47,7 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
         </Card.Header>
         <Card.Body pt={2}>
           <ItemsContainer rows={items.map((item) => ({ item }))} />
-          <Typography mt={2}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Typography>
+          <Text mt={2}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Text>
         </Card.Body>
       </Card.Root>
     </>

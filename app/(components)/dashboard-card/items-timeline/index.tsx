@@ -1,22 +1,54 @@
 "use client";
 
 import type { ItemsTimelineResponse } from "@/app/api/items/timeline/route";
-import { useTheme } from "@mui/material";
-import { LineChart } from "@mui/x-charts";
+import { Chart, useChart } from "@chakra-ui/charts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
-interface TestProps {
+interface ItemsTimelineProps {
   value: ItemsTimelineResponse;
 }
 
-export function ItemsTimeline({ value }: TestProps) {
-  const { palette } = useTheme();
+export function ItemsTimeline({ value }: ItemsTimelineProps) {
+  const chart = useChart({
+    data: value.days.map((day, index) => ({
+      date: day,
+      Deposits: value.data[index],
+    })),
+    series: [{ name: "Deposits", color: "teal.solid" }],
+  });
 
   return (
-    <LineChart
-      colors={[palette.primary.main]}
-      xAxis={[{ scaleType: "band", data: value.days }]}
-      series={[{ data: value.data }]}
-      height={250}
-    />
+    <Chart.Root chart={chart} height={300}>
+      <LineChart data={chart.data}>
+        <CartesianGrid stroke={chart.color("border")} vertical={false} />
+        <XAxis
+          dataKey={chart.key("date")}
+          label={{
+            value: "Date",
+            position: "insideBottom",
+            offset: -10,
+            style: { fill: "var(--chakra-colors-fg-muted)" },
+          }}
+        />
+        <YAxis
+          label={{
+            value: "Amount",
+            angle: -90,
+            style: { fill: "var(--chakra-colors-fg-muted)" },
+          }}
+        />
+        {chart.series.map((item) => (
+          <Line
+            key={item.name}
+            type="monotone"
+            dataKey={chart.key(item.name)}
+            stroke={chart.color(item.color)}
+            strokeWidth={2}
+            dot
+            isAnimationActive={false}
+          />
+        ))}
+      </LineChart>
+    </Chart.Root>
   );
 }

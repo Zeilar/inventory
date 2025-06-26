@@ -61,8 +61,8 @@ export const ColorModeButton = forwardRef<HTMLButtonElement, ColorModeButtonProp
         {...props}
         css={{
           _icon: {
-            width: "5",
-            height: "5",
+            width: "4",
+            height: "4",
           },
         }}
       >

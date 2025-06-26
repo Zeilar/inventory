@@ -1,14 +1,12 @@
-import { Alert, Box, Paper, type PaperProps, type SvgIconTypeMap, Typography } from "@mui/material";
-import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import { Alert, DataList, Flex, Icon, type SystemStyleObject } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+import type { IconType } from "react-icons/lib";
 
 interface DashboardCardBaseProps {
   title: ReactNode;
-  icon: OverridableComponent<SvgIconTypeMap<object, "svg">> & {
-    muiName: string;
-  };
+  icon: IconType;
   sibling?: ReactNode;
-  sx?: PaperProps["sx"];
+  css?: SystemStyleObject;
 }
 
 interface DashboardCardProps<T = unknown> extends DashboardCardBaseProps {
@@ -21,33 +19,37 @@ interface DashboardCardLayoutProps extends DashboardCardBaseProps {
 }
 
 export function DashboardCardLayout({
-  icon: Icon,
+  icon: IconComponent,
   title,
   sibling,
   children,
-  sx,
+  css,
 }: DashboardCardLayoutProps) {
   return (
-    <Paper sx={{ p: 1.5, display: "flex", gap: 3, alignItems: "center", ...sx }}>
-      <Box p={1} bgcolor="grey.500" display="flex" borderRadius={2}>
-        <Icon color="primary" fontSize="large" />
-      </Box>
-      <Box
-        display="flex"
-        gap={3}
-        width="100%"
-        alignItems={["start", "center"]}
-        flexDirection={["column", "row"]}
-      >
-        <Box width="100%">
-          <Typography variant="overline" color="primary" fontWeight={500}>
-            {title}
-          </Typography>
-          <Typography variant="h5">{children}</Typography>
-        </Box>
+    <Flex
+      border="1px solid {colors.border}"
+      rounded="sm"
+      bgColor="bg.panel"
+      p={2}
+      gap={4}
+      align="center"
+      css={css}
+    >
+      <Flex p={2}>
+        <Icon color="teal.solid" size="2xl">
+          <IconComponent />
+        </Icon>
+      </Flex>
+      <Flex gap={4} w="full" align={["start", "center"]} flexDir={["column", "row"]}>
+        <DataList.Root size="lg" w="full">
+          <DataList.Item>
+            <DataList.ItemLabel>{title}</DataList.ItemLabel>
+            <DataList.ItemValue>{children}</DataList.ItemValue>
+          </DataList.Item>
+        </DataList.Root>
         {sibling}
-      </Box>
-    </Paper>
+      </Flex>
+    </Flex>
   );
 }
 
@@ -57,13 +59,13 @@ export async function DashboardCard<T>({
   title,
   children,
   sibling,
-  sx,
+  css,
 }: DashboardCardProps<T>) {
   try {
     const data = await promise;
 
     return (
-      <DashboardCardLayout icon={icon} title={title} sibling={sibling} sx={sx}>
+      <DashboardCardLayout icon={icon} title={title} sibling={sibling} css={css}>
         {children(data)}
       </DashboardCardLayout>
     );
@@ -71,10 +73,13 @@ export async function DashboardCard<T>({
     console.error(error);
 
     return (
-      <DashboardCardLayout icon={icon} title={title} sibling={sibling} sx={sx}>
-        <Alert severity="error" sx={{ width: "fit-content" }}>
-          An unexpected error occurred.
-        </Alert>
+      <DashboardCardLayout icon={icon} title={title} sibling={sibling} css={css}>
+        <Alert.Root status="error">
+          <Alert.Indicator />
+          <Alert.Content>
+            <Alert.Title>An unexpected error occurred.</Alert.Title>
+          </Alert.Content>
+        </Alert.Root>
       </DashboardCardLayout>
     );
   }

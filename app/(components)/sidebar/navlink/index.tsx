@@ -22,7 +22,7 @@ export function AppBarNavlink({ href, icon: IconComponent, isActive }: NavlinkPr
   );
 }
 
-export function DesktopNavlink({ href, icon: Icon, isActive, label }: NavlinkProps) {
+export function DesktopNavlink({ href, icon: IconComponent, isActive, label }: NavlinkProps) {
   return (
     <UnstyledLink href={href} rounded="sm">
       <Button
@@ -38,11 +38,12 @@ export function DesktopNavlink({ href, icon: Icon, isActive, label }: NavlinkPro
         fontSize="medium"
         transition="colors"
         transitionDuration="fast"
-        height="auto"
-        border={0}
-        _hover={!isActive ? { backgroundColor: "gray.subtle" } : undefined}
+        h="auto"
+        _hover={!isActive ? { bgColor: "gray.subtle" } : undefined}
       >
-        <Icon color="inherit" />
+        <Icon size="lg">
+          <IconComponent />
+        </Icon>
         {label}
       </Button>
     </UnstyledLink>

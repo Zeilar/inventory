@@ -1,6 +1,5 @@
 "use client";
 
-import { AppBar } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { AppBarNavlink, DesktopNavlink } from "./navlink";
 import { APP_BAR_HEIGHT } from "./config";
@@ -77,21 +76,15 @@ export function Sidebar() {
 
       {/* Mobile. */}
       <Box display={["contents", "none"]}>
-        <AppBar
-          position="fixed"
-          color="primary"
-          sx={{
-            bottom: 0,
-            top: "auto",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: 3,
-            alignItems: "center",
-            borderBottom: 0,
-            borderLeft: 0,
-            borderRight: 0,
-            height: APP_BAR_HEIGHT,
-          }}
+        <Box
+          pos="fixed"
+          bottom={0}
+          top="auto"
+          justifyContent="center"
+          flexDirection="row"
+          gap={3}
+          alignItems="center"
+          height={APP_BAR_HEIGHT}
         >
           <AppBarNavlink
             href="/"
@@ -113,7 +106,7 @@ export function Sidebar() {
             icon={pathname === "/settings" ? MdSettings : MdOutlineSettings}
             isActive={pathname === "/settings"}
           />
-        </AppBar>
+        </Box>
       </Box>
     </>
   );
