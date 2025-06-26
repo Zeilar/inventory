@@ -28,7 +28,7 @@ interface InfoBoxProps extends PropsWithChildren {
 
 function InfoBox({ icon: IconComponent, children, title }: InfoBoxProps) {
   return (
-    <Box display="grid" gap={4} gridTemplateColumns="200px 1fr" alignItems="center">
+    <Box display="grid" gap={4} gridTemplateColumns="200px 1fr" alignItems="start">
       <Flex gap={4} h="40px" align="center">
         <Icon color="teal.fg" size="lg">
           <IconComponent />
