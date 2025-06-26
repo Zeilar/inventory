@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material";
+import { Heading } from "@/components";
 
 export default function Page() {
   return (
-    <Typography variant="h2" color="warning">
+    <Heading size="2xl" as="h2" color="fg.warning">
       404
-    </Typography>
+    </Heading>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography } from "@mui/material";
+import { Heading } from "@/components";
 
 interface Props {
   error: unknown;
@@ -10,8 +10,8 @@ export default function Page({ error }: Props) {
   console.error(error);
 
   return (
-    <Typography variant="h2" color="error">
+    <Heading size="2xl" as="h2" color="fg.error">
       500
-    </Typography>
+    </Heading>
   );
 }
