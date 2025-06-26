@@ -40,7 +40,6 @@ export function ItemsTimeline({ value }: ItemsTimelineProps) {
         {chart.series.map((item) => (
           <Line
             key={item.name}
-            type="monotone"
             dataKey={chart.key(item.name)}
             stroke={chart.color(item.color)}
             strokeWidth={2}
