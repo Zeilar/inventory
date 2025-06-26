@@ -22,9 +22,7 @@ export async function GET() {
     startDate.setDate(today.getDate() - 6);
 
     const items = await db
-      .select({
-        createdAt: itemsTable.createdAt,
-      })
+      .select({ createdAt: itemsTable.createdAt })
       .from(itemsTable)
       .where(gt(itemsTable.createdAt, startDate.toISOString()));
 
@@ -45,7 +43,7 @@ export async function GET() {
     const data: number[] = Array(7).fill(0);
     items.forEach((element) => {
       // Parse month and day from ISO string.
-      const [, month, day] = element.createdAt.split("T")[0].split("-");
+      const [, month, day] = element.createdAt.split("T")[0].split(" ")[0].split("-");
       const daysIndex = days.indexOf(`${day}/${month}`); // Match DD/MM.
       if (daysIndex < 0) {
         return;
