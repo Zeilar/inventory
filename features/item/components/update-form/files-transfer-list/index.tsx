@@ -1,20 +1,8 @@
 "use client";
 
-import { CheckCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Checkbox,
-  checkboxClasses,
-  Divider,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Icon, Separator, Box, Button, Text, Flex, Checkbox } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+import { MdCheckCircleOutline, MdRemoveCircleOutline } from "react-icons/md";
 
 interface CustomListProps {
   checked: string[];
@@ -42,28 +30,37 @@ function intersection(a: string[], b: string[]): string[] {
 
 function CustomList({ checked, handleToggle, items, title }: CustomListProps) {
   return (
-    <Paper sx={{ width: "100%" }}>
-      <Typography variant="body2" p={1.5} display="flex" alignItems="center" gap={0.75}>
+    <Box w="full" border="1px solid {colors.border}">
+      <Text p={2} display="flex" gap={2} alignItems="center">
         {title}
-      </Typography>
-      <Divider />
+      </Text>
+      <Separator />
       {/* 48px is the height of a list item. Update if needed. */}
-      <List dense sx={{ height: 56 * 4, overflow: "auto", py: 0 }}>
-        {items.map((value: string) => (
-          <ListItemButton
+      <Flex flexDir="column" overflow="auto" h={40 * 4}>
+        {items.map((value) => (
+          <Button
             key={value}
-            role="listitem"
+            variant="ghost"
             onClick={() => handleToggle(value)}
-            sx={{ pl: 0, pr: 1.5, borderRadius: 0 }}
+            justifyContent="start"
           >
-            <ListItemIcon sx={{ [`.${checkboxClasses.root}`]: { p: 1.5 } }}>
-              <Checkbox checked={checked.includes(value)} tabIndex={-1} disableRipple />
-            </ListItemIcon>
-            <ListItemText primary={value} sx={{ m: 0, ml: -0.75 }} />
-          </ListItemButton>
+            <Checkbox.Root
+              checked={checked.includes(value)}
+              tabIndex={-1}
+              cursor="pointer"
+              colorPalette="teal"
+            >
+              <Checkbox.HiddenInput />
+              {/* Need cursor pointer here as well. */}
+              <Checkbox.Control cursor="pointer">
+                <Checkbox.Indicator />
+              </Checkbox.Control>
+              <Checkbox.Label>{value}</Checkbox.Label>
+            </Checkbox.Root>
+          </Button>
         ))}
-      </List>
-    </Paper>
+      </Flex>
+    </Box>
   );
 }
 
@@ -114,17 +111,13 @@ export function FilesTransferList({
   }
 
   return (
-    <Box
-      display="flex"
-      gap={1.5}
-      alignItems="center"
-      justifyContent="center"
-      flexDirection={["column", "row"]}
-    >
+    <Flex gap={4} align="center" justify="center" flexDir={["column", "row"]}>
       <CustomList
         title={
           <>
-            <CheckCircleOutline color="success" />
+            <Icon color="fg.success" size="md">
+              <MdCheckCircleOutline />
+            </Icon>
             <span>Keep</span>
           </>
         }
@@ -132,44 +125,36 @@ export function FilesTransferList({
         checked={checked}
         handleToggle={handleToggle}
       />
-      <Box display="flex" flexDirection={["row-reverse", "column"]} gap={1.5}>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handleAllRight}
-          disabled={left.length === 0}
-        >
+      <Flex flexDir={["row-reverse", "column"]} gap={2}>
+        <Button variant="outline" size="sm" onClick={handleAllRight} disabled={left.length === 0}>
           ≫
         </Button>
         <Button
-          variant="outlined"
-          size="small"
+          variant="outline"
+          size="sm"
           onClick={handleCheckedRight}
           disabled={leftChecked.length === 0}
         >
           &gt;
         </Button>
         <Button
-          variant="outlined"
-          size="small"
+          variant="outline"
+          size="sm"
           onClick={handleCheckedLeft}
           disabled={rightChecked.length === 0}
         >
           &lt;
         </Button>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handleAllLeft}
-          disabled={right.length === 0}
-        >
+        <Button variant="outline" size="sm" onClick={handleAllLeft} disabled={right.length === 0}>
           ≪
         </Button>
-      </Box>
+      </Flex>
       <CustomList
         title={
           <>
-            <RemoveCircleOutline color="error" />
+            <Icon color="fg.error" size="md">
+              <MdRemoveCircleOutline />
+            </Icon>
             <span>Remove</span>
           </>
         }
@@ -177,6 +162,6 @@ export function FilesTransferList({
         checked={checked}
         handleToggle={handleToggle}
       />
-    </Box>
+    </Flex>
   );
 }

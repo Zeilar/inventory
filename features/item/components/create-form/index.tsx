@@ -105,7 +105,7 @@ export function CreateItemForm() {
                   <Text textStyle="label">Files</Text>
                   <Flex
                     {...getRootProps()}
-                    borderRadius="md"
+                    rounded="md"
                     border="2px dashed"
                     borderColor={isDragActive ? "teal.fg" : "border"}
                     h={200}
