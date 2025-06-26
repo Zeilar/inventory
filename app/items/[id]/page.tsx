@@ -35,7 +35,7 @@ function InfoBox({ icon: IconComponent, children, title }: InfoBoxProps) {
         </Icon>
         <Text>{title}</Text>
       </Flex>
-      {children}
+      <Box alignSelf="center">{children}</Box>
     </Box>
   );
 }
