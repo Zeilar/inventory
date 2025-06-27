@@ -46,7 +46,13 @@ export function Sidebar() {
               <Icon size="xl">
                 <InventoryIcon />
               </Icon>
-              <Box as="span" mb="1px" letterSpacing="1px">
+              <Box
+                as="span"
+                mb="1px"
+                letterSpacing="1px"
+                bgGradient="linear-gradient(to bottom, {colors.teal.fg}, {colors.teal.solid})"
+                bgClip="text"
+              >
                 Inventory
               </Box>
             </Heading>
