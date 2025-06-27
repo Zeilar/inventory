@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { ClientOnly, Flex, Skeleton } from "@chakra-ui/react";
 import { Breadcrumbs, type BreadcrumbsProps } from "../breadcrumbs";
 import { ColorModeButton } from "../color-mode";
 
@@ -19,9 +19,11 @@ export function A11yBar({ breadcrumbsProps }: A11yBarProps) {
       alignItems="center"
     >
       {breadcrumbsProps && <Breadcrumbs {...breadcrumbsProps} />}
-      <Box ml="auto">
-        <ColorModeButton />
-      </Box>
+      <Flex ml="auto" h="36px" justify="center" align="center">
+        <ClientOnly fallback={<Skeleton w="16px" h="16px" mr="10px" />}>
+          <ColorModeButton />
+        </ClientOnly>
+      </Flex>
     </Flex>
   );
 }
