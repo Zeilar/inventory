@@ -16,7 +16,9 @@ export function Breadcrumbs({ current, hrefs }: BreadcrumbsProps) {
       <Breadcrumb.List>
         {hrefs?.map(({ href, label }) => (
           <Fragment key={href}>
-            <Breadcrumb.Link as={Link}>{label}</Breadcrumb.Link>
+            <Breadcrumb.Link as={Link} href={href}>
+              {label}
+            </Breadcrumb.Link>
             <Breadcrumb.Separator>
               <Box mx={1}>/</Box>
             </Breadcrumb.Separator>
