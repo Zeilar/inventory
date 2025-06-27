@@ -12,6 +12,10 @@ const customConfig = defineConfig({
         bgColor: "gray.100",
       },
     },
+    "::selection": {
+      bgColor: "teal.muted",
+      color: "fg",
+    },
   },
   theme: {
     semanticTokens: defineSemanticTokens({
