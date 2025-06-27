@@ -23,53 +23,51 @@ export function Sidebar() {
     <>
       {/* Desktop. */}
       <Box display={["none", "contents"]}>
-        <Box
-          position="sticky"
-          height="100svh"
-          top={0}
-          display="flex"
-          flexDirection="column"
-          gap={1}
-          borderRight="1px solid"
-          borderRightColor="border"
-          bgColor="bg.panel"
-        >
-          <Heading
-            fontWeight={600}
-            as="h3"
-            size="2xl"
-            display="flex"
-            alignItems="center"
-            color="teal.fg"
-            gap={2}
-            px={6}
-            my={8}
+        <Box p={4} pr={0} h="100svh">
+          <Flex
+            h="full"
+            flexDir="column"
+            gap={1}
+            border="1px solid {colors.border}"
+            bgColor="bg.panel"
+            rounded="sm"
           >
-            <Icon size="xl">
-              <MdInventory2 />
-            </Icon>
-            Inventory
-          </Heading>
-          <Flex flexDir="column" p={4} gap={1}>
-            <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
-            <DesktopNavlink
-              href="/items"
-              icon={MdWarehouse}
-              isActive={pathname === "/items"}
-              label="Items"
-            />
-            <DesktopNavlink
-              href="/items/create"
-              icon={MdPostAdd}
-              isActive={pathname === "/items/create"}
-              label="Deposit"
-            />
-            <DesktopNavlink
-              href="/settings"
-              icon={MdSettings}
-              isActive={pathname === "/settings"}
-              label="Settings"
-            />
+            <Heading
+              as="h3"
+              size="2xl"
+              display="flex"
+              alignItems="center"
+              color="teal.fg"
+              gap={2}
+              px={6}
+              my={8}
+            >
+              <Icon size="xl">
+                <MdInventory2 />
+              </Icon>
+              Inventory
+            </Heading>
+            <Flex flexDir="column" p={4} gap={1}>
+              <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
+              <DesktopNavlink
+                href="/items"
+                icon={MdWarehouse}
+                isActive={pathname === "/items"}
+                label="Items"
+              />
+              <DesktopNavlink
+                href="/items/create"
+                icon={MdPostAdd}
+                isActive={pathname === "/items/create"}
+                label="Deposit"
+              />
+              <DesktopNavlink
+                href="/settings"
+                icon={MdSettings}
+                isActive={pathname === "/settings"}
+                label="Settings"
+              />
+            </Flex>
           </Flex>
         </Box>
       </Box>
