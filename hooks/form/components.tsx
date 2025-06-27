@@ -49,19 +49,22 @@ export function Field({ label, children, required, ...props }: InputProps & { la
   );
 }
 
-export function SubmitButton({ disabled, ...props }: ButtonProps) {
-  const { state } = useFormContext();
+export function SubmitButton({ loading, ...props }: ButtonProps) {
+  const form = useFormContext();
 
   return (
-    <Button
-      w="100%"
-      variant="surface"
-      colorPalette="teal"
-      type="submit"
-      loading={state.isSubmitting}
-      disabled={disabled || state.isSubmitting}
-      {...props}
-    />
+    <form.Subscribe selector={(state) => state.isSubmitting}>
+      {(isSubmitting) => (
+        <Button
+          w="100%"
+          variant="surface"
+          colorPalette="teal"
+          type="submit"
+          loading={loading || isSubmitting}
+          {...props}
+        />
+      )}
+    </form.Subscribe>
   );
 }
 

@@ -29,7 +29,7 @@ export function Form({ settings }: FormProps) {
 
   return (
     <form.AppForm>
-      <form.Form display="flex" flexDirection="column" gap={4}>
+      <form.Form display="flex" flexDir="column" gap={4}>
         <form.AppField name="itemsPerPage">
           {(field) => (
             <field.Field
