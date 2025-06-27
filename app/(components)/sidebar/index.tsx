@@ -7,7 +7,6 @@ import { Box, Flex, Heading, Icon } from "@chakra-ui/react";
 import {
   MdHome,
   MdOutlineHome,
-  MdInventory2,
   MdOutlineWarehouse,
   MdSettings,
   MdWarehouse,
@@ -15,6 +14,7 @@ import {
   MdPostAdd,
   MdOutlinePostAdd,
 } from "react-icons/md";
+import { InventoryIcon } from "./inventory-icon";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -32,8 +32,9 @@ export function Sidebar() {
             bgColor="bg.panel"
           >
             <Heading
+              textTransform="uppercase"
               alignSelf="center"
-              as="h3"
+              as="h2"
               size="2xl"
               display="flex"
               alignItems="center"
@@ -43,9 +44,11 @@ export function Sidebar() {
               my={8}
             >
               <Icon size="xl">
-                <MdInventory2 />
+                <InventoryIcon />
               </Icon>
-              Inventory
+              <Box as="span" mb="1px" letterSpacing="1px">
+                Inventory
+              </Box>
             </Heading>
             <Flex flexDir="column" p={4} gap={1}>
               <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
