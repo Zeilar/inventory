@@ -30,7 +30,7 @@ export function DashboardCardLayout({
       border="1px solid {colors.border}"
       rounded="sm"
       bgColor="bg.panel"
-      p={2}
+      p={4}
       gap={4}
       align="center"
       css={css}
