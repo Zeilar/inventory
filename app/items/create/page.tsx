@@ -4,7 +4,7 @@ import { Card, Flex } from "@chakra-ui/react";
 
 export default async function Page() {
   return (
-    <Flex flexDir="column" gap={2}>
+    <Flex flexDir="column" gap={2} m={4}>
       <A11yBar
         breadcrumbsProps={{
           hrefs: [
@@ -14,7 +14,7 @@ export default async function Page() {
           current: "Create",
         }}
       />
-      <Card.Root m={4}>
+      <Card.Root>
         <Card.Header>
           <Heading size="2xl" as="h2">
             Create item

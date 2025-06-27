@@ -51,7 +51,7 @@ export function Sidebar() {
             Inventory
           </Heading>
           <Flex flexDir="column" p={4} gap={1}>
-            <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Overview" />
+            <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
             <DesktopNavlink
               href="/items"
               icon={MdWarehouse}

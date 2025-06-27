@@ -53,10 +53,10 @@ export function SubmitButton({ loading, ...props }: ButtonProps) {
   const form = useFormContext();
 
   return (
-    <form.Subscribe selector={(state) => state.isSubmitting}>
+    <form.Subscribe selector={({ isSubmitting }) => isSubmitting}>
       {(isSubmitting) => (
         <Button
-          w="100%"
+          w="full"
           variant="surface"
           colorPalette="teal"
           type="submit"

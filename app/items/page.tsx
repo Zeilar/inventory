@@ -4,7 +4,7 @@ import { ItemsContainer, ItemsHeader } from "./(components)";
 import { buildAppUrl } from "@/common";
 import type { ItemsSearchParams } from "../api/items/route";
 import { getSettings } from "../api/settings/getSettings";
-import { Card, Text } from "@chakra-ui/react";
+import { Card, Flex, Text } from "@chakra-ui/react";
 import { A11yBar } from "@/components";
 
 function getPaginationSummary(
@@ -39,9 +39,9 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
   const parsedPage = parseInt(page) || 1;
 
   return (
-    <>
+    <Flex flexDir="column" gap={2} m={4}>
       <A11yBar breadcrumbsProps={{ hrefs: [{ href: "/", label: "Home" }], current: "Items" }} />
-      <Card.Root m={4}>
+      <Card.Root>
         <Card.Header>
           <ItemsHeader count={total} page={total ? parsedPage : 1} />
         </Card.Header>
@@ -50,6 +50,6 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
           <Text mt={2}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Text>
         </Card.Body>
       </Card.Root>
-    </>
+    </Flex>
   );
 }

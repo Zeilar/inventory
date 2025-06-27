@@ -80,7 +80,7 @@ export default async function Page({
   const parsedLinks = links.split(",").filter(Boolean);
 
   return (
-    <div>
+    <Flex flexDir="column" gap={2} m={4}>
       <A11yBar
         breadcrumbsProps={{
           hrefs: [
@@ -90,7 +90,7 @@ export default async function Page({
           current: item.title,
         }}
       />
-      <Card.Root m={4}>
+      <Card.Root>
         <Card.Header>
           <Flex gap={4} justify="space-between" flexDir={["column", "row"]}>
             <Heading size="2xl" as="h2">
@@ -182,6 +182,6 @@ export default async function Page({
           </Flex>
         </Card.Body>
       </Card.Root>
-    </div>
+    </Flex>
   );
 }

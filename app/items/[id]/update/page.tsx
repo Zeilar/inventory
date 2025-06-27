@@ -3,7 +3,7 @@ import { buildAppUrl } from "@/common";
 import { A11yBar, Heading } from "@/components";
 import type { Item } from "@/features/db/schema";
 import { UpdateItemForm } from "@/features/item/components";
-import { Card } from "@chakra-ui/react";
+import { Card, Flex } from "@chakra-ui/react";
 
 export default async function Page({ params }: Params<"id">) {
   const { id } = await params;
@@ -14,7 +14,7 @@ export default async function Page({ params }: Params<"id">) {
     await res.json();
 
   return (
-    <>
+    <Flex flexDir="column" gap={2} m={4}>
       <A11yBar
         breadcrumbsProps={{
           hrefs: [
@@ -25,7 +25,7 @@ export default async function Page({ params }: Params<"id">) {
           current: "Update",
         }}
       />
-      <Card.Root m={4}>
+      <Card.Root>
         <Card.Header>
           <Heading size="2xl" as="h2">
             {title}
@@ -45,6 +45,6 @@ export default async function Page({ params }: Params<"id">) {
           />
         </Card.Body>
       </Card.Root>
-    </>
+    </Flex>
   );
 }

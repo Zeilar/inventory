@@ -1,16 +1,18 @@
 import { A11yBar, Heading } from "@/components";
-import { Box, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 export default function Page() {
   return (
-    <>
-      <A11yBar />
-      <Box m={4}>
+    <Flex flexDir="column" gap={2} m={4}>
+      <A11yBar breadcrumbsProps={{ current: "404" }} />
+      <div>
         <Heading size="6xl" as="h1" color="fg.warning">
           404
         </Heading>
-        <Text>That page does not exist.</Text>
-      </Box>
-    </>
+        <Heading size="lg" as="h5">
+          That page does not exist.
+        </Heading>
+      </div>
+    </Flex>
   );
 }

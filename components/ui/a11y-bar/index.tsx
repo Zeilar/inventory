@@ -10,13 +10,13 @@ export function A11yBar({ breadcrumbsProps }: A11yBarProps) {
   return (
     <Flex
       justify="space-between"
+      align="center"
       gap={4}
       py={2}
       px={4}
-      borderBottom="1px solid"
-      borderBottomColor="border"
+      border="1px solid {colors.border}"
       bgColor="bg.panel"
-      alignItems="center"
+      rounded="sm"
     >
       {breadcrumbsProps && <Breadcrumbs {...breadcrumbsProps} />}
       <Flex ml="auto" h="36px" justify="center" align="center">
