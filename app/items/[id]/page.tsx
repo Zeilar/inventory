@@ -62,19 +62,8 @@ export default async function Page({
   const foundPastVersion = history.find(({ createdAt }) => createdAt === version);
   const itemToRender = foundPastVersion ?? item;
 
-  const {
-    archived,
-    archivedAt,
-    articleId,
-    createdAt,
-    files,
-    links,
-    price,
-    quantity,
-    tags,
-    title,
-    updatedAt,
-  } = itemToRender;
+  const { archived, archivedAt, articleId, files, links, price, quantity, tags, title } =
+    itemToRender;
 
   const parsedFiles = files.split(",").filter(Boolean);
   const parsedLinks = links.split(",").filter(Boolean);
@@ -174,10 +163,10 @@ export default async function Page({
               </Flex>
             </InfoBox>
             <InfoBox icon={MdOutlineDateRange} title="Deposited">
-              {new Date(createdAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
+              {new Date(item.createdAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
             </InfoBox>
             <InfoBox icon={MdOutlineUpdate} title="Updated">
-              {new Date(updatedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
+              {new Date(item.updatedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
             </InfoBox>
           </Flex>
         </Card.Body>

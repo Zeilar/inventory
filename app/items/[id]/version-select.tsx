@@ -1,7 +1,7 @@
 "use client";
 
 import { createListCollection, Portal, Select } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 interface VersionSelectProps {
   value?: string;
@@ -15,6 +15,8 @@ function renderItem(value: string): string {
 export function VersionSelect({ options, value = options.at(0) ?? "current" }: VersionSelectProps) {
   const { push } = useRouter();
   const collection = createListCollection({ items: ["current", ...options] });
+  const { id } = useParams<{ id: string }>();
+  const pathname = usePathname();
 
   return (
     <Select.Root
@@ -24,7 +26,12 @@ export function VersionSelect({ options, value = options.at(0) ?? "current" }: V
       value={[value]}
       onValueChange={({ value }) => {
         const version = value.at(0);
-        push(!version || version === "current" ? window.location.pathname : `?version=${value}`);
+        const url =
+          !version || version === "current" ? `/items/${id}` : `/items/${id}?version=${value}`;
+        if (`${pathname}${window.location.search}` === url) {
+          return;
+        }
+        push(url);
       }}
       colorPalette="teal"
     >

@@ -58,15 +58,11 @@ export async function updateItem(
 
   // Add current (not previous) version to history. Copy everything except auto generated columns.
   await Promise.all([
-    db
-      .insert(itemsHistoryTable)
-      .values({
-        itemId: id,
-        ...currentItem,
-        createdAt: undefined,
-        updatedAt: undefined,
-        id: undefined,
-      }),
+    db.insert(itemsHistoryTable).values({
+      itemId: id,
+      ...currentItem,
+      id: undefined,
+    }),
     db
       .update(itemsTable)
       .set({ ...data, files: filesToSave.join(",") })
