@@ -25,7 +25,7 @@ interface Fields {
   links: string;
 }
 
-interface UpdateFormProps {
+interface EditFormProps {
   id: number;
   title: string;
   files: string;
@@ -37,7 +37,7 @@ interface UpdateFormProps {
   links: string;
 }
 
-export function UpdateItemForm({
+export function EditItemForm({
   id,
   title,
   files,
@@ -47,7 +47,7 @@ export function UpdateItemForm({
   archived,
   links,
   price,
-}: UpdateFormProps) {
+}: EditFormProps) {
   const { back, push } = useRouter();
   const form = useAppForm({
     defaultValues: {

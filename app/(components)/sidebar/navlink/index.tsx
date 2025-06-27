@@ -38,7 +38,7 @@ export function DesktopNavlink({ href, icon: IconComponent, isActive, label }: N
         fontSize="medium"
         transition="colors"
         transitionDuration="fast"
-        h="auto"
+        h="50px"
         _hover={!isActive ? { bgColor: "gray.subtle" } : undefined}
       >
         <Icon size="lg">

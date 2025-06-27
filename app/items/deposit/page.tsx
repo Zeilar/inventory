@@ -1,5 +1,5 @@
 import { A11yBar, Heading } from "@/components";
-import { CreateItemForm } from "@/features/item/components";
+import { DepositItemForm } from "@/features/item/components";
 import { Card, Flex } from "@chakra-ui/react";
 
 export default async function Page() {
@@ -11,17 +11,17 @@ export default async function Page() {
             { href: "/", label: "Home" },
             { href: "/items", label: "Items" },
           ],
-          current: "Create",
+          current: "Deposit",
         }}
       />
       <Card.Root>
         <Card.Header>
           <Heading size="2xl" as="h2">
-            Create item
+            Deposit item
           </Heading>
         </Card.Header>
         <Card.Body>
-          <CreateItemForm />
+          <DepositItemForm />
         </Card.Body>
       </Card.Root>
     </Flex>

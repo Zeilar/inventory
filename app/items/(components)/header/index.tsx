@@ -134,10 +134,10 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           <Heading size="3xl" as="h1">
             Items
           </Heading>
-          <UnstyledLink href="/items/create">
+          <UnstyledLink href="/items/deposit">
             <Button colorPalette="teal" variant="surface">
               <MdAdd />
-              Create
+              Deposit
             </Button>
           </UnstyledLink>
         </Flex>

@@ -59,9 +59,9 @@ export function Sidebar() {
                 label="Items"
               />
               <DesktopNavlink
-                href="/items/create"
+                href="/items/deposit"
                 icon={MdPostAdd}
-                isActive={pathname === "/items/create"}
+                isActive={pathname === "/items/deposit"}
                 label="Deposit"
               />
               <DesktopNavlink
@@ -98,9 +98,9 @@ export function Sidebar() {
             isActive={pathname === "/items"}
           />
           <AppBarNavlink
-            href="/items/create"
-            icon={pathname === "/items/create" ? MdPostAdd : MdOutlinePostAdd}
-            isActive={pathname === "/items/create"}
+            href="/items/deposit"
+            icon={pathname === "/items/deposit" ? MdPostAdd : MdOutlinePostAdd}
+            isActive={pathname === "/items/deposit"}
           />
           <AppBarNavlink
             href="/settings"

@@ -91,7 +91,7 @@ export default async function Page({
                 options={history.flatMap(({ createdAt }) => createdAt)}
                 value={version}
               />
-              <UnstyledLink href={`/items/${id}/update`}>
+              <UnstyledLink href={`/items/${id}/edit`}>
                 <Button variant="surface" colorPalette="teal" h="40px">
                   Edit
                 </Button>

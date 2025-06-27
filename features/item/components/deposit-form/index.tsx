@@ -23,7 +23,7 @@ interface Fields {
   links: string;
 }
 
-export function CreateItemForm() {
+export function DepositItemForm() {
   const { back, push } = useRouter();
   const form = useAppForm({
     defaultValues: {

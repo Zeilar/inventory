@@ -2,7 +2,7 @@ import type { Params } from "@/app/types";
 import { buildAppUrl } from "@/common";
 import { A11yBar, Heading } from "@/components";
 import type { Item } from "@/features/db/schema";
-import { UpdateItemForm } from "@/features/item/components";
+import { EditItemForm } from "@/features/item/components";
 import { Card, Flex } from "@chakra-ui/react";
 
 export default async function Page({ params }: Params<"id">) {
@@ -22,7 +22,7 @@ export default async function Page({ params }: Params<"id">) {
             { href: "/items", label: "Items" },
             { href: `/items/${id}`, label: title },
           ],
-          current: "Update",
+          current: "Edit",
         }}
       />
       <Card.Root>
@@ -32,7 +32,7 @@ export default async function Page({ params }: Params<"id">) {
           </Heading>
         </Card.Header>
         <Card.Body>
-          <UpdateItemForm
+          <EditItemForm
             articleId={articleId}
             files={files}
             id={parseInt(id)}
