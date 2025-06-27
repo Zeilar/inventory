@@ -67,6 +67,7 @@ export default async function Page({
 
   const parsedFiles = files.split(",").filter(Boolean);
   const parsedLinks = links.split(",").filter(Boolean);
+  const parsedTags = tags.split(",").filter(Boolean);
 
   return (
     <Flex flexDir="column" gap={2} m={4}>
@@ -113,16 +114,15 @@ export default async function Page({
             </InfoBox>
             <InfoBox icon={MdOutlineTag} title="Tags">
               <Flex display="flex" gap={2} flexWrap="wrap">
-                {tags
-                  .split(",")
-                  .filter(Boolean)
-                  .map((tag) => (
-                    <Link key={tag} href={`/items?tags=${tag}`}>
-                      <Badge size="lg" colorPalette="teal">
-                        {tag}
-                      </Badge>
-                    </Link>
-                  ))}
+                {parsedTags.length > 0
+                  ? parsedTags.map((tag) => (
+                      <Link key={tag} href={`/items?tags=${tag}`}>
+                        <Badge size="lg" colorPalette="teal">
+                          {tag}
+                        </Badge>
+                      </Link>
+                    ))
+                  : "-"}
               </Flex>
             </InfoBox>
             <InfoBox icon={MdOutlineAttachFile} title="Files">
