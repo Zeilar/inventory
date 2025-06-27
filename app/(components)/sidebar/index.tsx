@@ -23,14 +23,13 @@ export function Sidebar() {
     <>
       {/* Desktop. */}
       <Box display={["none", "contents"]}>
-        <Box p={4} pr={0} h="100svh">
+        <Box h="100svh">
           <Flex
             h="full"
             flexDir="column"
             gap={1}
-            border="1px solid {colors.border}"
+            borderRight="1px solid {colors.border}"
             bgColor="bg.panel"
-            rounded="sm"
           >
             <Heading
               alignSelf="center"
