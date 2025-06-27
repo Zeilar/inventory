@@ -33,6 +33,7 @@ export function Sidebar() {
             rounded="sm"
           >
             <Heading
+              alignSelf="center"
               as="h3"
               size="2xl"
               display="flex"
