@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { AppBarNavlink, DesktopNavlink } from "./navlink";
 import { APP_BAR_HEIGHT } from "./config";
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Icon } from "@chakra-ui/react";
 import {
   MdHome,
   MdOutlineHome,
@@ -13,10 +13,14 @@ import {
   MdOutlineSettings,
   MdPostAdd,
   MdOutlinePostAdd,
+  MdDarkMode,
+  MdLightMode,
 } from "react-icons/md";
+import { useColorMode } from "@/components";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { setColorMode } = useColorMode();
 
   return (
     <>
@@ -72,6 +76,39 @@ export function Sidebar() {
                 label="Settings"
               />
             </Flex>
+            <Box
+              display="grid"
+              gridTemplateColumns="1fr 1fr"
+              m={4}
+              mt="auto"
+              rounded="sm"
+              border="1px solid {colors.border}"
+            >
+              <Button
+                variant="plain"
+                onClick={() => setColorMode("light")}
+                w="full"
+                rounded="sm"
+                _light={{ bgColor: "yellow.muted" }}
+              >
+                <Icon color="yellow.fg" size="sm">
+                  <MdLightMode />
+                </Icon>
+                Light
+              </Button>
+              <Button
+                variant="plain"
+                onClick={() => setColorMode("dark")}
+                w="full"
+                rounded="sm"
+                _dark={{ bgColor: "bg.muted" }}
+              >
+                <Icon color="fg" size="sm">
+                  <MdDarkMode />
+                </Icon>
+                Dark
+              </Button>
+            </Box>
           </Flex>
         </Box>
       </Box>
