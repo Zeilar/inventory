@@ -3,22 +3,23 @@
 import type { ItemsTimelineResponse } from "@/app/api/items/timeline/route";
 import { Chart, useChart } from "@chakra-ui/charts";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { TIMELINE_HEIGHT } from "./config";
 
 interface ItemsTimelineProps {
-  value: ItemsTimelineResponse;
+  timeline: ItemsTimelineResponse;
 }
 
-export function ItemsTimeline({ value }: ItemsTimelineProps) {
+export function ItemsTimeline({ timeline }: ItemsTimelineProps) {
   const chart = useChart({
-    data: value.days.map((day, index) => ({
+    data: timeline.days.map((day, index) => ({
       date: day,
-      Deposits: value.data[index],
+      Deposits: timeline.data[index],
     })),
     series: [{ name: "Deposits", color: "teal.solid" }],
   });
 
   return (
-    <Chart.Root chart={chart} height={300}>
+    <Chart.Root chart={chart} height={TIMELINE_HEIGHT}>
       <LineChart data={chart.data}>
         <CartesianGrid stroke={chart.color("border")} vertical={false} />
         <XAxis

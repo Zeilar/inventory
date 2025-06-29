@@ -9,6 +9,7 @@ import { Seeder } from "./(seeder)";
 import { APP_BAR_HEIGHT } from "./(components)/sidebar/config";
 import { Box } from "@chakra-ui/react";
 import { SIDEBAR_WIDTH } from "@/features/theme/constants";
+import { z } from "zod";
 
 export const metadata: Metadata = {
   title: "Inventory",
@@ -19,7 +20,7 @@ export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children }: PropsWithChildren) {
   let hasInstalled = false;
-  let settings: SettingsValues = { itemsPerPage: 0 };
+  let settings: SettingsValues | undefined;
   try {
     settings = await getSettings();
     hasInstalled = true;
@@ -34,14 +35,14 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         suppressHydrationWarning
       >
         <body>
-          <Providers settings={settings}>
+          <Providers settings={z.object({ itemsPerPage: z.number() }).parse(settings)}>
             {hasInstalled ? (
               <Box
                 as="main"
-                minHeight="100svh"
+                minH="100svh"
                 display="grid"
                 gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
-                height="100%"
+                h="100%"
                 pb={[`${APP_BAR_HEIGHT}px`, 0]}
               >
                 <Sidebar />

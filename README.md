@@ -1,4 +1,5 @@
 ## Prerequisites
 
-- Act ([.github/workflows/insta--act.sh](https://nektosact.com/))
-- A Docker account. You must login locally using `docker login` in order to pull the Act image.
+## Problems
+
+- For whatever reason Chakra UI nowadays can't handle hydration/streaming etc. So when using server components, utilize Chakra's `<ClientOnly />` component to act as `loading.tsx`. Do not use any `loading.tsx`.

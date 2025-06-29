@@ -26,22 +26,22 @@ export function DesktopNavlink({ href, icon: IconComponent, isActive, label }: N
   return (
     <UnstyledLink href={href} rounded="sm">
       <Button
+        variant="ghost"
         rounded="sm"
         width="100%"
         justifyContent="start"
-        px={4}
-        py={3}
+        p={4}
         gap={3}
         bgColor={isActive ? "teal.subtle" : "transparent"}
         color={isActive ? "teal.fg" : "fg"}
         fontWeight={500}
-        fontSize="medium"
-        transitionProperty="all"
+        fontSize="lg"
+        transitionProperty="background-color"
         transitionDuration="fast"
         h="50px"
         _hover={!isActive ? { bgColor: "gray.subtle" } : undefined}
       >
-        <Icon size="lg">
+        <Icon size="xl">
           <IconComponent />
         </Icon>
         {label}
