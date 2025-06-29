@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { AppBarNavlink, DesktopNavlink } from "./navlink";
 import { APP_BAR_HEIGHT } from "./config";
-import { Box, Flex, Heading, Icon } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import {
   MdHome,
   MdOutlineHome,
@@ -14,7 +14,6 @@ import {
   MdPostAdd,
   MdOutlinePostAdd,
 } from "react-icons/md";
-import { InventoryIcon } from "./inventory-icon";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -33,19 +32,15 @@ export function Sidebar() {
           >
             <Heading
               textTransform="uppercase"
-              alignSelf="center"
               as="h2"
               size="2xl"
               display="flex"
               alignItems="center"
               color="teal.fg"
               gap={2}
-              px={6}
+              px={8}
               my={8}
             >
-              <Icon size="xl">
-                <InventoryIcon />
-              </Icon>
               <Box
                 as="span"
                 mb="1px"
@@ -56,7 +51,7 @@ export function Sidebar() {
                 Inventory
               </Box>
             </Heading>
-            <Flex flexDir="column" p={4} gap={1}>
+            <Flex flexDir="column" p={4} pt={0} gap={1}>
               <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
               <DesktopNavlink
                 href="/items"

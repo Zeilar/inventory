@@ -3,7 +3,7 @@ import { Flex } from "@chakra-ui/react";
 
 export default function Page() {
   return (
-    <Flex flexDir="column" gap={2} m={4}>
+    <Flex flexDir="column" gap={42} m={8}>
       <A11yBar breadcrumbsProps={{ current: "404" }} />
       <div>
         <Heading size="6xl" as="h1" color="fg.warning">

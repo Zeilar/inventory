@@ -11,7 +11,7 @@ export default function Page({ error }: Props) {
   console.error(error);
 
   return (
-    <Flex flexDir="column" gap={2} m={4}>
+    <Flex flexDir="column" gap={4} m={8}>
       <A11yBar breadcrumbsProps={{ current: "500" }} />
       <div>
         <Heading size="6xl" as="h1" color="fg.error">

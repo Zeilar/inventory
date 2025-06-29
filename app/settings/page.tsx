@@ -6,7 +6,7 @@ import { A11yBar } from "@/components/ui/a11y-bar";
 
 export default async function Page() {
   return (
-    <Flex flexDir="column" gap={2} m={4}>
+    <Flex flexDir="column" gap={4} m={8}>
       <A11yBar breadcrumbsProps={{ hrefs: [{ href: "/", label: "Home" }], current: "Settings" }} />
       <Card.Root>
         <Card.Header>
