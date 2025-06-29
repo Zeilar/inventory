@@ -41,7 +41,7 @@ export function DesktopNavlink({ href, icon: IconComponent, isActive, label }: N
         h="50px"
         _hover={!isActive ? { bgColor: "gray.subtle" } : undefined}
       >
-        <Icon size="xl">
+        <Icon size="lg" w="5" h="5">
           <IconComponent />
         </Icon>
         {label}
