@@ -20,7 +20,7 @@ export function VersionSelect({ options, value = options.at(0) ?? "current" }: V
 
   return (
     <Select.Root
-      w={250}
+      w={["full", 250]}
       collection={collection}
       disabled={collection.items.length === 0}
       value={[value]}
