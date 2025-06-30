@@ -19,7 +19,13 @@ interface TagsFieldProps {
   label?: ReactNode;
 }
 
-export function Field({ label, children, required, ...props }: InputProps & { label?: ReactNode }) {
+export function Field({
+  label,
+  children,
+  required,
+  helperText,
+  ...props
+}: InputProps & { label?: ReactNode; helperText?: ReactNode }) {
   const { handleBlur, handleChange, state } = useFieldContext<string | number>();
   const error: ZodIssueBase | string | undefined = state.meta.errors.at(0);
   const hasError = Boolean(error);
@@ -39,6 +45,7 @@ export function Field({ label, children, required, ...props }: InputProps & { la
         onChange={(e) => handleChange(e.target.value)}
         {...props}
       />
+      {helperText && <ChakraField.HelperText>{helperText}</ChakraField.HelperText>}
       {children}
       {hasError && (
         <ChakraField.ErrorText>
@@ -94,6 +101,7 @@ export function TagsField({ label }: TagsFieldProps) {
 
   return (
     <Field
+      helperText="Must not contain commas."
       label={label}
       autoComplete="off"
       value={input}
@@ -102,7 +110,12 @@ export function TagsField({ label }: TagsFieldProps) {
         if (e.key === "Enter") {
           e.preventDefault();
         }
-        if (e.key !== "Enter" || tags.includes(input)) {
+        if (
+          e.key !== "Enter" ||
+          tags.includes(input) ||
+          input.includes(",") ||
+          tags.some((tag) => input.split(",").includes(tag))
+        ) {
           return;
         }
         setInput("");
