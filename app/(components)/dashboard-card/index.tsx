@@ -40,7 +40,7 @@ export function DashboardCardLayout({
           <IconComponent />
         </Icon>
       </Flex>
-      <Flex gap={4} w="full" align={["start", "center"]} flexDir={["column", "row"]}>
+      <Flex gap={4} w="full" align="center">
         <DataList.Root size="lg" w="full">
           <DataList.Item>
             <DataList.ItemLabel>{title}</DataList.ItemLabel>

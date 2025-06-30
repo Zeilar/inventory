@@ -54,17 +54,15 @@ export function DashboardLayout({
       >
         {dbSize}
       </DashboardCardLayout>
-      <Box display={["none", "contents"]}>
-        <DashboardCardLayout
-          title="Deposits"
-          icon={MdTimeline}
-          css={{ gridColumn: "span 2", alignItems: "start" }}
-        >
-          <Box py={4} pr={4} w="full">
-            {timeline}
-          </Box>
-        </DashboardCardLayout>
-      </Box>
+      <DashboardCardLayout
+        title="Deposits"
+        icon={MdTimeline}
+        css={{ gridColumn: ["auto", "span 2"], alignItems: "start" }}
+      >
+        <Box py={4} pr={4} w="full">
+          {timeline}
+        </Box>
+      </DashboardCardLayout>
       <DashboardCardLayout
         icon={MdStorage}
         title="Storage"

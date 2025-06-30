@@ -19,7 +19,7 @@ export function ItemsTimeline({ timeline }: ItemsTimelineProps) {
   });
 
   return (
-    <Chart.Root chart={chart} height={TIMELINE_HEIGHT}>
+    <Chart.Root chart={chart} height={["auto", TIMELINE_HEIGHT]}>
       <LineChart data={chart.data}>
         <CartesianGrid stroke={chart.color("border")} vertical={false} />
         <XAxis
