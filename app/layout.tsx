@@ -35,8 +35,8 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         suppressHydrationWarning
       >
         <body>
-          <Providers settings={z.object({ itemsPerPage: z.number() }).parse(settings)}>
-            {hasInstalled ? (
+          {hasInstalled ? (
+            <Providers settings={z.object({ itemsPerPage: z.number() }).parse(settings)}>
               <Box
                 as="main"
                 minH="100svh"
@@ -48,10 +48,10 @@ export default async function RootLayout({ children }: PropsWithChildren) {
                 <Sidebar />
                 <div>{children}</div>
               </Box>
-            ) : (
-              <Seeder />
-            )}
-          </Providers>
+            </Providers>
+          ) : (
+            <Seeder />
+          )}
         </body>
       </html>
     );

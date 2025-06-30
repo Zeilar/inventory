@@ -43,14 +43,17 @@ ssh angelin-local << 'EOF'
 
   echo "[CI/CD] ✅ Pulled latest changes"
 
-  echo "[CI/CD] 🔄 Restarting containers..."
+  echo "[CI/CD] 🔄 Closing containers..."
 
-  if ! docker compose restart; then
-    echo "[CI/CD] ❌ Restart failed"
-    exit 1
-  fi
+  docker compose down
 
-  echo "[CI/CD] ✅ Restarted containers"
+  echo "[CI/CD] ✅ Closed containers"
+
+  echo "[CI/CD] 🔄 Starting containers..."
+
+  docker compose up -d
+
+  echo "[CI/CD] ✅ Started containers"
 EOF
 
 echo "[CI/CD] ✅ Deployed. Closing..."
