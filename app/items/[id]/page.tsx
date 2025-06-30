@@ -28,14 +28,23 @@ interface InfoBoxProps extends PropsWithChildren {
 
 function InfoBox({ icon: IconComponent, children, title }: InfoBoxProps) {
   return (
-    <Box display="grid" gap={4} gridTemplateColumns="200px 1fr" alignItems="start">
-      <Flex gap={4} h="40px" align="center">
+    <Box
+      display={["flex", "grid"]}
+      gap={[2, 4]}
+      gridTemplateColumns={["none", "200px 1fr"]}
+      flexDir={["column", "unset"]}
+      alignItems="start"
+      border={["1px solid {colors.border}", 0]}
+      p={[4, 0]}
+      rounded={["sm", "none"]}
+    >
+      <Flex gap={[2, 4]} h="40px" align="center">
         <Icon color="teal.fg" size="md">
           <IconComponent />
         </Icon>
         <Text>{title}</Text>
       </Flex>
-      <Box alignSelf="center">{children}</Box>
+      <Box alignSelf={["unset", "center"]}>{children}</Box>
     </Box>
   );
 }
@@ -99,8 +108,8 @@ export default async function Page({
             </Flex>
           </Flex>
         </Card.Header>
-        <Card.Body>
-          <Flex flexDir="column" gap={4}>
+        <Card.Body pt={[4, 6]}>
+          <Flex flexDir="column" gap={[2, 4]}>
             <InfoBox icon={MdOutlineNumbers} title="Quantity">
               {quantity}
             </InfoBox>

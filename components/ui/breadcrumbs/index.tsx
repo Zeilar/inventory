@@ -13,7 +13,7 @@ export interface BreadcrumbsProps {
 export function Breadcrumbs({ current, hrefs }: BreadcrumbsProps) {
   return (
     <Breadcrumb.Root size="lg">
-      <Breadcrumb.List>
+      <Breadcrumb.List flexWrap="wrap">
         {hrefs?.map(({ href, label }) => (
           <Fragment key={href}>
             <Breadcrumb.Link as={Link} href={href}>
