@@ -14,7 +14,7 @@ export default async function Page({ params }: Params<"id">) {
     await res.json();
 
   return (
-    <Flex flexDir="column" gap={4} m={8}>
+    <Flex flexDir="column" gap={4} m={[4, 8]}>
       <A11yBar
         breadcrumbsProps={{
           hrefs: [

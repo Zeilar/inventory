@@ -274,7 +274,7 @@ export function EditItemForm({
         >
           {(field) => <field.TagsField label="Links" />}
         </form.AppField>
-        <Flex gap={2}>
+        <Flex gap={2} flexDir={["column", "row"]}>
           <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
           <Button onClick={back} variant="surface" w={["100%", "auto"]}>
             Cancel

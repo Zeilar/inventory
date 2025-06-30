@@ -70,7 +70,7 @@ export default async function Page({
   const parsedTags = tags.split(",").filter(Boolean);
 
   return (
-    <Flex flexDir="column" gap={4} m={8}>
+    <Flex flexDir="column" gap={4} m={[4, 8]}>
       <A11yBar
         breadcrumbsProps={{
           hrefs: [

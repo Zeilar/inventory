@@ -204,9 +204,9 @@ export function DepositItemForm() {
             {(field) => <field.TagsField label="Links" />}
           </form.AppField>
         </Box>
-        <Flex gap={2}>
+        <Flex gap={2} flexDir={["column", "row"]}>
           <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
-          <Button variant="outline" onClick={back} w={["100%", "auto"]}>
+          <Button variant="surface" onClick={back} w={["100%", "auto"]}>
             Cancel
           </Button>
         </Flex>

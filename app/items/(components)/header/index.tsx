@@ -20,6 +20,7 @@ import {
   SegmentGroup,
   Select,
   Separator,
+  Text,
 } from "@chakra-ui/react";
 import { MdAdd, MdClose, MdFilterAlt } from "react-icons/md";
 import { SIDEBAR_WIDTH } from "@/features/theme/constants";
@@ -129,50 +130,50 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
 
   return (
     <form.AppForm>
-      <Box>
-        <Flex justifyContent="space-between" gap={4} mb={4}>
-          <Heading size="3xl" as="h1">
+      <div>
+        <Flex justify="space-between" gap={4} mb={4}>
+          <Heading size={["2xl", "3xl"]} as="h1">
             Items
           </Heading>
           <UnstyledLink href="/items/deposit">
-            <Button colorPalette="teal" variant="surface">
+            <Button colorPalette="teal" variant="surface" size={["sm", "md"]}>
               <MdAdd />
               Deposit
             </Button>
           </UnstyledLink>
         </Flex>
-        <Box display="flex" flexDir="column" gap={2}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems={["start", "center"]}
+        <Flex flexDir="column" gap={2}>
+          <Flex
+            justify="space-between"
+            align={["start", "center"]}
             gap={2}
             flexDir={["column", "row"]}
           >
-            <Box mr="auto">
+            <Box mr={[0, "auto"]}>
               <Pagination {...paginationProps} />
             </Box>
-            <Box
-              display="flex"
-              alignItems={["start", "center"]}
-              justifyContent="end"
+            <Flex
+              align={["start", "center"]}
+              justify="end"
               flexDir={["column", "row"]}
-              width={["100%", "auto"]}
-              h="40px"
+              w={["100%", "auto"]}
+              h={["auto", "40px"]}
               gap={2}
             >
-              <Button onClick={filter.toggle} variant="surface">
-                {!isFilterOpen ? <MdFilterAlt /> : <MdClose />}
-                Filter
-              </Button>
-              {searchField}
+              <Flex display={["flex", "contents"]} gap={2} w="full">
+                <Button onClick={filter.toggle} variant={["outline", "surface"]}>
+                  {!isFilterOpen ? <MdFilterAlt /> : <MdClose />}
+                  <Text display={["none", "inline"]}>Filter</Text>
+                </Button>
+                {searchField}
+              </Flex>
               <form.AppField name="sortBy" validators={{ onChangeListenTo: ["status"] }}>
                 {(field) => {
                   return (
                     <Select.Root
                       colorPalette="teal"
                       collection={sortCollection}
-                      width={320}
+                      w={["100%", 320]}
                       value={[
                         `${field.state.value || "id"},${
                           form.getFieldValue("sortDirection") || "desc"
@@ -210,10 +211,10 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                   );
                 }}
               </form.AppField>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+            </Flex>
+          </Flex>
+        </Flex>
+      </div>
       <Box
         as="nav"
         pos="fixed"
@@ -228,14 +229,14 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         transition="position"
       >
         <form.Form display="flex" flexDir="column" gap={4}>
-          <Box display="flex" justifyContent="space-between" alignItems="center" gap={4}>
+          <Flex justify="space-between" align="center" gap={4}>
             <Heading as="h2" size="2xl">
               Filters
             </Heading>
             <IconButton variant="ghost" onClick={filter.close}>
               <MdClose />
             </IconButton>
-          </Box>
+          </Flex>
           <Separator />
           <form.AppField name="status">
             {(field) => (
@@ -327,7 +328,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             </Box>
           </div>
           <Separator />
-          <Box display="flex" gap={2} flexDir="column" alignItems="center">
+          <Flex gap={2} flexDir="column" align="center">
             <Field.Root>
               <Field.Label>Deposited at</Field.Label>
             </Field.Root>
@@ -338,7 +339,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             <form.AppField name="dateTo">
               {(field) => <field.Field type="datetime-local" />}
             </form.AppField>
-          </Box>
+          </Flex>
           <Separator />
           <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
           <Separator />

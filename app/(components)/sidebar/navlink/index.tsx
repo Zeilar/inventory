@@ -12,9 +12,17 @@ interface NavlinkProps {
 
 export function AppBarNavlink({ href, icon: IconComponent, isActive }: NavlinkProps) {
   return (
-    <UnstyledLink href={href}>
-      <IconButton>
-        <Icon color={isActive ? "primary" : "secondary"} transition="colors">
+    <UnstyledLink
+      href={href}
+      h="full"
+      borderTop="1px solid"
+      borderBottom="1px solid"
+      borderColor="transparent"
+      borderTopColor={isActive ? "teal.fg" : "transparent"}
+      px={1}
+    >
+      <IconButton variant="plain">
+        <Icon color={isActive ? "teal.fg" : "fg.muted"} transition="colors" size="lg">
           <IconComponent />
         </Icon>
       </IconButton>
@@ -28,7 +36,7 @@ export function DesktopNavlink({ href, icon: IconComponent, isActive, label }: N
       <Button
         variant="ghost"
         rounded="sm"
-        width="100%"
+        w="100%"
         justifyContent="start"
         p={4}
         gap={3}

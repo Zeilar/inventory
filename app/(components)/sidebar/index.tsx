@@ -115,14 +115,19 @@ export function Sidebar() {
 
       {/* Mobile. */}
       <Box display={["contents", "none"]}>
-        <Box
+        <Flex
+          as="nav"
+          borderTop="1px solid {colors.border}"
+          bgColor="bg.panel"
+          w="full"
           pos="fixed"
-          bottom={0}
           top="auto"
-          justifyContent="center"
-          flexDirection="row"
-          gap={3}
-          alignItems="center"
+          bottom={0}
+          justify="center"
+          flexDir="row"
+          align="center"
+          gap={4}
+          zIndex="overlay"
           height={APP_BAR_HEIGHT}
         >
           <AppBarNavlink
@@ -145,7 +150,7 @@ export function Sidebar() {
             icon={pathname === "/settings" ? MdSettings : MdOutlineSettings}
             isActive={pathname === "/settings"}
           />
-        </Box>
+        </Flex>
       </Box>
     </>
   );

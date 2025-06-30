@@ -3,7 +3,7 @@
 import { ItemCard, type ItemCardProps } from "../card";
 import { Link } from "@/components";
 import { Fragment } from "react";
-import { Card, Flex, Icon, Separator, Table, TableCellProps } from "@chakra-ui/react";
+import { Flex, Icon, Separator, Table, TableCellProps } from "@chakra-ui/react";
 import { MdSell, MdNumbers, MdCalendarMonth, MdPublic } from "react-icons/md";
 import type { IconType } from "react-icons/lib";
 
@@ -42,18 +42,19 @@ const headCellWithIconProps: TableCellProps = {
 export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutProps) {
   return (
     <>
-      <Card.Root display={["flex", "none"]} flexDir="column">
-        <Card.Body>
-          {rows.map(({ item }, i) => (
-            <Fragment key={item.id}>
-              <Link key={item.id} href={`/items/${item.id}`} p={1.5}>
-                {item.title}
-              </Link>
-              {i !== rows.length - 1 && <Separator />}
-            </Fragment>
-          ))}
-        </Card.Body>
-      </Card.Root>
+      {/* Mobile. */}
+      <Flex display={["flex", "none"]} flexDir="column" border="1px solid {colors.border}">
+        {rows.map(({ item }, i) => (
+          <Fragment key={item.id}>
+            <Link key={item.id} href={`/items/${item.id}`} p={3}>
+              {item.title}
+            </Link>
+            {i !== rows.length - 1 && <Separator />}
+          </Fragment>
+        ))}
+      </Flex>
+
+      {/* Desktop. */}
       <Table.ScrollArea borderWidth="1px" rounded="sm" maxH="65vh" display={["none", "block"]}>
         <Table.Root size="lg" stickyHeader>
           <Table.Header>

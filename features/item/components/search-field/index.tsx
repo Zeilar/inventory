@@ -29,10 +29,11 @@ export function ItemSearchFieldLayout({
         e.preventDefault();
         onSubmit?.();
       }}
-      height="100%"
+      w={["full", "auto"]}
+      height="full"
     >
       <InputGroup
-        w={250}
+        w={["full", 250]}
         startElement={
           <Icon size="md">
             <MdSearch />

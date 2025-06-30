@@ -39,7 +39,7 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
   const parsedPage = parseInt(page) || 1;
 
   return (
-    <Flex flexDir="column" gap={4} m={8}>
+    <Flex flexDir="column" gap={4} m={[4, 8]}>
       <A11yBar breadcrumbsProps={{ hrefs: [{ href: "/", label: "Home" }], current: "Items" }} />
       <Card.Root>
         <Card.Header>
@@ -47,7 +47,9 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
         </Card.Header>
         <Card.Body pt={2}>
           <ItemsContainer rows={items.map((item) => ({ item }))} />
-          <Text mt={2}>{getPaginationSummary(parsedPage, itemsPerPage, total)}</Text>
+          <Text mt={2} display={["none", "inline"]}>
+            {getPaginationSummary(parsedPage, itemsPerPage, total)}
+          </Text>
         </Card.Body>
       </Card.Root>
     </Flex>

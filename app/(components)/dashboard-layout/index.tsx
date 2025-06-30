@@ -31,7 +31,12 @@ export function DashboardLayout({
   timeline,
 }: DashboardLayoutProps) {
   return (
-    <Box display="grid" gap={8} gridTemplateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]} m={8}>
+    <Box
+      display="grid"
+      gap={[4, 8]}
+      gridTemplateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]}
+      m={[4, 8]}
+    >
       <DashboardCardLayout title="Item count" icon={MdWarehouse}>
         {itemCount}
       </DashboardCardLayout>

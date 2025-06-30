@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Box,
   ButtonGroup,
   Pagination as ChakraPagination,
   IconButton,
@@ -11,6 +12,7 @@ import { useSettings } from "@/app/(components)/providers/settings";
 import { UnstyledLink } from "../link";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import { useSearchParams } from "next/navigation";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 export interface PaginationProps {
   count: number;
@@ -40,7 +42,7 @@ const PaginationLink = ({
     <IconButton
       asChild
       outline={0}
-      variant="surface"
+      variant={["plain", "surface"]}
       disabled={isDisabled}
       // Make it effectively disabled but don't affect styles.
       pointerEvents={pagination.page === page ? "none" : undefined}
@@ -75,20 +77,42 @@ export function Pagination({ count, page, disabled }: PaginationProps) {
         },
       }}
     >
-      <ButtonGroup variant="ghost" size="sm">
-        <PaginationLink disabled={disabled || !count} page="prev">
-          <HiChevronLeft />
-        </PaginationLink>
-        <ChakraPagination.Items
-          render={({ value }) => (
-            <PaginationLink disabled={disabled} page={value}>
-              {value}
+      <ButtonGroup variant="ghost" size="sm" flexWrap="wrap">
+        {/* Mobile. */}
+        <Box display={["contents", "none"]}>
+          <ChakraPagination.PrevTrigger asChild>
+            <PaginationLink page={Math.max(page - 1, 1)}>
+              <IconButton>
+                <MdChevronLeft />
+              </IconButton>
             </PaginationLink>
-          )}
-        />
-        <PaginationLink disabled={disabled || !count} page="next">
-          <HiChevronRight />
-        </PaginationLink>
+          </ChakraPagination.PrevTrigger>
+          <ChakraPagination.PageText />
+          <ChakraPagination.NextTrigger asChild>
+            <PaginationLink page={page + 1}>
+              <IconButton>
+                <MdChevronRight />
+              </IconButton>
+            </PaginationLink>
+          </ChakraPagination.NextTrigger>
+        </Box>
+
+        {/* Desktop. */}
+        <Box display={["none", "contents"]}>
+          <PaginationLink disabled={disabled || !count} page="prev">
+            <HiChevronLeft />
+          </PaginationLink>
+          <ChakraPagination.Items
+            render={({ value }) => (
+              <PaginationLink disabled={disabled} page={value}>
+                {value}
+              </PaginationLink>
+            )}
+          />
+          <PaginationLink disabled={disabled || !count} page="next">
+            <HiChevronRight />
+          </PaginationLink>
+        </Box>
       </ButtonGroup>
     </ChakraPagination.Root>
   );
