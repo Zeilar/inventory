@@ -9,6 +9,8 @@ import {
   MIN_ITEMS_PER_PAGE,
   settingsValuesValidator,
 } from "@/features/settings";
+import { ColorModeSwitcher } from "@/components";
+import { Flex, Text } from "@chakra-ui/react";
 
 interface FormProps {
   settings: SettingsValues;
@@ -43,6 +45,10 @@ export function Form({ settings }: FormProps) {
             />
           )}
         </form.AppField>
+        <Flex flexDir="column" gap={1.5} display={["flex", "none"]}>
+          <Text textStyle="label">Theme</Text>
+          <ColorModeSwitcher />
+        </Flex>
         <div>
           <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
         </div>
