@@ -22,7 +22,7 @@ export function VersionSelect({ options, value = options.at(0) ?? "current" }: V
     <Select.Root
       w={["full", 250]}
       collection={collection}
-      disabled={collection.items.length === 0}
+      disabled={collection.items.length <= 1}
       value={[value]}
       onValueChange={({ value }) => {
         const version = value.at(0);
