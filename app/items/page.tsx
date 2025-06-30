@@ -1,11 +1,11 @@
 import { SearchParams } from "../types";
 import type { GetItemsResponse } from "../api/items/types";
 import { ItemsContainer, ItemsHeader } from "./(components)";
-import { buildAppUrl } from "@/common";
 import type { ItemsSearchParams } from "../api/items/route";
 import { getSettings } from "../api/settings/getSettings";
 import { Card, Flex, Text } from "@chakra-ui/react";
 import { A11yBar } from "@/components";
+import { apiFetch } from "../api/api-fetch";
 
 function getPaginationSummary(
   currentPage: number,
@@ -34,7 +34,7 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
     newSearchParams.set(key, value);
   });
 
-  const res = await fetch(buildAppUrl(`/api/items?${newSearchParams}`));
+  const res = await apiFetch(`/api/items?${newSearchParams}`);
   const { items = [], total }: GetItemsResponse = await res.json();
   const parsedPage = parseInt(page) || 1;
 

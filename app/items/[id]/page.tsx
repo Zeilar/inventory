@@ -1,5 +1,4 @@
 import type { Params, SearchParams } from "@/app/types";
-import { buildAppUrl } from "@/common";
 import { UnstyledLink, A11yBar, Heading, Link } from "@/components";
 import type { Item, ItemHistory } from "@/features/db/schema";
 import type { PropsWithChildren, ReactNode } from "react";
@@ -20,6 +19,7 @@ import {
   MdOutlineTag,
   MdOutlineUpdate,
 } from "react-icons/md";
+import { apiFetch } from "@/app/api/api-fetch";
 
 interface InfoBoxProps extends PropsWithChildren {
   icon: IconType;
@@ -55,8 +55,9 @@ export default async function Page({
 }: Params<"id"> & SearchParams<"version">) {
   const { id } = await params;
   const { version = "" } = await searchParams;
-  const res = await fetch(buildAppUrl(`/api/items/${id}`), {
-    next: { revalidate: 31_556_926, tags: [`items-${id}`] },
+  const res = await apiFetch(`/api/items/${id}`, "GET", null, {
+    revalidate: 31_556_926,
+    tags: [`items-${id}`],
   });
   const item: Item = await res.json();
 
@@ -65,7 +66,7 @@ export default async function Page({
   }
 
   // For some reason clearing the cache in the update action doesn't work with this fetch.
-  const historyRes = await fetch(buildAppUrl(`/api/items/${id}/history`));
+  const historyRes = await apiFetch(`/api/items/${id}/history`);
   const history: ItemHistory[] = await historyRes.json();
 
   const foundPastVersion = history.find(({ createdAt }) => createdAt === version);

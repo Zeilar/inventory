@@ -13,6 +13,7 @@ declare global {
       DB_PORT: string;
       DB_HOST: string;
       DB_TYPE: string;
+      SESSION_SECRET: string;
     }
   }
 }

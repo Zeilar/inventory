@@ -18,6 +18,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: inventory_app_dev
+    restart: always
     image: inventory_dev
     ports:
       - ${PORT}:${PORT}

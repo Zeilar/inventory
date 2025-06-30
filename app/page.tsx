@@ -1,13 +1,13 @@
 import { ItemsTimeline } from "./(components)/dashboard-card/items-timeline";
-import { buildAppUrl } from "@/common";
 import prettyBytes from "pretty-bytes";
 import { ClientOnly } from "@chakra-ui/react";
 import { DashboardLayout, DashboardLayoutLoading } from "./(components)/dashboard-layout";
+import { apiFetch } from "./api/api-fetch";
 
 export default async function Page() {
   const [totalItems, dbSize, timeline, storageSize] = await Promise.all(
     ["/api/items/total", "/api/db/total", "/api/items/timeline", "/api/files/total"].map(
-      async (route) => (await fetch(buildAppUrl(route))).json()
+      async (route) => (await apiFetch(route)).json()
     )
   );
 

@@ -14,6 +14,7 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { useState, type ReactNode } from "react";
+import { useStore } from "@tanstack/react-form";
 
 interface TagsFieldProps {
   label?: ReactNode;
@@ -26,8 +27,9 @@ export function Field({
   helperText,
   ...props
 }: InputProps & { label?: ReactNode; helperText?: ReactNode }) {
-  const { handleBlur, handleChange, state } = useFieldContext<string | number>();
-  const error: ZodIssueBase | string | undefined = state.meta.errors.at(0);
+  const field = useFieldContext<string | number>();
+  const errors = useStore(field.store, ({ meta }) => meta.errors);
+  const error: ZodIssueBase | string | undefined = errors.at(0);
   const hasError = Boolean(error);
 
   return (
@@ -40,9 +42,9 @@ export function Field({
       <Input
         colorPalette="teal"
         required={required}
-        value={state.value}
-        onBlur={handleBlur}
-        onChange={(e) => handleChange(e.target.value)}
+        value={field.state.value}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
         {...props}
       />
       {helperText && <ChakraField.HelperText>{helperText}</ChakraField.HelperText>}

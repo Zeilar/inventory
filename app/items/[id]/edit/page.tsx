@@ -1,5 +1,5 @@
+import { apiFetch } from "@/app/api/api-fetch";
 import type { Params } from "@/app/types";
-import { buildAppUrl } from "@/common";
 import { A11yBar, Heading } from "@/components";
 import type { Item } from "@/features/db/schema";
 import { EditItemForm } from "@/features/item/components";
@@ -7,8 +7,9 @@ import { Card, Flex } from "@chakra-ui/react";
 
 export default async function Page({ params }: Params<"id">) {
   const { id } = await params;
-  const res = await fetch(buildAppUrl(`/api/items/${id}`), {
-    next: { revalidate: 31_556_926, tags: [`items-${id}`] },
+  const res = await apiFetch(`/api/items/${id}`, "GET", null, {
+    revalidate: 31_556_926,
+    tags: [`items-${id}`],
   });
   const { title, quantity, articleId, files, tags, archived, links, price }: Item =
     await res.json();
