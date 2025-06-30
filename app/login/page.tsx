@@ -4,11 +4,9 @@ import { useAppForm } from "@/hooks";
 import type { AuthRequestDto } from "../api/auth/route";
 import { Heading } from "@/components";
 import { Card } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 
 export default function Page() {
-  const { push } = useRouter();
   const form = useAppForm({
     defaultValues: { password: "" } satisfies AuthRequestDto,
     onSubmit: async ({ value, formApi }) => {
@@ -26,9 +24,9 @@ export default function Page() {
       }
       enqueueSnackbar({
         variant: "success",
-        message: "Logged in.",
+        message: "Logged in, reloading...",
       });
-      push("/");
+      window.location.href = "/";
     },
   });
 
