@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children }: PropsWithChildren) {
   let hasInstalled = false;
-  let settings: SettingsValues | undefined;
+  let settings: SettingsValues = { itemsPerPage: 10 };
   try {
     settings = await getSettings();
     hasInstalled = true;
@@ -35,23 +35,23 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         suppressHydrationWarning
       >
         <body>
-          {hasInstalled ? (
-            <Providers settings={z.object({ itemsPerPage: z.number() }).parse(settings)}>
+          <Providers settings={z.object({ itemsPerPage: z.number() }).parse(settings)}>
+            {hasInstalled ? (
               <Box
                 as="main"
                 minH="100svh"
+                h="100%"
                 display="grid"
                 gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
-                h="100%"
                 pb={[`${APP_BAR_HEIGHT}px`, 0]}
               >
                 <Sidebar />
                 <div>{children}</div>
               </Box>
-            </Providers>
-          ) : (
-            <Seeder />
-          )}
+            ) : (
+              <Seeder />
+            )}
+          </Providers>
         </body>
       </html>
     );
