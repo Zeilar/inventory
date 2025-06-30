@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "[CI/CD] 🟡 Restarting containers..."
+echo "[CI/CD] 🔄 Restarting containers..."
 
 if ! docker compose restart; then
   echo "[CI/CD] ❌ Restart failed"
