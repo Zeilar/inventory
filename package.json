@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "ci": "yarn setup && git push && yarn deploy",
     "deploy": "sh ci/deploy.sh",
     "setup": "sh ci/setup.sh",
     "dev": "docker compose -f docker-compose.dev.yml up",

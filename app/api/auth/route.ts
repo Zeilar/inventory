@@ -6,8 +6,6 @@ export interface AuthRequestDto {
   password: string;
 }
 
-export const authRoute = "/api/auth";
-
 export async function POST(req: NextRequest): Promise<NextResponse> {
   console.log("here");
   const { password }: AuthRequestDto = z.object({ password: z.string() }).parse(await req.json());

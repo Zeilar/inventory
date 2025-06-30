@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppForm } from "@/hooks";
-import { authRoute, type AuthRequestDto } from "../api/auth/route";
+import type { AuthRequestDto } from "../api/auth/route";
 import { A11yBar, Heading } from "@/components";
 import { Card, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ export default function Page() {
   const form = useAppForm({
     defaultValues: { password: "" } satisfies AuthRequestDto,
     onSubmit: async ({ value, formApi }) => {
-      const res = await fetch(authRoute, { method: "POST", body: JSON.stringify(value) });
+      const res = await fetch("/api/auth", { method: "POST", body: JSON.stringify(value) });
       if (!res.ok) {
         formApi.setFieldMeta("password", (p) => ({
           ...p,
