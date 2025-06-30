@@ -1,8 +1,3 @@
-import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
-import ora from "ora";
-
 function sleep(): Promise<unknown> {
   return new Promise((resolve) => setTimeout(resolve, 1000));
 }
@@ -11,6 +6,11 @@ const retries = 5;
 
 export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
+    const { default: ora } = await import("ora");
+    const { migrate } = await import("drizzle-orm/node-postgres/migrator");
+    const { drizzle } = await import("drizzle-orm/node-postgres");
+    const { Pool } = await import("pg");
+
     const spinner = ora({
       text: "Applying migrations...",
       isEnabled: true,
