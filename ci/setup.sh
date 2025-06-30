@@ -15,6 +15,8 @@ if [ ! -f "$PRE_PUSH_HOOK_SRC" ]; then
   exit 1
 fi
 
+echo "[CI/CD] 🔄 Installing pre-push hook..."
+
 cp "$PRE_PUSH_HOOK_SRC" "$PRE_PUSH_HOOK_DEST"
 chmod +x "$PRE_PUSH_HOOK_DEST"
 

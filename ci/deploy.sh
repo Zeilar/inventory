@@ -51,7 +51,7 @@ ssh angelin-local << 'EOF'
 
   echo "[CI/CD] 🔄 Starting containers..."
 
-  docker compose up -d
+  docker compose up -d --build
 
   echo "[CI/CD] ✅ Started containers"
 EOF
