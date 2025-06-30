@@ -7,7 +7,6 @@ export interface AuthRequestDto {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  console.log("here");
   const { password }: AuthRequestDto = z.object({ password: z.string() }).parse(await req.json());
   if (password !== process.env.SESSION_SECRET) {
     return NextResponse.json({ message: "Incorrect password." }, { status: 401 });
