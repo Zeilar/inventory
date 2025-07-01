@@ -43,16 +43,23 @@ export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutPro
   return (
     <>
       {/* Mobile. */}
-      <Flex display={["flex", "none"]} flexDir="column" border="1px solid {colors.border}">
-        {rows.map(({ item }, i) => (
-          <Fragment key={item.id}>
-            <Link key={item.id} href={`/items/${item.id}`} p={3}>
-              {item.title}
-            </Link>
-            {i !== rows.length - 1 && <Separator />}
-          </Fragment>
-        ))}
-      </Flex>
+      {rows.length > 0 ? (
+        <Flex
+          display={["flex", "none"]}
+          flexDir="column"
+          border="1px solid {colors.border}"
+          rounded="sm"
+        >
+          {rows.map(({ item }, i) => (
+            <Fragment key={item.id}>
+              <Link key={item.id} href={`/items/${item.id}`} p={3}>
+                {item.title}
+              </Link>
+              {i !== rows.length - 1 && <Separator />}
+            </Fragment>
+          ))}
+        </Flex>
+      ) : null}
 
       {/* Desktop. */}
       <Table.ScrollArea borderWidth="1px" rounded="sm" maxH="65vh" display={["none", "block"]}>

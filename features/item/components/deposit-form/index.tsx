@@ -85,7 +85,7 @@ export function DepositItemForm() {
                   .min(0, "Quantity must be 0 or bigger."),
               }}
             >
-              {(field) => <field.Field label="Quantity" placeholder="1" min={0} />}
+              {(field) => <field.Field label="Quantity" type="number" placeholder="1" min={0} />}
             </form.AppField>
           </Box>
           <Box display="flex" gap={4} flexDir={["column", "row"]}>

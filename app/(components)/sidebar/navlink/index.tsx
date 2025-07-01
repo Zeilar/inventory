@@ -15,11 +15,12 @@ export function AppBarNavlink({ href, icon: IconComponent, isActive }: NavlinkPr
     <UnstyledLink
       href={href}
       h="full"
-      borderTop="1px solid"
-      borderBottom="1px solid"
+      borderTop="2px solid"
+      borderBottom="2px solid"
       borderColor="transparent"
       borderTopColor={isActive ? "teal.fg" : "transparent"}
-      px={1}
+      rounded="none"
+      px={2}
     >
       <IconButton variant="plain">
         <Icon color={isActive ? "teal.fg" : "fg.muted"} transition="colors" size="lg">

@@ -121,14 +121,12 @@ export function Sidebar() {
           bgColor="bg.panel"
           w="full"
           pos="fixed"
-          top="auto"
           bottom={0}
           justify="center"
-          flexDir="row"
           align="center"
-          gap={4}
+          gap={6}
           zIndex="overlay"
-          height={APP_BAR_HEIGHT}
+          h={APP_BAR_HEIGHT}
         >
           <AppBarNavlink
             href="/"
