@@ -39,25 +39,25 @@ ssh angelin-local << 'EOF'
 
   sh ci/setup.sh
 
-  echo "[CI/CD] ✅ Running setup..."
+  echo "[CI/CD] ✅ Running setup"
 
   echo "[CI/CD] 🔄 Pulling latest changes..."
 
   git pull
 
-  echo "[CI/CD] ✅ Pulling latest changes..."
+  echo "[CI/CD] ✅ Pulling latest changes"
 
   echo "[CI/CD] 🔄 Building image..."
 
   docker build -t inventory .
 
-  echo "[CI/CD] ✅ Building image..."
+  echo "[CI/CD] ✅ Building image"
 
   echo "[CI/CD] 🔄 Restarting containers..."
 
   docker compose restart
 
-  echo "[CI/CD] ✅ Restarting containers..."
+  echo "[CI/CD] ✅ Restarting containers"
 EOF
 
 echo "[CI/CD] ✅ Deployed. Closing..."
