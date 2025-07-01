@@ -2,6 +2,7 @@ services:
   db:
     image: postgres:17
     container_name: inventory_db
+    restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -18,6 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: inventory_app
+    restart: always
     image: inventory
     ports:
       - ${PORT}:${PORT}
