@@ -26,91 +26,91 @@ export function Sidebar() {
     <>
       {/* Desktop. */}
       <Box display={["none", "contents"]}>
-        <Box h="100svh">
-          <Flex
-            h="full"
-            flexDir="column"
-            gap={1}
-            borderRight="1px solid {colors.border}"
-            bgColor="bg.panel"
+        <Flex
+          h="100svh"
+          pos="sticky"
+          top={0}
+          flexDir="column"
+          gap={1}
+          borderRight="1px solid {colors.border}"
+          bgColor="bg.panel"
+        >
+          <Heading
+            textTransform="uppercase"
+            as="h2"
+            size="2xl"
+            display="flex"
+            alignItems="center"
+            color="teal.fg"
+            gap={2}
+            px={8}
+            my={8}
           >
-            <Heading
-              textTransform="uppercase"
-              as="h2"
-              size="2xl"
-              display="flex"
-              alignItems="center"
-              color="teal.fg"
-              gap={2}
-              px={8}
-              my={8}
-            >
-              <Box
-                as="span"
-                mb="1px"
-                letterSpacing="1px"
-                bgGradient="linear-gradient(to bottom, {colors.teal.fg}, {colors.teal.solid})"
-                bgClip="text"
-              >
-                Inventory
-              </Box>
-            </Heading>
-            <Flex flexDir="column" p={4} pt={0} gap={1}>
-              <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
-              <DesktopNavlink
-                href="/items"
-                icon={MdWarehouse}
-                isActive={pathname === "/items"}
-                label="Items"
-              />
-              <DesktopNavlink
-                href="/items/deposit"
-                icon={MdPostAdd}
-                isActive={pathname === "/items/deposit"}
-                label="Deposit"
-              />
-              <DesktopNavlink
-                href="/settings"
-                icon={MdSettings}
-                isActive={pathname === "/settings"}
-                label="Settings"
-              />
-            </Flex>
             <Box
-              display="grid"
-              gridTemplateColumns="1fr 1fr"
-              m={4}
-              mt="auto"
-              rounded="sm"
-              border="1px solid {colors.border}"
+              as="span"
+              mb="1px"
+              letterSpacing="1px"
+              bgGradient="linear-gradient(to bottom, {colors.teal.fg}, {colors.teal.solid})"
+              bgClip="text"
             >
-              <Button
-                variant="plain"
-                onClick={() => setColorMode("light")}
-                w="full"
-                rounded="sm"
-                _light={{ bgColor: "yellow.muted" }}
-              >
-                <Icon color="yellow.fg" size="sm">
-                  <MdLightMode />
-                </Icon>
-                Light
-              </Button>
-              <Button
-                variant="plain"
-                onClick={() => setColorMode("dark")}
-                w="full"
-                rounded="sm"
-                _dark={{ bgColor: "bg.muted" }}
-              >
-                <Icon color="fg" size="sm">
-                  <MdDarkMode />
-                </Icon>
-                Dark
-              </Button>
+              Inventory
             </Box>
+          </Heading>
+          <Flex flexDir="column" p={4} pt={0} gap={1}>
+            <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
+            <DesktopNavlink
+              href="/items"
+              icon={MdWarehouse}
+              isActive={pathname === "/items"}
+              label="Items"
+            />
+            <DesktopNavlink
+              href="/items/deposit"
+              icon={MdPostAdd}
+              isActive={pathname === "/items/deposit"}
+              label="Deposit"
+            />
+            <DesktopNavlink
+              href="/settings"
+              icon={MdSettings}
+              isActive={pathname === "/settings"}
+              label="Settings"
+            />
           </Flex>
-        </Box>
+          <Box
+            display="grid"
+            gridTemplateColumns="1fr 1fr"
+            m={4}
+            mt="auto"
+            rounded="sm"
+            border="1px solid {colors.border}"
+          >
+            <Button
+              variant="plain"
+              onClick={() => setColorMode("light")}
+              w="full"
+              rounded="sm"
+              _light={{ bgColor: "yellow.muted" }}
+            >
+              <Icon color="yellow.fg" size="sm">
+                <MdLightMode />
+              </Icon>
+              Light
+            </Button>
+            <Button
+              variant="plain"
+              onClick={() => setColorMode("dark")}
+              w="full"
+              rounded="sm"
+              _dark={{ bgColor: "bg.muted" }}
+            >
+              <Icon color="fg" size="sm">
+                <MdDarkMode />
+              </Icon>
+              Dark
+            </Button>
+          </Box>
+        </Flex>
       </Box>
 
       {/* Mobile. */}
