@@ -160,8 +160,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
               h={["auto", "40px"]}
               gap={2}
             >
-              <Flex display={["flex", "contents"]} gap={2} w="full">
-                <Button onClick={filter.toggle} variant={["outline", "surface"]}>
+              <Flex display={["flex", "contents"]} flexDir="row-reverse" gap={2} w="full">
+                <Button onClick={filter.toggle} variant="surface">
                   {!isFilterOpen ? <MdFilterAlt /> : <MdClose />}
                   <Text display={["none", "inline"]}>Filter</Text>
                 </Button>
