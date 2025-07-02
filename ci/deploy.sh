@@ -47,15 +47,11 @@ ssh angelin-local << 'EOF'
 
   echo "[CI/CD] ✅ Pulling latest changes"
 
-  echo "[CI/CD] 🔄 Building image..."
-
-  docker build -t inventory .
-
-  echo "[CI/CD] ✅ Building image"
-
   echo "[CI/CD] 🔄 Restarting containers..."
 
-  docker compose restart
+  docker compose down
+
+  docker compose up -d --build
 
   echo "[CI/CD] ✅ Restarting containers"
 EOF
