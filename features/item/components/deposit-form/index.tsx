@@ -187,22 +187,24 @@ export function DepositItemForm() {
               );
             }}
           </form.AppField>
-          <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
-          <form.AppField
-            name="links"
-            validators={{
-              onChange: ({ value }) => {
-                const links = value.split(",").filter(Boolean);
-                for (const link of links) {
-                  if (!z.string().url().safeParse(link).success) {
-                    return "One or more URLs are invalid.";
+          <Flex flexDir={["column", "row"]} gap={4}>
+            <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
+            <form.AppField
+              name="links"
+              validators={{
+                onChange: ({ value }) => {
+                  const links = value.split(",").filter(Boolean);
+                  for (const link of links) {
+                    if (!z.string().url().safeParse(link).success) {
+                      return "One or more URLs are invalid.";
+                    }
                   }
-                }
-              },
-            }}
-          >
-            {(field) => <field.TagsField label="Links" />}
-          </form.AppField>
+                },
+              }}
+            >
+              {(field) => <field.TagsField label="Links" />}
+            </form.AppField>
+          </Flex>
         </Box>
         <Flex gap={2} flexDir={["column", "row"]}>
           <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>

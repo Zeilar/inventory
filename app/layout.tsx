@@ -7,7 +7,7 @@ import { getSettings } from "./api/settings/getSettings";
 import type { SettingsValues } from "@/features/db/schema";
 import { Seeder } from "./(seeder)";
 import { APP_BAR_HEIGHT } from "./(components)/sidebar/config";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { SIDEBAR_WIDTH } from "@/features/theme/constants";
 import { z } from "zod";
 
@@ -46,7 +46,18 @@ export default async function RootLayout({ children }: PropsWithChildren) {
                 pb={[`${APP_BAR_HEIGHT}px`, 0]}
               >
                 <Sidebar />
-                <div>{children}</div>
+                <Flex
+                  justify="center"
+                  w="full"
+                  css={{
+                    "& > div": {
+                      w: "full",
+                      maxW: "breakpoint-2xl",
+                    },
+                  }}
+                >
+                  {children}
+                </Flex>
               </Box>
             ) : (
               <Seeder />

@@ -156,7 +156,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
               align={["start", "center"]}
               justify="end"
               flexDir={["column", "row"]}
-              w={["100%", "auto"]}
+              w={["full", "auto"]}
               h={["auto", "40px"]}
               gap={2}
             >
@@ -221,9 +221,9 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         top={0}
         left={isFilterOpen ? 0 : -SIDEBAR_WIDTH}
         w={SIDEBAR_WIDTH}
-        h="100%"
+        h="full"
         p={4}
-        shadow="lg"
+        shadow="xl"
         zIndex="overlay"
         bgColor="bg.panel"
         transition="position"
