@@ -35,6 +35,7 @@ export function DashboardLayout({
       display="grid"
       gap={[4, 8]}
       gridTemplateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]}
+      gridAutoRows="min-content"
       m={[4, 8]}
     >
       <DashboardCardLayout title="Item count" icon={MdWarehouse}>
