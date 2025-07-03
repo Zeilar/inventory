@@ -133,56 +133,58 @@ export function DepositItemForm() {
                       <input {...getInputProps()} />
                     </Flex>
                   </Flex>
-                  <Box border="1px solid {colors.border}" rounded="sm">
-                    <Text p={3} color={accepted.length === 0 ? "fg.muted" : undefined}>
-                      Accepted ({accepted.length})
-                    </Text>
-                    {accepted.length > 0 ? (
-                      <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
-                        {accepted.map((file, i) => (
-                          <Flex key={i} gap={2} align="center">
-                            <Alert.Root variant="surface" w="full" status="success">
+                  <Flex flexDir={["column", "row"]} gap={2}>
+                    <Box w="full" border="1px solid {colors.border}" rounded="sm">
+                      <Text p={3} color={accepted.length === 0 ? "fg.muted" : undefined}>
+                        Accepted ({accepted.length})
+                      </Text>
+                      {accepted.length > 0 ? (
+                        <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
+                          {accepted.map((file, i) => (
+                            <Flex key={i} gap={2} align="center">
+                              <Alert.Root variant="surface" w="full" status="success">
+                                <Alert.Indicator />
+                                <Alert.Content>
+                                  <Alert.Title>
+                                    <Text truncate>{file.name}</Text>
+                                  </Alert.Title>
+                                </Alert.Content>
+                              </Alert.Root>
+                              <IconButton
+                                variant="ghost"
+                                onClick={() =>
+                                  field.setValue(({ accepted, rejected }) => ({
+                                    accepted: accepted.filter((element) => element !== file),
+                                    rejected,
+                                  }))
+                                }
+                              >
+                                <MdClear />
+                              </IconButton>
+                            </Flex>
+                          ))}
+                        </Flex>
+                      ) : null}
+                    </Box>
+                    <Box w="full" border="1px solid {colors.border}" rounded="sm">
+                      <Text p={3} color={rejected.length === 0 ? "fg.muted" : undefined}>
+                        Rejected ({rejected.length})
+                      </Text>
+                      {rejected.length > 0 ? (
+                        <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
+                          {rejected.map((rejection, i) => (
+                            <Alert.Root key={i} variant="surface" status="error">
                               <Alert.Indicator />
-                              <Alert.Content>
-                                <Alert.Title>
-                                  <Text truncate>{file.name}</Text>
-                                </Alert.Title>
+                              <Alert.Content mr="2px">
+                                <Text truncate>{rejection.file.name}</Text>
+                                <Text>{rejection.errors.at(0)?.message}</Text>
                               </Alert.Content>
                             </Alert.Root>
-                            <IconButton
-                              variant="ghost"
-                              onClick={() =>
-                                field.setValue(({ accepted, rejected }) => ({
-                                  accepted: accepted.filter((element) => element !== file),
-                                  rejected,
-                                }))
-                              }
-                            >
-                              <MdClear />
-                            </IconButton>
-                          </Flex>
-                        ))}
-                      </Flex>
-                    ) : null}
-                  </Box>
-                  <Box border="1px solid {colors.border}" rounded="sm">
-                    <Text p={3} color={rejected.length === 0 ? "fg.muted" : undefined}>
-                      Rejected ({rejected.length})
-                    </Text>
-                    {rejected.length > 0 ? (
-                      <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
-                        {rejected.map((rejection, i) => (
-                          <Alert.Root key={i} variant="surface" status="error">
-                            <Alert.Indicator />
-                            <Alert.Content mr="2px">
-                              <Text truncate>{rejection.file.name}</Text>
-                              <Text>{rejection.errors.at(0)?.message}</Text>
-                            </Alert.Content>
-                          </Alert.Root>
-                        ))}
-                      </Flex>
-                    ) : null}
-                  </Box>
+                          ))}
+                        </Flex>
+                      ) : null}
+                    </Box>
+                  </Flex>
                 </Flex>
               );
             }}
