@@ -165,7 +165,9 @@ export default async function Page({
                       <Link key={`${link}-${i}`} href={link} target="_blank">
                         <Badge size="lg" colorPalette="teal">
                           <MdOutlineOpenInNew />
-                          {link}
+                          <Text maxW="calc(100vw - (var(--chakra-spacing-1) * 31))" truncate>
+                            {link}
+                          </Text>
                         </Badge>
                       </Link>
                     ))
