@@ -30,7 +30,7 @@ export function Seeder() {
         Click the button below to get started!
       </Heading>
       <Button
-        variant="surface"
+        variant="solid"
         loading={isLoading}
         onClick={() => mutate()}
         colorPalette="teal"

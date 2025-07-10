@@ -8,7 +8,7 @@ export function CustomSnackbarProvider() {
       anchorOrigin={{ horizontal: "right", vertical: "top" }}
       Components={{
         default: forwardRef<HTMLDivElement, CustomContentProps>(({ message }, ref) => (
-          <Alert.Root variant="surface" status="neutral" ref={ref}>
+          <Alert.Root variant="solid" status="neutral" ref={ref}>
             <Alert.Indicator />
             <Alert.Content>
               <Alert.Title>{message}</Alert.Title>
@@ -16,7 +16,7 @@ export function CustomSnackbarProvider() {
           </Alert.Root>
         )),
         success: forwardRef<HTMLDivElement, CustomContentProps>(({ message }, ref) => (
-          <Alert.Root variant="surface" status="success" ref={ref}>
+          <Alert.Root variant="solid" status="success" ref={ref}>
             <Alert.Indicator />
             <Alert.Content>
               <Alert.Title>{message}</Alert.Title>
@@ -24,7 +24,7 @@ export function CustomSnackbarProvider() {
           </Alert.Root>
         )),
         error: forwardRef<HTMLDivElement, CustomContentProps>(({ message }, ref) => (
-          <Alert.Root variant="surface" status="error" ref={ref}>
+          <Alert.Root variant="solid" status="error" ref={ref}>
             <Alert.Indicator />
             <Alert.Content>
               <Alert.Title>{message}</Alert.Title>
@@ -32,7 +32,7 @@ export function CustomSnackbarProvider() {
           </Alert.Root>
         )),
         info: forwardRef<HTMLDivElement, CustomContentProps>(({ message }, ref) => (
-          <Alert.Root variant="surface" status="info" ref={ref}>
+          <Alert.Root variant="solid" status="info" ref={ref}>
             <Alert.Indicator />
             <Alert.Content>
               <Alert.Title>{message}</Alert.Title>
@@ -40,7 +40,7 @@ export function CustomSnackbarProvider() {
           </Alert.Root>
         )),
         warning: forwardRef<HTMLDivElement, CustomContentProps>(({ message }, ref) => (
-          <Alert.Root variant="surface" status="warning" ref={ref}>
+          <Alert.Root variant="solid" status="warning" ref={ref}>
             <Alert.Indicator />
             <Alert.Content>
               <Alert.Title>{message}</Alert.Title>

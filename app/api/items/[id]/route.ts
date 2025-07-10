@@ -35,6 +35,7 @@ export async function GET(_req: Request, { params }: Params<"id">) {
           tags: itemsTable.tags,
           price: itemsTable.price,
           links: itemsTable.links,
+          thumbnail: itemsTable.thumbnail,
         })
         .from(itemsTable)
         .where(eq(itemsTable.id, id))

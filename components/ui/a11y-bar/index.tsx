@@ -7,15 +7,7 @@ interface A11yBarProps {
 
 export function A11yBar({ breadcrumbsProps }: A11yBarProps) {
   return (
-    <Flex
-      justify="space-between"
-      align="center"
-      gap={4}
-      p={4}
-      border="1px solid {colors.border}"
-      bgColor="bg.panel"
-      rounded="sm"
-    >
+    <Flex justify="space-between" align="center" gap={4}>
       {breadcrumbsProps && <Breadcrumbs {...breadcrumbsProps} />}
     </Flex>
   );

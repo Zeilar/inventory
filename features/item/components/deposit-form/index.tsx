@@ -8,6 +8,9 @@ import { useRouter } from "next/navigation";
 import { Button, Box, Text, Icon, Flex, IconButton, Alert } from "@chakra-ui/react";
 import { Heading } from "@/components";
 import { MdClear, MdUpload } from "react-icons/md";
+import { useMutation } from "react-query";
+import { ItemCardPreview } from "@/app/items/(components)";
+import { useStore } from "@tanstack/react-form";
 
 interface Fields {
   title: string;
@@ -21,6 +24,7 @@ interface Fields {
   archived: boolean;
   price: string | null;
   links: string;
+  thumbnail: File | null;
 }
 
 export function DepositItemForm() {
@@ -35,9 +39,13 @@ export function DepositItemForm() {
       archived: false,
       price: "",
       links: "",
+      thumbnail: null,
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { files, quantity, title, articleId, tags, links, price } = value;
+      const { files, quantity, title, articleId, tags, links, price, thumbnail } = value;
+      if (!thumbnail) {
+        throw new Error("Missing thumbnail.");
+      }
       const id = await createItem(
         {
           title,
@@ -47,26 +55,53 @@ export function DepositItemForm() {
           tags,
           links,
           price: price || null,
+          thumbnail: thumbnail.name,
         },
-        files.accepted
+        files.accepted,
+        thumbnail
       );
-      form.resetField("files");
       push(`/items/${id}`);
     },
   });
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const filesDropzone = useDropzone({
     multiple: true,
     maxSize: 10_000_000, // 10MB.
     maxFiles: 10,
     onDrop: (accepted, rejected) => form.setFieldValue("files", { accepted, rejected }),
   });
 
+  const archived = useStore(form.store, (state) => state.values.archived);
+  const quantity = useStore(form.store, (state) => state.values.quantity);
+  const title = useStore(form.store, (state) => state.values.title);
+  const price = useStore(form.store, (state) => state.values.price);
+
+  const thumbnailPreviewMutation = useMutation({
+    mutationFn: async (thumbnail: File | null) => {
+      if (!thumbnail) {
+        return null;
+      }
+      return URL.createObjectURL(thumbnail);
+    },
+  });
+
   return (
     <form.AppForm>
-      <form.Form display="flex" flexDir="column" gap={4}>
-        <Box display="flex" flexDir="column" gap={4}>
+      <form.Form display="flex" flexDir="column" gap={8}>
+        <Box display="flex" flexDir="column" gap={8}>
+          <Box display="grid" gridTemplateColumns="repeat(3, 1fr)">
+            <Flex flexDir="column" gap={1}>
+              <Text textStyle="label">Preview</Text>
+              <ItemCardPreview
+                thumbnailSrc={thumbnailPreviewMutation.data ?? null}
+                item={{ archived, price, quantity, title }}
+              />
+            </Flex>
+          </Box>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
-          <Box display="flex" gap={4} flexDir={["column", "row"]}>
+          <form.AppField name="thumbnail">
+            {(field) => <field.ThumbnailField onChange={thumbnailPreviewMutation.mutate} />}
+          </form.AppField>
+          <Box display="flex" gap={8} flexDir={["column", "row"]}>
             <form.AppField
               name="title"
               validators={{
@@ -75,20 +110,22 @@ export function DepositItemForm() {
                   .min(1, "Title is required."),
               }}
             >
-              {(field) => <field.Field label="Title" placeholder="IKEA" />}
+              {(field) => <field.Field required label="Title" placeholder="Ryzen 7800X3D" />}
             </form.AppField>
             <form.AppField
               name="quantity"
               validators={{
                 onChange: z
-                  .number({ message: "Quantity must be a number." })
+                  .number({ message: "Quantity must be a number.", coerce: true })
                   .min(0, "Quantity must be 0 or bigger."),
               }}
             >
-              {(field) => <field.Field label="Quantity" type="number" placeholder="1" min={0} />}
+              {(field) => (
+                <field.Field required label="Quantity" type="number" placeholder="1" min={0} />
+              )}
             </form.AppField>
           </Box>
-          <Box display="flex" gap={4} flexDir={["column", "row"]}>
+          <Box display="flex" gap={8} flexDir={["column", "row"]}>
             <form.AppField name="articleId">
               {(field) => <field.Field label="Article id" placeholder="dG8rm4nVC7dfj57" />}
             </form.AppField>
@@ -104,10 +141,10 @@ export function DepositItemForm() {
                 <Flex gap={2} flexDir="column">
                   <Text textStyle="label">Files</Text>
                   <Flex
-                    {...getRootProps()}
+                    {...filesDropzone.getRootProps()}
                     rounded="md"
                     border="2px dashed"
-                    borderColor={isDragActive ? "teal.fg" : "border"}
+                    borderColor={filesDropzone.isDragActive ? "teal.fg" : "border"}
                     h={200}
                     p={4}
                     cursor="pointer"
@@ -130,7 +167,7 @@ export function DepositItemForm() {
                       <Text mt={2} color="fg.muted" fontSize="sm">
                         Max 10 files, up to 10MB per file. Filenames must be unique.
                       </Text>
-                      <input {...getInputProps()} />
+                      <input {...filesDropzone.getInputProps()} />
                     </Flex>
                   </Flex>
                   <Flex flexDir={["column", "row"]} gap={2}>
@@ -142,7 +179,7 @@ export function DepositItemForm() {
                         <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
                           {accepted.map((file, i) => (
                             <Flex key={i} gap={2} align="center">
-                              <Alert.Root variant="surface" w="full" status="success">
+                              <Alert.Root variant="solid" w="full" status="success">
                                 <Alert.Indicator />
                                 <Alert.Content>
                                   <Alert.Title>
@@ -173,7 +210,7 @@ export function DepositItemForm() {
                       {rejected.length > 0 ? (
                         <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
                           {rejected.map((rejection, i) => (
-                            <Alert.Root key={i} variant="surface" status="error">
+                            <Alert.Root key={i} variant="solid" status="error">
                               <Alert.Indicator />
                               <Alert.Content mr="2px">
                                 <Text truncate>{rejection.file.name}</Text>
@@ -189,7 +226,7 @@ export function DepositItemForm() {
               );
             }}
           </form.AppField>
-          <Flex flexDir={["column", "row"]} gap={4}>
+          <Flex flexDir={["column", "row"]} gap={8}>
             <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
             <form.AppField
               name="links"
@@ -208,9 +245,9 @@ export function DepositItemForm() {
             </form.AppField>
           </Flex>
         </Box>
-        <Flex gap={2} flexDir={["column", "row"]}>
+        <Flex gap={4} flexDir={["column", "row"]}>
           <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
-          <Button variant="surface" onClick={back} w={["100%", "auto"]}>
+          <Button variant="outline" onClick={back} w={["100%", "auto"]}>
             Cancel
           </Button>
         </Flex>

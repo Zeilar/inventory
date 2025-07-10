@@ -12,10 +12,10 @@ import capitalize from "lodash/capitalize";
 import {
   Box,
   Button,
+  CloseButton,
   createListCollection,
   Field,
   Flex,
-  IconButton,
   Portal,
   SegmentGroup,
   Select,
@@ -23,7 +23,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { MdAdd, MdClose, MdFilterAlt } from "react-icons/md";
-import { SIDEBAR_WIDTH } from "@/features/theme/constants";
 
 interface ItemsHeaderProps {
   page: number;
@@ -136,7 +135,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             Items
           </Heading>
           <UnstyledLink href="/items/deposit">
-            <Button colorPalette="teal" variant="surface" size={["sm", "md"]}>
+            <Button colorPalette="teal" variant="solid" size={["sm", "md"]}>
               <MdAdd />
               Deposit
             </Button>
@@ -161,7 +160,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
               gap={2}
             >
               <Flex display={["flex", "contents"]} flexDir="row-reverse" gap={2} w="full">
-                <Button onClick={filter.toggle} variant="surface">
+                <Button onClick={filter.toggle} variant="outline">
                   {!isFilterOpen ? <MdFilterAlt /> : <MdClose />}
                   <Text display={["none", "inline"]}>Filter</Text>
                 </Button>
@@ -201,7 +200,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                             {sortCollection.items.map((item) => (
                               <Select.Item item={item} key={item.value}>
                                 {item.label}
-                                <Select.ItemIndicator color="teal.fg" />
+                                <Select.ItemIndicator />
                               </Select.Item>
                             ))}
                           </Select.Content>
@@ -219,23 +218,21 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         as="nav"
         pos="fixed"
         top={0}
-        left={isFilterOpen ? 0 : -SIDEBAR_WIDTH}
-        w={SIDEBAR_WIDTH}
+        left={isFilterOpen ? 0 : "-100%"}
+        w={350}
         h="full"
-        p={4}
+        p={8}
         shadow="xl"
         zIndex="overlay"
         bgColor="bg.panel"
         transition="position"
       >
-        <form.Form display="flex" flexDir="column" gap={4}>
+        <form.Form display="flex" flexDir="column" gap={8}>
           <Flex justify="space-between" align="center" gap={4}>
             <Heading as="h2" size="2xl">
               Filters
             </Heading>
-            <IconButton variant="ghost" onClick={filter.close}>
-              <MdClose />
-            </IconButton>
+            <CloseButton onClick={filter.close} />
           </Flex>
           <Separator />
           <form.AppField name="status">
@@ -244,16 +241,14 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                 <Field.Root mb={2}>
                   <Field.Label>Status</Field.Label>
                 </Field.Root>
-                <SegmentGroup.Root value={field.state.value} w="100%">
+                <SegmentGroup.Root value={field.state.value} w="full" shadow="none">
                   <SegmentGroup.Item
                     roundedRight="none"
                     roundedLeft="sm"
-                    w="100%"
+                    w="full"
                     cursor="pointer"
                     onClick={() => field.handleChange("published")}
                     value="published"
-                    border="1px solid {colors.border}"
-                    mr="-1px"
                     _checked={{
                       color: "green.fg",
                       bgColor: "green.subtle",
@@ -268,9 +263,6 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     cursor="pointer"
                     onClick={() => field.handleChange("archived")}
                     value="archived"
-                    border="1px solid"
-                    borderColor="border"
-                    mr="-1px"
                     _checked={{
                       color: "orange.fg",
                       bgColor: "orange.subtle",
@@ -286,8 +278,6 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     cursor="pointer"
                     onClick={() => field.handleChange("all")}
                     value="all"
-                    border="1px solid"
-                    borderColor="border"
                     _checked={{
                       color: "teal.fg",
                       bgColor: "teal.subtle",
@@ -348,7 +338,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
           <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
             <form.SubmitButton>Apply</form.SubmitButton>
             <Button
-              variant="surface"
+              variant="outline"
               type="button"
               onClick={() => {
                 form.reset(defaultValues);

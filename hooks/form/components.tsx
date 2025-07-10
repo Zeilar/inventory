@@ -8,16 +8,26 @@ import {
   Button,
   type ButtonProps,
   Field as ChakraField,
+  CloseButton,
+  FileUpload,
+  Flex,
   Input,
+  InputGroup,
   type InputProps,
   SegmentGroup,
   Tag,
+  Text,
 } from "@chakra-ui/react";
 import { useState, type ReactNode } from "react";
 import { useStore } from "@tanstack/react-form";
+import { MdUpload } from "react-icons/md";
 
 interface TagsFieldProps {
   label?: ReactNode;
+}
+
+interface ThumbnailFieldProps {
+  onChange(value: File | null): void;
 }
 
 export function Field({
@@ -66,7 +76,7 @@ export function SubmitButton({ loading, ...props }: ButtonProps) {
       {(isSubmitting) => (
         <Button
           w="full"
-          variant="surface"
+          variant="solid"
           colorPalette="teal"
           type="submit"
           loading={loading || isSubmitting}
@@ -149,41 +159,71 @@ export function ArchivedToggler() {
   const { state, handleChange } = useFieldContext<boolean>();
 
   return (
-    <SegmentGroup.Root value={`${state.value}`} w="fit">
-      <SegmentGroup.Item
-        roundedRight="none"
-        roundedLeft="sm"
-        w="100%"
-        cursor="pointer"
-        onClick={() => handleChange(false)}
-        value={`${false}`}
-        border="1px solid"
-        borderColor="border"
-        mr="-1px"
-        _checked={{
-          color: "green.fg",
-          bgColor: "green.subtle",
+    <Flex flexDir="column" gap={1}>
+      <Text textStyle="label">Status</Text>
+      <SegmentGroup.Root value={`${state.value}`} w="fit" shadow="none">
+        <SegmentGroup.Item
+          roundedRight="none"
+          roundedLeft="sm"
+          w="full"
+          cursor="pointer"
+          onClick={() => handleChange(false)}
+          value={`${false}`}
+          _checked={{
+            color: "green.fg",
+            bgColor: "green.subtle",
+          }}
+          css={{ "&::before": { display: "none" } }}
+        >
+          Published
+        </SegmentGroup.Item>
+        <SegmentGroup.Item
+          rounded="none"
+          w="full"
+          cursor="pointer"
+          onClick={() => handleChange(true)}
+          value={`${true}`}
+          _checked={{
+            color: "orange.fg",
+            bgColor: "orange.subtle",
+          }}
+          css={{ "&::before": { display: "none" } }}
+        >
+          Archived
+        </SegmentGroup.Item>
+      </SegmentGroup.Root>
+    </Flex>
+  );
+}
+
+export function ThumbnailField({ onChange }: ThumbnailFieldProps) {
+  const { state, handleChange } = useFieldContext<File | null>();
+  const { value } = state;
+
+  return (
+    <FileUpload.Root gap={1} maxW={300} accept={["image/*"]}>
+      <FileUpload.HiddenInput
+        onChange={(e) => {
+          const file = e.target.files?.[0] ?? null;
+          handleChange(file);
+          onChange(file);
         }}
-        css={{ "&::before": { display: "none" } }}
+      />
+      <FileUpload.Label>Thumbnail</FileUpload.Label>
+      <InputGroup
+        startElement={<MdUpload />}
+        endElement={
+          <FileUpload.ClearTrigger asChild>
+            <CloseButton ml={1} size="xs" variant="plain" onClick={() => handleChange(null)} />
+          </FileUpload.ClearTrigger>
+        }
       >
-        Published
-      </SegmentGroup.Item>
-      <SegmentGroup.Item
-        rounded="none"
-        w="100%"
-        cursor="pointer"
-        onClick={() => handleChange(true)}
-        value={`${true}`}
-        border="1px solid"
-        borderColor="border"
-        _checked={{
-          color: "orange.fg",
-          bgColor: "orange.subtle",
-        }}
-        css={{ "&::before": { display: "none" } }}
-      >
-        Archived
-      </SegmentGroup.Item>
-    </SegmentGroup.Root>
+        <Input asChild>
+          <FileUpload.Trigger truncate>
+            {value ? value.name : <Text color="fg.muted">Select image</Text>}
+          </FileUpload.Trigger>
+        </Input>
+      </InputGroup>
+    </FileUpload.Root>
   );
 }

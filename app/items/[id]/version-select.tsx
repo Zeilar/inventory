@@ -51,7 +51,7 @@ export function VersionSelect({ options, value = options.at(0) ?? "current" }: V
               {collection.items.map((version) => (
                 <Select.Item item={version} key={version}>
                   {version === "current" ? "Current" : renderItem(version)}
-                  <Select.ItemIndicator color="teal.fg" />
+                  <Select.ItemIndicator />
                 </Select.Item>
               ))}
             </Select.Content>

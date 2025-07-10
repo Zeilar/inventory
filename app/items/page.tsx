@@ -3,7 +3,7 @@ import type { GetItemsResponse } from "../api/items/types";
 import { ItemsContainer, ItemsHeader } from "./(components)";
 import type { ItemsSearchParams } from "../api/items/route";
 import { getSettings } from "../api/settings/getSettings";
-import { Card, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { A11yBar } from "@/components";
 import { apiFetch } from "../api/api-fetch";
 
@@ -39,19 +39,15 @@ export default async function Page({ searchParams }: SearchParams<ItemsSearchPar
   const parsedPage = parseInt(page) || 1;
 
   return (
-    <Flex flexDir="column" gap={4} m={[4, 8]}>
+    <Flex flexDir="column" gap={[4, 8]} m={[4, 8]}>
       <A11yBar breadcrumbsProps={{ hrefs: [{ href: "/", label: "Home" }], current: "Items" }} />
-      <Card.Root>
-        <Card.Header>
-          <ItemsHeader count={total} page={total ? parsedPage : 1} />
-        </Card.Header>
-        <Card.Body pt={2}>
-          <ItemsContainer rows={items.map((item) => ({ item }))} />
-          <Text mt={2} display={["none", "inline"]}>
-            {getPaginationSummary(parsedPage, itemsPerPage, total)}
-          </Text>
-        </Card.Body>
-      </Card.Root>
+      <Flex flexDir="column" gap={4}>
+        <ItemsHeader count={total} page={total ? parsedPage : 1} />
+        <ItemsContainer rows={items} />
+        <Text mt={2} display={["none", "inline"]}>
+          {getPaginationSummary(parsedPage, itemsPerPage, total)}
+        </Text>
+      </Flex>
     </Flex>
   );
 }

@@ -31,26 +31,26 @@ export function Form({ settings }: FormProps) {
 
   return (
     <form.AppForm>
-      <form.Form display="flex" flexDir="column" gap={4}>
+      <form.Form display="flex" flexDir="column" gap={8}>
         <form.AppField name="itemsPerPage">
           {(field) => (
             <field.Field
               onChange={(e) => field.handleChange(parseInt(e.target.value) || MIN_ITEMS_PER_PAGE)}
               type="number"
               label="Items per page"
-              w={["100%", 200]}
+              w={["full", 200]}
               min={MIN_ITEMS_PER_PAGE}
               max={MAX_ITEMS_PER_PAGE}
               required
             />
           )}
         </form.AppField>
-        <Flex flexDir="column" gap={1.5} display={["flex", "none"]}>
+        <Flex flexDir="column" gap={1} w={200}>
           <Text textStyle="label">Theme</Text>
           <ColorModeSwitcher />
         </Flex>
         <div>
-          <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
+          <form.SubmitButton w={["full", "auto"]}>Save</form.SubmitButton>
         </div>
       </form.Form>
     </form.AppForm>

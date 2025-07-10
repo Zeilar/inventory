@@ -14,7 +14,9 @@ interface ProvidersProps extends PropsWithChildren {
   settings: SettingsValues;
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
 
 export function Providers({ children, settings }: ProvidersProps) {
   return (

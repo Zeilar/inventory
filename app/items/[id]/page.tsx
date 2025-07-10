@@ -4,7 +4,7 @@ import type { Item, ItemHistory } from "@/features/db/schema";
 import type { PropsWithChildren, ReactNode } from "react";
 import { VersionSelect } from "./version-select";
 import { notFound } from "next/navigation";
-import { Badge, Box, Button, Card, Flex, Icon, Text } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import type { IconType } from "react-icons/lib";
 import {
   MdOutlineArchive,
@@ -90,99 +90,90 @@ export default async function Page({
           current: item.title,
         }}
       />
-      <Card.Root>
-        <Card.Header>
-          <Flex gap={4} justify="space-between" flexDir={["column", "row"]}>
-            <Heading size="2xl" as="h2">
-              {title}
-            </Heading>
-            <Flex gap={2} justify="space-between">
-              <VersionSelect
-                options={history.flatMap(({ createdAt }) => createdAt)}
-                value={version}
-              />
-              <UnstyledLink href={`/items/${id}/edit`}>
-                <Button variant="surface" colorPalette="teal" h="40px">
-                  Edit
-                </Button>
-              </UnstyledLink>
-            </Flex>
+      <Flex gap={4} justify="space-between" flexDir={["column", "row"]}>
+        <Heading size="2xl" as="h2">
+          {title}
+        </Heading>
+        <Flex gap={2} justify="space-between">
+          <VersionSelect options={history.flatMap(({ createdAt }) => createdAt)} value={version} />
+          <UnstyledLink href={`/items/${id}/edit`}>
+            <Button variant="solid" colorPalette="teal" h="40px">
+              Edit
+            </Button>
+          </UnstyledLink>
+        </Flex>
+      </Flex>
+      <Flex flexDir="column" gap={[2, 4]}>
+        <InfoBox icon={MdOutlineNumbers} title="Quantity">
+          {quantity}
+        </InfoBox>
+        <InfoBox icon={MdOutlineFingerprint} title="Article id">
+          {articleId || "-"}
+        </InfoBox>
+        <InfoBox icon={MdOutlineArchive} title="Archived">
+          {archived && archivedAt
+            ? new Date(archivedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)
+            : "No"}
+        </InfoBox>
+        <InfoBox icon={MdOutlineTag} title="Tags">
+          <Flex display="flex" gap={2} flexWrap="wrap">
+            {parsedTags.length > 0
+              ? parsedTags.map((tag) => (
+                  <Link key={tag} href={`/items?tags=${tag}`}>
+                    <Badge size="lg" colorPalette="teal">
+                      {tag}
+                    </Badge>
+                  </Link>
+                ))
+              : "-"}
           </Flex>
-        </Card.Header>
-        <Card.Body pt={[4, 6]}>
-          <Flex flexDir="column" gap={[2, 4]}>
-            <InfoBox icon={MdOutlineNumbers} title="Quantity">
-              {quantity}
-            </InfoBox>
-            <InfoBox icon={MdOutlineFingerprint} title="Article id">
-              {articleId || "-"}
-            </InfoBox>
-            <InfoBox icon={MdOutlineArchive} title="Archived">
-              {archived && archivedAt
-                ? new Date(archivedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)
-                : "No"}
-            </InfoBox>
-            <InfoBox icon={MdOutlineTag} title="Tags">
-              <Flex display="flex" gap={2} flexWrap="wrap">
-                {parsedTags.length > 0
-                  ? parsedTags.map((tag) => (
-                      <Link key={tag} href={`/items?tags=${tag}`}>
-                        <Badge size="lg" colorPalette="teal">
-                          {tag}
-                        </Badge>
-                      </Link>
-                    ))
-                  : "-"}
-              </Flex>
-            </InfoBox>
-            <InfoBox icon={MdOutlineAttachFile} title="Files">
-              <Flex flexDir="column" gap={2}>
-                {parsedFiles.length
-                  ? parsedFiles.map((file, i) => (
-                      <UnstyledLink
-                        key={`${file}-${i}`}
-                        href={`/api/file/${id}/${file}`}
-                        download
-                        as={foundPastVersion ? "span" : undefined}
-                        cursor={foundPastVersion ? "not-allowed" : undefined}
-                      >
-                        <Button colorPalette="teal" variant="surface">
-                          <MdOutlineDownload />
-                          {file}
-                        </Button>
-                      </UnstyledLink>
-                    ))
-                  : "-"}
-              </Flex>
-            </InfoBox>
-            <InfoBox icon={MdOutlineSell} title="Price">
-              {price || "-"}
-            </InfoBox>
-            <InfoBox icon={MdOutlineLink} title="Links">
-              <Flex flexDir="column" gap={2}>
-                {parsedLinks.length
-                  ? parsedLinks.map((link, i) => (
-                      <Link key={`${link}-${i}`} href={link} target="_blank">
-                        <Badge size="lg" colorPalette="teal">
-                          <MdOutlineOpenInNew />
-                          <Text maxW="calc(100vw - (var(--chakra-spacing-1) * 31))" truncate>
-                            {link}
-                          </Text>
-                        </Badge>
-                      </Link>
-                    ))
-                  : "-"}
-              </Flex>
-            </InfoBox>
-            <InfoBox icon={MdOutlineDateRange} title="Deposited">
-              {new Date(item.createdAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
-            </InfoBox>
-            <InfoBox icon={MdOutlineUpdate} title="Updated">
-              {new Date(item.updatedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
-            </InfoBox>
+        </InfoBox>
+        <InfoBox icon={MdOutlineAttachFile} title="Files">
+          <Flex flexDir="column" gap={2}>
+            {parsedFiles.length
+              ? parsedFiles.map((file, i) => (
+                  <UnstyledLink
+                    key={`${file}-${i}`}
+                    href={`/api/file/${id}/${file}`}
+                    download
+                    as={foundPastVersion ? "span" : undefined}
+                    cursor={foundPastVersion ? "not-allowed" : undefined}
+                  >
+                    <Button colorPalette="teal" variant="outline">
+                      <MdOutlineDownload />
+                      {file}
+                    </Button>
+                  </UnstyledLink>
+                ))
+              : "-"}
           </Flex>
-        </Card.Body>
-      </Card.Root>
+        </InfoBox>
+        <InfoBox icon={MdOutlineSell} title="Price">
+          {price || "-"}
+        </InfoBox>
+        <InfoBox icon={MdOutlineLink} title="Links">
+          <Flex flexDir="column" gap={2}>
+            {parsedLinks.length
+              ? parsedLinks.map((link, i) => (
+                  <Link key={`${link}-${i}`} href={link} target="_blank">
+                    <Badge size="lg" colorPalette="teal">
+                      <MdOutlineOpenInNew />
+                      <Text maxW="calc(100vw - (var(--chakra-spacing-1) * 31))" truncate>
+                        {link}
+                      </Text>
+                    </Badge>
+                  </Link>
+                ))
+              : "-"}
+          </Flex>
+        </InfoBox>
+        <InfoBox icon={MdOutlineDateRange} title="Deposited">
+          {new Date(item.createdAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
+        </InfoBox>
+        <InfoBox icon={MdOutlineUpdate} title="Updated">
+          {new Date(item.updatedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
+        </InfoBox>
+      </Flex>
     </Flex>
   );
 }

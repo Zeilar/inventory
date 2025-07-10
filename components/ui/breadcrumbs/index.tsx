@@ -1,6 +1,7 @@
 import { Box, Breadcrumb } from "@chakra-ui/react";
 import { Link } from "../link";
 import { Fragment } from "react";
+import { MdChevronRight } from "react-icons/md";
 
 export interface BreadcrumbsProps {
   /**
@@ -20,7 +21,9 @@ export function Breadcrumbs({ current, hrefs }: BreadcrumbsProps) {
               {label}
             </Breadcrumb.Link>
             <Breadcrumb.Separator>
-              <Box mx={1}>/</Box>
+              <Box mx={1}>
+                <MdChevronRight />
+              </Box>
             </Breadcrumb.Separator>
           </Fragment>
         ))}

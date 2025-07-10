@@ -2,13 +2,11 @@ import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import classNames from "classnames";
 import { openSans, roboto } from "@/features/theme/fonts";
-import { Providers, Sidebar } from "./(components)";
+import { Providers, Navbar } from "./(components)";
 import { getSettings } from "./api/settings/getSettings";
 import type { SettingsValues } from "@/features/db/schema";
 import { Seeder } from "./(seeder)";
-import { APP_BAR_HEIGHT } from "./(components)/sidebar/config";
 import { Box, Flex } from "@chakra-ui/react";
-import { SIDEBAR_WIDTH } from "@/features/theme/constants";
 import { z } from "zod";
 
 export const metadata: Metadata = {
@@ -20,7 +18,7 @@ export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children }: PropsWithChildren) {
   let hasInstalled = false;
-  let settings: SettingsValues = { itemsPerPage: 10 };
+  let settings: SettingsValues = { itemsPerPage: 9 };
   try {
     settings = await getSettings();
     hasInstalled = true;
@@ -37,28 +35,10 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         <body>
           <Providers settings={z.object({ itemsPerPage: z.number() }).parse(settings)}>
             {hasInstalled ? (
-              <Box
-                as="main"
-                minH="100svh"
-                h="100%"
-                display="grid"
-                gridTemplateColumns={["1fr", `${SIDEBAR_WIDTH}px 1fr`]}
-                pb={[`${APP_BAR_HEIGHT}px`, 0]}
-              >
-                <Sidebar />
-                <Flex
-                  justify="center"
-                  w="full"
-                  css={{
-                    "& > div": {
-                      w: "full",
-                      maxW: "breakpoint-2xl",
-                    },
-                  }}
-                >
-                  {children}
-                </Flex>
-              </Box>
+              <Flex as="main" flexDir="column" minH="100svh" align="center">
+                <Navbar />
+                <Box w="breakpoint-xl">{children}</Box>
+              </Flex>
             ) : (
               <Seeder />
             )}

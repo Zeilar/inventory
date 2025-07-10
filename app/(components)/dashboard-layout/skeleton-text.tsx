@@ -1,7 +1,7 @@
 import { Box, SkeletonText } from "@chakra-ui/react";
 
 interface DashboardLayoutSkeletonTextProps {
-  w: number;
+  w?: number;
   noOfLines?: number;
 }
 

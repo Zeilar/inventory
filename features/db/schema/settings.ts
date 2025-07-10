@@ -6,7 +6,7 @@ export type SettingsValues = Settings["value"];
 
 export const settingsTable = pgTable("settings", {
   id: serial("id").primaryKey(),
-  value: json("value").$type<{ itemsPerPage: number }>().default({ itemsPerPage: 10 }).notNull(),
+  value: json("value").$type<{ itemsPerPage: number }>().default({ itemsPerPage: 9 }).notNull(),
   createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "string" })
     .defaultNow()

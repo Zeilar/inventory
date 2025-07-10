@@ -3,7 +3,7 @@ import type { Params } from "@/app/types";
 import { A11yBar, Heading } from "@/components";
 import type { Item } from "@/features/db/schema";
 import { EditItemForm } from "@/features/item/components";
-import { Card, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 export default async function Page({ params }: Params<"id">) {
   const { id } = await params;
@@ -11,11 +11,11 @@ export default async function Page({ params }: Params<"id">) {
     revalidate: 31_556_926,
     tags: [`items-${id}`],
   });
-  const { title, quantity, articleId, files, tags, archived, links, price }: Item =
+  const { title, quantity, articleId, files, tags, archived, links, price, thumbnail }: Item =
     await res.json();
 
   return (
-    <Flex flexDir="column" gap={4} m={[4, 8]}>
+    <Flex flexDir="column" gap={8} m={[4, 8]}>
       <A11yBar
         breadcrumbsProps={{
           hrefs: [
@@ -26,26 +26,21 @@ export default async function Page({ params }: Params<"id">) {
           current: "Edit",
         }}
       />
-      <Card.Root>
-        <Card.Header>
-          <Heading size="2xl" as="h2">
-            {title}
-          </Heading>
-        </Card.Header>
-        <Card.Body>
-          <EditItemForm
-            articleId={articleId}
-            files={files}
-            id={parseInt(id)}
-            quantity={quantity}
-            title={title}
-            tags={tags}
-            archived={archived}
-            links={links}
-            price={price}
-          />
-        </Card.Body>
-      </Card.Root>
+      <Heading size="2xl" as="h2">
+        {title}
+      </Heading>
+      <EditItemForm
+        articleId={articleId}
+        files={files}
+        id={parseInt(id)}
+        quantity={quantity}
+        title={title}
+        tags={tags}
+        archived={archived}
+        links={links}
+        price={price}
+        thumbnail={thumbnail}
+      />
     </Flex>
   );
 }

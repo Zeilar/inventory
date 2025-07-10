@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { AppBarNavlink, DesktopNavlink } from "./navlink";
 import { APP_BAR_HEIGHT } from "./config";
-import { Box, Button, Flex, Heading, Icon } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import {
   MdHome,
   MdOutlineHome,
@@ -13,29 +13,31 @@ import {
   MdOutlineSettings,
   MdPostAdd,
   MdOutlinePostAdd,
-  MdDarkMode,
-  MdLightMode,
 } from "react-icons/md";
-import { useColorMode } from "@/components";
 
-export function Sidebar() {
+export function Navbar() {
   const pathname = usePathname();
-  const { setColorMode } = useColorMode();
 
   return (
     <>
       {/* Desktop. */}
       <Box display={["none", "contents"]}>
         <Flex
-          h="100svh"
+          justify="center"
+          borderBottom="1px solid {colors.border}"
           pos="sticky"
           top={0}
-          flexDir="column"
-          gap={1}
-          borderRight="1px solid {colors.border}"
-          bgColor="bg.panel"
+          w="full"
+          zIndex="banner"
+          _dark={{
+            bgColor: "#080808", // Body background-color.
+          }}
+          _light={{
+            bgColor: "gray.100", // Body background-color.
+          }}
         >
-          <Heading
+          <Flex px={6} gap={12} justify="center" maxW="breakpoint-2xl">
+            {/* <Heading
             textTransform="uppercase"
             as="h2"
             size="2xl"
@@ -48,68 +50,22 @@ export function Sidebar() {
           >
             <Box
               as="span"
-              mb="1px"
               letterSpacing="1px"
               bgGradient="linear-gradient(to bottom, {colors.teal.fg}, {colors.teal.solid})"
               bgClip="text"
             >
               Inventory
             </Box>
-          </Heading>
-          <Flex flexDir="column" p={4} pt={0} gap={1}>
-            <DesktopNavlink href="/" icon={MdHome} isActive={pathname === "/"} label="Home" />
-            <DesktopNavlink
-              href="/items"
-              icon={MdWarehouse}
-              isActive={pathname === "/items"}
-              label="Items"
-            />
+          </Heading> */}
+            <DesktopNavlink href="/" isActive={pathname === "/"} label="Home" />
+            <DesktopNavlink href="/items" isActive={pathname === "/items"} label="Items" />
             <DesktopNavlink
               href="/items/deposit"
-              icon={MdPostAdd}
               isActive={pathname === "/items/deposit"}
               label="Deposit"
             />
-            <DesktopNavlink
-              href="/settings"
-              icon={MdSettings}
-              isActive={pathname === "/settings"}
-              label="Settings"
-            />
+            <DesktopNavlink href="/settings" isActive={pathname === "/settings"} label="Settings" />
           </Flex>
-          <Box
-            display="grid"
-            gridTemplateColumns="1fr 1fr"
-            m={4}
-            mt="auto"
-            rounded="sm"
-            border="1px solid {colors.border}"
-          >
-            <Button
-              variant="plain"
-              onClick={() => setColorMode("light")}
-              w="full"
-              rounded="sm"
-              _light={{ bgColor: "yellow.muted" }}
-            >
-              <Icon color="yellow.fg" size="sm">
-                <MdLightMode />
-              </Icon>
-              Light
-            </Button>
-            <Button
-              variant="plain"
-              onClick={() => setColorMode("dark")}
-              w="full"
-              rounded="sm"
-              _dark={{ bgColor: "bg.muted" }}
-            >
-              <Icon color="fg" size="sm">
-                <MdDarkMode />
-              </Icon>
-              Dark
-            </Button>
-          </Box>
         </Flex>
       </Box>
 

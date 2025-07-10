@@ -5,3 +5,4 @@ export * from "./color-mode";
 export * from "./heading";
 export * from "./a11y-bar";
 export * from "./tooltip";
+export * from "./skeleton-text";

@@ -26,15 +26,7 @@ export function DashboardCardLayout({
   css,
 }: DashboardCardLayoutProps) {
   return (
-    <Flex
-      border="1px solid {colors.border}"
-      rounded="sm"
-      bgColor="bg.panel"
-      p={4}
-      gap={4}
-      align="center"
-      css={css}
-    >
+    <Flex rounded="sm" bgColor="bg.panel" p={4} gap={4} align="center" css={css}>
       <Flex p={2}>
         <Icon color="teal.solid" size="2xl">
           <IconComponent />

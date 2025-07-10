@@ -9,10 +9,14 @@ const itemsTableSchema = {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   /**
-   * Nullable. Doesn't refer to anything in the app.
+   * Nullable. Isn't connected to anything internally in the app.
    */
   articleId: text("article_id"),
   quantity: integer("quantity").notNull().default(1),
+  /**
+   * File path.
+   */
+  thumbnail: text("thumbnail").notNull(),
   /**
    * Comma separated file paths.
    */

@@ -9,6 +9,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Flex, Box, Button, Text, Icon, Heading, IconButton, Alert } from "@chakra-ui/react";
 import { MdClear, MdUpload } from "react-icons/md";
+import { useStore } from "@tanstack/react-form";
+import { useMutation } from "react-query";
+import { ItemCardPreview } from "@/app/items/(components)";
+import { getThumbnailPath } from "../../common";
 
 interface Fields {
   title?: string;
@@ -23,6 +27,7 @@ interface Fields {
   archived: boolean;
   price: string;
   links: string;
+  thumbnail: File | null;
 }
 
 interface EditFormProps {
@@ -35,6 +40,7 @@ interface EditFormProps {
   archived: boolean;
   price: string | null;
   links: string;
+  thumbnail: string | null;
 }
 
 export function EditItemForm({
@@ -47,6 +53,7 @@ export function EditItemForm({
   archived,
   links,
   price,
+  thumbnail,
 }: EditFormProps) {
   const { back, push } = useRouter();
   const form = useAppForm({
@@ -60,9 +67,15 @@ export function EditItemForm({
       archived,
       links,
       price: price ?? "",
+      thumbnail: null,
     } as Fields,
     onSubmit: async ({ value }) => {
-      const { filesToRemove, quantity, articleId, files, title, tags, links, price } = value;
+      const { filesToRemove, quantity, articleId, files, title, tags, links, price, thumbnail } =
+        value;
+
+      if (!thumbnail) {
+        throw new Error("Missing thumbnail.");
+      }
 
       let archivedAt: string | null | undefined;
       // Archiving.
@@ -87,7 +100,8 @@ export function EditItemForm({
           price: price || null,
         },
         files.accepted,
-        filesToRemove.right
+        filesToRemove.right,
+        thumbnail
       );
       push(`/items/${id}`);
     },
@@ -107,12 +121,46 @@ export function EditItemForm({
     });
   }, [files, form]);
 
+  const archivedValue = useStore(form.store, (state) => state.values.archived);
+  const quantityValue = useStore(form.store, (state) => state.values.quantity);
+  const titleValue = useStore(form.store, (state) => state.values.title);
+  const priceValue = useStore(form.store, (state) => state.values.price);
+
+  const thumbnailPreviewMutation = useMutation({
+    mutationFn: async (thumbnail: File | null) => {
+      if (!thumbnail) {
+        return null;
+      }
+      return URL.createObjectURL(thumbnail);
+    },
+  });
+
   return (
     <form.AppForm>
-      <form.Form display="flex" flexDir="column" gap={4}>
-        <Box display="flex" flexDir="column" gap={4}>
+      <form.Form display="flex" flexDir="column" gap={8}>
+        <Box display="flex" flexDir="column" gap={8}>
+          <Box display="grid" gridTemplateColumns="repeat(3, 1fr)">
+            <Flex flexDir="column" gap={1}>
+              <Text textStyle="label">Preview</Text>
+              <ItemCardPreview
+                thumbnailSrc={
+                  thumbnailPreviewMutation.data ??
+                  (thumbnail ? getThumbnailPath(id, thumbnail) : null)
+                }
+                item={{
+                  archived: archivedValue,
+                  price: priceValue,
+                  quantity: quantityValue,
+                  title: titleValue,
+                }}
+              />
+            </Flex>
+          </Box>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
-          <Box display="flex" gap={4} flexDir={["column", "row"]}>
+          <form.AppField name="thumbnail">
+            {(field) => <field.ThumbnailField onChange={thumbnailPreviewMutation.mutate} />}
+          </form.AppField>
+          <Box display="flex" gap={8} flexDir={["column", "row"]}>
             <form.AppField
               name="title"
               validators={{
@@ -121,7 +169,7 @@ export function EditItemForm({
                   .min(1, "Title is required."),
               }}
             >
-              {(field) => <field.Field label="Title" placeholder="IKEA" />}
+              {(field) => <field.Field required label="Title" placeholder="IKEA" />}
             </form.AppField>
             <form.AppField
               name="quantity"
@@ -131,10 +179,12 @@ export function EditItemForm({
                   .min(0, "Quantity must be 0 or bigger."),
               }}
             >
-              {(field) => <field.Field type="number" label="Quantity" placeholder="1" min={0} />}
+              {(field) => (
+                <field.Field required type="number" label="Quantity" placeholder="1" min={0} />
+              )}
             </form.AppField>
           </Box>
-          <Flex gap={4} flexDir={["column", "row"]}>
+          <Flex gap={8} flexDir={["column", "row"]}>
             <form.AppField
               name="articleId"
               validators={{
@@ -193,7 +243,7 @@ export function EditItemForm({
                         <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
                           {accepted.map((file, i) => (
                             <Flex key={i} gap={2} align="center">
-                              <Alert.Root variant="surface" w="full" status="success">
+                              <Alert.Root variant="solid" w="full" status="success">
                                 <Alert.Indicator />
                                 <Alert.Content>
                                   <Alert.Title>
@@ -224,7 +274,7 @@ export function EditItemForm({
                       {rejected.length > 0 ? (
                         <Flex flexDir="column" gap={2} overflow="auto" maxH={250} p={2} pt={0}>
                           {rejected.map((rejection, i) => (
-                            <Alert.Root key={i} variant="surface" status="error">
+                            <Alert.Root key={i} variant="solid" status="error">
                               <Alert.Indicator />
                               <Alert.Content mr="2px">
                                 <Text truncate>{rejection.file.name}</Text>
@@ -260,7 +310,7 @@ export function EditItemForm({
             }}
           </form.AppField>
         </Box>
-        <Flex flexDir={["column", "row"]} gap={4}>
+        <Flex flexDir={["column", "row"]} gap={8}>
           <form.AppField name="tags">{(field) => <field.TagsField label="Tags" />}</form.AppField>
           <form.AppField
             name="links"
@@ -278,9 +328,9 @@ export function EditItemForm({
             {(field) => <field.TagsField label="Links" />}
           </form.AppField>
         </Flex>
-        <Flex gap={2} flexDir={["column", "row"]}>
-          <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
-          <Button onClick={back} variant="surface" w={["100%", "auto"]}>
+        <Flex gap={4} flexDir={["column", "row"]}>
+          <form.SubmitButton w={["full", "auto"]}>Save</form.SubmitButton>
+          <Button onClick={back} variant="outline" w={["full", "auto"]}>
             Cancel
           </Button>
         </Flex>

@@ -10,7 +10,8 @@ import { resolve } from "path";
 
 export async function createItem(
   data: InferInsertModel<typeof itemsTable>,
-  files: File[]
+  files: File[],
+  thumbnail: File
 ): Promise<number> {
   const result = await db
     .insert(itemsTable)
@@ -42,6 +43,17 @@ export async function createItem(
       }
     })
   );
+
+  const thumbnailDir = resolve(process.cwd(), "public", "thumbnails", `${item.id}`);
+  if (!existsSync(thumbnailDir)) {
+    await mkdir(thumbnailDir);
+  }
+  const thumbnailPath = resolve(thumbnailDir, thumbnail.name);
+  try {
+    await writeFile(thumbnailPath, Buffer.from(await thumbnail.arrayBuffer()));
+  } catch (error) {
+    console.error(`Failed to write thumbnail ${thumbnail.name} to ${thumbnailPath}`, error);
+  }
 
   revalidateTag("items");
 

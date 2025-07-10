@@ -27,6 +27,7 @@ async function seedItems(count: number = 100): Promise<void> {
       archived,
       archivedAt: archived ? faker.date.recent({ days: 50 }).toISOString() : undefined,
       tags: [...new Set(tags)].join(","), // Tags must be unique.
+      thumbnail: "",
     };
   });
   await db.insert(itemsTable).values(items);

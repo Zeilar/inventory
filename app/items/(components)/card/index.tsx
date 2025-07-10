@@ -1,90 +1,101 @@
-import { Link, Tooltip } from "@/components";
+import { Link, SkeletonText } from "@/components";
 import { Item } from "@/features/db/schema";
-import { Badge, Skeleton, Table, Text } from "@chakra-ui/react";
+import { AbsoluteCenter, Badge, Card, Flex, Icon, Text } from "@chakra-ui/react";
+import Image from "next/image";
+import { MdImageNotSupported, MdNumbers, MdSell } from "react-icons/md";
 
-export interface ItemCardLoadingProps {
-  isLoading: boolean;
+interface ItemCardProps {
+  item: Item;
+  isLoading?: boolean;
+  thumbnailSrc: string | null;
 }
 
-export interface ItemCardProps {
-  item: Pick<Item, "id" | "title" | "archived" | "quantity" | "createdAt" | "archivedAt" | "price">;
+interface ItemCardPreviewProps {
+  item: Partial<Item>;
+  thumbnailSrc: string | null;
 }
 
-function isLoadingProps(
-  props: ItemCardProps | ItemCardLoadingProps
-): props is ItemCardLoadingProps {
-  return "isLoading" in props && props.isLoading;
+export function ItemCardPreview({ item, thumbnailSrc }: ItemCardPreviewProps) {
+  return (
+    <ItemCardLayout
+      thumbnailSrc={thumbnailSrc}
+      item={{
+        id: 1,
+        archivedAt: "",
+        articleId: "",
+        createdAt: "",
+        files: "",
+        links: "",
+        tags: "",
+        thumbnail: "",
+        updatedAt: "",
+        archived: item.archived ?? true,
+        price: item.price ?? "",
+        quantity: item.quantity ?? 1,
+        title: item.title || "Lorem ipsum dolor",
+      }}
+    />
+  );
 }
 
-export function ItemCard(props: ItemCardProps | ItemCardLoadingProps) {
-  const hasLoadingProps = isLoadingProps(props);
+export function ItemCardLayout({ item, isLoading, thumbnailSrc }: ItemCardProps) {
+  const { title, archived, price, quantity } = item;
 
   return (
-    <Table.Row p={2} bgColor="bg.subtle" _last={{ "& td": { borderBottom: 0 } }}>
-      <Table.Cell>{!hasLoadingProps ? props.item.id : <Skeleton />}</Table.Cell>
-      <Table.Cell>
-        {!hasLoadingProps ? (
-          <Link href={`/items/${props.item.id}`}>{props.item.title}</Link>
-        ) : (
-          <Text>
-            <Skeleton />
-          </Text>
+    <Card.Root w="full" bgColor="transparent" overflow="hidden">
+      <Flex
+        h={[150, 200, 225, 175]}
+        align="center"
+        justify="center"
+        borderBottom="1px solid {colors.border}"
+        pos="relative"
+        overflow="hidden"
+      >
+        <Badge
+          colorPalette={!archived ? "green" : "orange"}
+          pos="absolute"
+          right={2}
+          top={2}
+          zIndex={2} // Keep this higher than the image's z-index.
+        >
+          {!archived ? "Published" : "Archived"}
+        </Badge>
+        {thumbnailSrc && (
+          <Image
+            src={thumbnailSrc}
+            width={450}
+            height={225}
+            alt=""
+            style={{ objectFit: "cover", zIndex: 1 }} // The z-index is to put it above the placeholder.
+          />
         )}
-      </Table.Cell>
-      <Table.Cell textAlign="center">
-        {!hasLoadingProps ? (
-          props.item.price || "-"
-        ) : (
-          <Text>
-            <Skeleton />
-          </Text>
-        )}
-      </Table.Cell>
-      <Table.Cell textAlign="center">
-        {!hasLoadingProps ? (
-          props.item.quantity
-        ) : (
-          <Text>
-            <Skeleton />
-          </Text>
-        )}
-      </Table.Cell>
-      <Table.Cell textAlign="center">
-        {!hasLoadingProps ? (
-          new Date(props.item.createdAt).toLocaleDateString(process.env.NEXT_PUBLIC_LOCALE, {
-            timeZone: process.env.TZ,
-          })
-        ) : (
-          <Text>
-            <Skeleton />
-          </Text>
-        )}
-      </Table.Cell>
-      <Table.Cell textAlign="center">
-        {!hasLoadingProps ? (
-          !props.item.archived ? (
-            <Badge colorPalette="green">Published</Badge>
-          ) : (
-            <Tooltip
-              content={
-                props.item.archivedAt
-                  ? new Date(props.item.archivedAt).toLocaleDateString(
-                      process.env.NEXT_PUBLIC_LOCALE,
-                      { timeZone: process.env.TZ }
-                    )
-                  : null
-              }
-            >
-              <Badge colorPalette="orange">Archived</Badge>
-            </Tooltip>
-          )
-        ) : (
-          <Text>
-            {/* Height should match the chip height. */}
-            <Skeleton height={32} />
-          </Text>
-        )}
-      </Table.Cell>
-    </Table.Row>
+        <AbsoluteCenter>
+          <Icon size="2xl" color="fg.muted">
+            <MdImageNotSupported />
+          </Icon>
+        </AbsoluteCenter>
+      </Flex>
+      <Card.Body>
+        <Text truncate>{!isLoading ? title : <SkeletonText />}</Text>
+      </Card.Body>
+      <Card.Footer gap={6}>
+        <Flex align="center" gap={1.5} color="fg.muted">
+          <MdSell />
+          {price || "-"}
+        </Flex>
+        <Flex align="center" gap={1.5} color="fg.muted">
+          <MdNumbers />
+          {quantity}
+        </Flex>
+      </Card.Footer>
+    </Card.Root>
+  );
+}
+
+export function ItemCard({ item, isLoading, thumbnailSrc }: ItemCardProps) {
+  return (
+    <Link href={`/items/${item.id}`}>
+      <ItemCardLayout item={item} isLoading={isLoading} thumbnailSrc={thumbnailSrc} />
+    </Link>
   );
 }

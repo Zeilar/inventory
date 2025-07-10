@@ -1,3 +1,3 @@
 export * from "./dashboard-card";
-export * from "./sidebar";
+export * from "./navbar";
 export * from "./providers";

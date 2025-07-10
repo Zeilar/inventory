@@ -1,9 +1,8 @@
-import { UnstyledLink } from "@/components";
+import { SkeletonText, UnstyledLink } from "@/components";
 import { Box, Button, Skeleton } from "@chakra-ui/react";
 import { DashboardCardLayout } from "../dashboard-card";
 import { MdDownload, MdLayers, MdStorage, MdTimeline, MdWarehouse } from "react-icons/md";
 import { ReactNode } from "react";
-import { DashboardLayoutSkeletonText } from "./skeleton-text";
 import { TIMELINE_HEIGHT } from "../dashboard-card/items-timeline/config";
 
 interface DashboardLayoutProps {
@@ -16,10 +15,10 @@ interface DashboardLayoutProps {
 export function DashboardLayoutLoading() {
   return (
     <DashboardLayout
-      itemCount={<DashboardLayoutSkeletonText w={75} />}
-      dbSize={<DashboardLayoutSkeletonText w={100} />}
+      itemCount={<SkeletonText w={75} />}
+      dbSize={<SkeletonText w={100} />}
       timeline={<Skeleton h={TIMELINE_HEIGHT} />}
-      storageSize={<DashboardLayoutSkeletonText w={100} />}
+      storageSize={<SkeletonText w={100} />}
     />
   );
 }
@@ -46,7 +45,7 @@ export function DashboardLayout({
         icon={MdLayers}
         sibling={
           <UnstyledLink href="/api/db/backup" download ml={[0, "auto"]}>
-            <Button variant="surface" colorPalette="teal">
+            <Button variant="outline" colorPalette="teal">
               <MdDownload />
               Download
             </Button>
@@ -69,7 +68,7 @@ export function DashboardLayout({
         title="Storage"
         sibling={
           <UnstyledLink href="/api/files/backup" download ml={[0, "auto"]}>
-            <Button variant="surface" colorPalette="teal">
+            <Button variant="outline" colorPalette="teal">
               <MdDownload />
               Download
             </Button>
