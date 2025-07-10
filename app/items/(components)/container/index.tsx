@@ -14,7 +14,6 @@ interface ItemsContainerProps {
 }
 
 export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutProps) {
-  console.log(rows[0].thumbnail);
   return (
     <Box
       display="grid"
