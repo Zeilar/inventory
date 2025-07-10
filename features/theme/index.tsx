@@ -5,15 +5,9 @@ const customConfig = defineConfig({
   globalCss: {
     body: {
       fontFamily: roboto.style.fontFamily,
-      _dark: {
-        bgColor: "#080808",
-      },
-      _light: {
-        bgColor: "gray.100",
-      },
     },
     "::selection": {
-      bgColor: "teal.muted",
+      bgColor: "bg.muted",
       color: "fg",
     },
   },
@@ -28,15 +22,10 @@ const customConfig = defineConfig({
             },
           },
         },
-        black: {
-          value: "#080808", // Based on teal surface.
-        },
-        fg: {
-          DEFAULT: {
-            value: {
-              _light: "{colors.gray.800}",
-              _dark: "{colors.gray.100}",
-            },
+        border: {
+          value: {
+            _light: "{colors.gray.300}",
+            _dark: "{colors.gray.800}",
           },
         },
       },

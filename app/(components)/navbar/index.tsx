@@ -29,12 +29,6 @@ export function Navbar() {
           top={0}
           w="full"
           zIndex="banner"
-          _dark={{
-            bgColor: "#080808", // Body background-color.
-          }}
-          _light={{
-            bgColor: "gray.100", // Body background-color.
-          }}
         >
           <Flex px={6} gap={12} justify="center" maxW="breakpoint-2xl">
             {/* <Heading
@@ -43,7 +37,7 @@ export function Navbar() {
             size="2xl"
             display="flex"
             alignItems="center"
-            color="teal.fg"
+            color="bg.fg"
             gap={2}
             px={8}
             my={8}
@@ -51,7 +45,7 @@ export function Navbar() {
             <Box
               as="span"
               letterSpacing="1px"
-              bgGradient="linear-gradient(to bottom, {colors.teal.fg}, {colors.teal.solid})"
+              bgGradient="linear-gradient(to bottom, {colors.bg.fg}, {colors.bg.solid})"
               bgClip="text"
             >
               Inventory

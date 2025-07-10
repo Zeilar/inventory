@@ -52,7 +52,7 @@ export function ItemCardLayout({ item, isLoading, thumbnailSrc }: ItemCardProps)
         overflow="hidden"
       >
         <Badge
-          colorPalette={!archived ? "green" : "orange"}
+          colorPalette={!archived ? "bg" : "orange"}
           pos="absolute"
           right={2}
           top={2}

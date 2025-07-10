@@ -135,7 +135,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             Items
           </Heading>
           <UnstyledLink href="/items/deposit">
-            <Button colorPalette="teal" variant="solid" size={["sm", "md"]}>
+            <Button colorPalette="bg" variant="solid" size={["sm", "md"]}>
               <MdAdd />
               Deposit
             </Button>
@@ -143,10 +143,10 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         </Flex>
         <Flex flexDir="column" gap={2}>
           <Flex
+            flexDir={["column", "row"]}
             justify="space-between"
             align={["start", "center"]}
             gap={2}
-            flexDir={["column", "row"]}
           >
             <Box mr={[0, "auto"]}>
               <Pagination {...paginationProps} />
@@ -160,7 +160,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
               gap={2}
             >
               <Flex display={["flex", "contents"]} flexDir="row-reverse" gap={2} w="full">
-                <Button onClick={filter.toggle} variant="outline">
+                <Button onClick={filter.toggle} variant="outline" borderColor="border">
                   {!isFilterOpen ? <MdFilterAlt /> : <MdClose />}
                   <Text display={["none", "inline"]}>Filter</Text>
                 </Button>
@@ -170,9 +170,9 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                 {(field) => {
                   return (
                     <Select.Root
-                      colorPalette="teal"
+                      colorPalette="bg"
                       collection={sortCollection}
-                      w={["100%", 320]}
+                      w={["full", 320]}
                       value={[
                         `${field.state.value || "id"},${
                           form.getFieldValue("sortDirection") || "desc"
@@ -250,8 +250,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     onClick={() => field.handleChange("published")}
                     value="published"
                     _checked={{
-                      color: "green.fg",
-                      bgColor: "green.subtle",
+                      color: "bg.fg",
+                      bgColor: "bg.subtle",
                     }}
                     css={{ "&::before": { display: "none" } }}
                   >
@@ -279,8 +279,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     onClick={() => field.handleChange("all")}
                     value="all"
                     _checked={{
-                      color: "teal.fg",
-                      bgColor: "teal.subtle",
+                      color: "bg.fg",
+                      bgColor: "bg.subtle",
                     }}
                     css={{ "&::before": { content: "none" } }}
                   >

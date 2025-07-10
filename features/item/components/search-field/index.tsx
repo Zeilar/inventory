@@ -30,7 +30,7 @@ export function ItemSearchFieldLayout({
         onSubmit?.();
       }}
       w={["full", "auto"]}
-      height="full"
+      h="full"
     >
       <InputGroup
         w={["full", 250]}
@@ -44,7 +44,7 @@ export function ItemSearchFieldLayout({
         }
       >
         <Input
-          colorPalette="teal"
+          colorPalette="bg"
           value={value}
           onChange={onChange}
           disabled={isLoading}

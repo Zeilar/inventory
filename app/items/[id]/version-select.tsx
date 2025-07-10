@@ -33,7 +33,7 @@ export function VersionSelect({ options, value = options.at(0) ?? "current" }: V
         }
         push(url);
       }}
-      colorPalette="teal"
+      colorPalette="bg"
     >
       <Select.HiddenSelect />
       <Select.Control>

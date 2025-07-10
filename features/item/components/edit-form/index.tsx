@@ -208,7 +208,7 @@ export function EditItemForm({
                     {...getRootProps()}
                     rounded="sm"
                     border="2px dashed"
-                    borderColor={isDragActive ? "teal.fg" : "border"}
+                    borderColor={isDragActive ? "bg.fg" : "border"}
                     h={200}
                     p={4}
                     cursor="pointer"
@@ -222,7 +222,7 @@ export function EditItemForm({
                         alignItems="center"
                         gap={1}
                       >
-                        <Icon color="teal.fg">
+                        <Icon color="bg.fg">
                           <MdUpload />
                         </Icon>
                         Drop your files here

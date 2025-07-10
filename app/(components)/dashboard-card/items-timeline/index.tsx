@@ -15,7 +15,7 @@ export function ItemsTimeline({ timeline }: ItemsTimelineProps) {
       date: day,
       Deposits: timeline.data[index],
     })),
-    series: [{ name: "Deposits", color: "teal.solid" }],
+    series: [{ name: "Deposits", color: "bg.solid" }],
   });
 
   return (

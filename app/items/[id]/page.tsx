@@ -39,7 +39,7 @@ function InfoBox({ icon: IconComponent, children, title }: InfoBoxProps) {
       rounded={["sm", "none"]}
     >
       <Flex gap={[2, 4]} h="40px" align="center">
-        <Icon color="teal.fg" size="md">
+        <Icon color="bg.fg" size="md">
           <IconComponent />
         </Icon>
         <Text>{title}</Text>
@@ -97,7 +97,7 @@ export default async function Page({
         <Flex gap={2} justify="space-between">
           <VersionSelect options={history.flatMap(({ createdAt }) => createdAt)} value={version} />
           <UnstyledLink href={`/items/${id}/edit`}>
-            <Button variant="solid" colorPalette="teal" h="40px">
+            <Button variant="solid" colorPalette="bg" h="40px">
               Edit
             </Button>
           </UnstyledLink>
@@ -120,7 +120,7 @@ export default async function Page({
             {parsedTags.length > 0
               ? parsedTags.map((tag) => (
                   <Link key={tag} href={`/items?tags=${tag}`}>
-                    <Badge size="lg" colorPalette="teal">
+                    <Badge size="lg" colorPalette="bg">
                       {tag}
                     </Badge>
                   </Link>
@@ -139,7 +139,7 @@ export default async function Page({
                     as={foundPastVersion ? "span" : undefined}
                     cursor={foundPastVersion ? "not-allowed" : undefined}
                   >
-                    <Button colorPalette="teal" variant="outline">
+                    <Button colorPalette="bg" variant="outline">
                       <MdOutlineDownload />
                       {file}
                     </Button>
@@ -156,7 +156,7 @@ export default async function Page({
             {parsedLinks.length
               ? parsedLinks.map((link, i) => (
                   <Link key={`${link}-${i}`} href={link} target="_blank">
-                    <Badge size="lg" colorPalette="teal">
+                    <Badge size="lg" colorPalette="bg">
                       <MdOutlineOpenInNew />
                       <Text maxW="calc(100vw - (var(--chakra-spacing-1) * 31))" truncate>
                         {link}

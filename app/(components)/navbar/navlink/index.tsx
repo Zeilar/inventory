@@ -24,12 +24,12 @@ export function AppBarNavlink({ href, icon: IconComponent, isActive }: AppbarNav
       borderTop="2px solid"
       borderBottom="2px solid"
       borderColor="transparent"
-      borderTopColor={isActive ? "teal.fg" : "transparent"}
+      borderTopColor={isActive ? "bg.fg" : "transparent"}
       rounded="none"
       px={2}
     >
       <IconButton variant="plain">
-        <Icon color={isActive ? "teal.fg" : "fg.muted"} transition="colors" size="lg">
+        <Icon color={isActive ? "bg.fg" : "fg.muted"} transition="colors" size="lg">
           <IconComponent />
         </Icon>
       </IconButton>
@@ -57,7 +57,7 @@ export function DesktopNavlink({ href, isActive, label }: DesktopNavlinkProps) {
               bottom: "-1px",
               w: "full",
               h: "1px",
-              bgColor: "teal.fg",
+              bgColor: "fg",
             }
           : undefined
       }

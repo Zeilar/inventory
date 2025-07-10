@@ -144,7 +144,7 @@ export function DepositItemForm() {
                     {...filesDropzone.getRootProps()}
                     rounded="md"
                     border="2px dashed"
-                    borderColor={filesDropzone.isDragActive ? "teal.fg" : "border"}
+                    borderColor={filesDropzone.isDragActive ? "bg.fg" : "border"}
                     h={200}
                     p={4}
                     cursor="pointer"
@@ -158,7 +158,7 @@ export function DepositItemForm() {
                         alignItems="center"
                         gap={1}
                       >
-                        <Icon color="teal.fg">
+                        <Icon color="bg.fg">
                           <MdUpload />
                         </Icon>
                         <Text>Drop your files here</Text>

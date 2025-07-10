@@ -45,7 +45,7 @@ export function DashboardLayout({
         icon={MdLayers}
         sibling={
           <UnstyledLink href="/api/db/backup" download ml={[0, "auto"]}>
-            <Button variant="outline" colorPalette="teal">
+            <Button variant="outline" colorPalette="bg">
               <MdDownload />
               Download
             </Button>
@@ -68,7 +68,7 @@ export function DashboardLayout({
         title="Storage"
         sibling={
           <UnstyledLink href="/api/files/backup" download ml={[0, "auto"]}>
-            <Button variant="outline" colorPalette="teal">
+            <Button variant="outline" colorPalette="bg">
               <MdDownload />
               Download
             </Button>

@@ -7,8 +7,8 @@ export const Link = ({ children, href = "#", ...props }: LinkProps) => (
   <ChakraLink
     asChild
     textDecor="none"
-    _dark={{ color: "teal.solid", _hover: { color: "teal.fg" } }}
-    _light={{ color: "teal.solid", _hover: { color: "teal.focusRing" } }}
+    _dark={{ color: "bg.solid", _hover: { color: "bg.fg" } }}
+    _light={{ color: "bg.solid", _hover: { color: "bg.focusRing" } }}
     transition="colors"
     outline={0}
     {...props}

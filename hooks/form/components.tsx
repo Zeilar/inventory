@@ -50,7 +50,7 @@ export function Field({
         </ChakraField.Label>
       )}
       <Input
-        colorPalette="teal"
+        colorPalette="bg"
         required={required}
         value={field.state.value}
         onBlur={field.handleBlur}
@@ -77,7 +77,7 @@ export function SubmitButton({ loading, ...props }: ButtonProps) {
         <Button
           w="full"
           variant="solid"
-          colorPalette="teal"
+          colorPalette="bg"
           type="submit"
           loading={loading || isSubmitting}
           {...props}
@@ -170,8 +170,8 @@ export function ArchivedToggler() {
           onClick={() => handleChange(false)}
           value={`${false}`}
           _checked={{
-            color: "green.fg",
-            bgColor: "green.subtle",
+            color: "bg.fg",
+            bgColor: "bg.subtle",
           }}
           css={{ "&::before": { display: "none" } }}
         >

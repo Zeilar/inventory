@@ -48,7 +48,7 @@ function CustomList({ checked, handleToggle, items, title }: CustomListProps) {
               checked={checked.includes(value)}
               tabIndex={-1}
               cursor="pointer"
-              colorPalette="teal"
+              colorPalette="bg"
             >
               <Checkbox.HiddenInput />
               {/* Need cursor pointer here as well. */}
