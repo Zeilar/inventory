@@ -170,8 +170,8 @@ export function ArchivedToggler() {
           onClick={() => handleChange(false)}
           value={`${false}`}
           _checked={{
-            color: "bg.fg",
-            bgColor: "bg.subtle",
+            color: "green.fg",
+            bgColor: "green.subtle",
           }}
           css={{ "&::before": { display: "none" } }}
         >

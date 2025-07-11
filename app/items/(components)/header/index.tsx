@@ -250,8 +250,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     onClick={() => field.handleChange("published")}
                     value="published"
                     _checked={{
-                      color: "bg.fg",
-                      bgColor: "bg.subtle",
+                      color: "green.fg",
+                      bgColor: "green.subtle",
                     }}
                     css={{ "&::before": { display: "none" } }}
                   >
