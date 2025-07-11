@@ -29,6 +29,7 @@ export function Navbar() {
           top={0}
           w="full"
           zIndex="banner"
+          bgColor="bg"
         >
           <Flex px={6} gap={12} justify="center" maxW="breakpoint-2xl">
             {/* <Heading
