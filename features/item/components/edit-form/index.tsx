@@ -157,7 +157,16 @@ export function EditItemForm({
             </Flex>
           </Box>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
-          <form.AppField name="thumbnail">
+          <form.AppField
+            name="thumbnail"
+            validators={{
+              onChange: ({ value }) => {
+                if (!value) {
+                  return "Thumbnail is required.";
+                }
+              },
+            }}
+          >
             {(field) => <field.ThumbnailField onChange={thumbnailPreviewMutation.mutate} />}
           </form.AppField>
           <Box display="flex" gap={8} flexDir={["column", "row"]}>

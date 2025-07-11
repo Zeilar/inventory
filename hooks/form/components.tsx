@@ -198,7 +198,9 @@ export function ArchivedToggler() {
 
 export function ThumbnailField({ onChange }: ThumbnailFieldProps) {
   const { state, handleChange } = useFieldContext<File | null>();
-  const { value } = state;
+  const { value, meta } = state;
+  const { errors } = meta;
+  const error: ZodIssueBase | string | undefined = errors.at(0);
 
   return (
     <FileUpload.Root gap={1} maxW={300} accept={["image/*"]}>
@@ -209,7 +211,12 @@ export function ThumbnailField({ onChange }: ThumbnailFieldProps) {
           onChange(file);
         }}
       />
-      <FileUpload.Label>Thumbnail</FileUpload.Label>
+      <FileUpload.Label display="flex" gap={1}>
+        Thumbnail
+        <Box as="span" color="fg.error">
+          *
+        </Box>
+      </FileUpload.Label>
       <InputGroup
         startElement={<MdUpload />}
         endElement={
@@ -224,6 +231,11 @@ export function ThumbnailField({ onChange }: ThumbnailFieldProps) {
           </FileUpload.Trigger>
         </Input>
       </InputGroup>
+      {error && (
+        <Text fontWeight={500} color="fg.error" fontSize="xs">
+          {typeof error === "string" ? error : error?.message}
+        </Text>
+      )}
     </FileUpload.Root>
   );
 }
