@@ -1,7 +1,6 @@
 import { Link, SkeletonText } from "@/components";
 import { Item } from "@/features/db/schema";
-import { AbsoluteCenter, Badge, Card, Flex, Icon, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import { AbsoluteCenter, Badge, Card, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { MdImageNotSupported, MdNumbers, MdSell } from "react-icons/md";
 
 interface ItemCardProps {
@@ -63,10 +62,11 @@ export function ItemCardLayout({ item, isLoading, thumbnailSrc }: ItemCardProps)
         {thumbnailSrc && (
           <Image
             src={thumbnailSrc}
-            width={450}
-            height={225}
+            w="full"
+            h="full"
             alt=""
-            style={{ objectFit: "cover", zIndex: 1 }} // The z-index is to put it above the placeholder.
+            objectFit="cover"
+            zIndex={1} // The z-index is to put it above the placeholder.
           />
         )}
         <AbsoluteCenter>

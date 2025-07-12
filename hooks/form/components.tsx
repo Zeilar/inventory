@@ -203,7 +203,7 @@ export function ThumbnailField({ onChange }: ThumbnailFieldProps) {
   const error: ZodIssueBase | string | undefined = errors.at(0);
 
   return (
-    <FileUpload.Root gap={1} maxW={300} accept={["image/*"]}>
+    <FileUpload.Root gap={1} maxW={["full", 300]} accept={["image/*"]}>
       <FileUpload.HiddenInput
         onChange={(e) => {
           const file = e.target.files?.[0] ?? null;

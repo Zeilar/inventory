@@ -21,15 +21,24 @@ export function AppBarNavlink({ href, icon: IconComponent, isActive }: AppbarNav
     <UnstyledLink
       href={href}
       h="full"
-      borderTop="2px solid"
-      borderBottom="2px solid"
-      borderColor="transparent"
-      borderTopColor={isActive ? "bg.fg" : "transparent"}
-      rounded="none"
-      px={2}
+      px={1}
+      pos="relative"
+      _after={
+        isActive
+          ? {
+              content: `""`,
+              pos: "absolute",
+              left: 0,
+              top: "-1px",
+              w: "full",
+              h: "1px",
+              bgColor: "bg.inverted",
+            }
+          : undefined
+      }
     >
       <IconButton variant="plain">
-        <Icon color={isActive ? "bg.fg" : "fg.muted"} transition="colors" size="lg">
+        <Icon color={isActive ? "bg.inverted" : "fg.muted"} transition="colors" size="lg">
           <IconComponent />
         </Icon>
       </IconButton>

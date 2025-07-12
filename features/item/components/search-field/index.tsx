@@ -33,7 +33,7 @@ export function ItemSearchFieldLayout({
       h="full"
     >
       <InputGroup
-        w={["full", 250]}
+        w={["full", 200]}
         startElement={
           <Icon size="md">
             <MdSearch />

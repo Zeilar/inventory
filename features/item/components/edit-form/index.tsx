@@ -139,7 +139,16 @@ export function EditItemForm({
     <form.AppForm>
       <form.Form display="flex" flexDir="column" gap={8}>
         <Box display="flex" flexDir="column" gap={8}>
-          <Box display="grid" gridTemplateColumns="repeat(3, 1fr)">
+          <Box
+            display="grid"
+            gridTemplateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(3, 1fr)",
+            ]}
+            gap={4}
+          >
             <Flex flexDir="column" gap={1}>
               <Text textStyle="label">Preview</Text>
               <ItemCardPreview

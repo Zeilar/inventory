@@ -17,7 +17,7 @@ export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutPro
   return (
     <Box
       display="grid"
-      gridTemplateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
+      gridTemplateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
       gap={4}
     >
       {rows.map((item) => (

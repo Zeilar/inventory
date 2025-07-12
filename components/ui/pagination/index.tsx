@@ -46,7 +46,7 @@ const PaginationLink = ({
       disabled={isDisabled}
       // Make it effectively disabled but don't affect styles.
       pointerEvents={pagination.page === page ? "none" : undefined}
-      _selected={{ bgColor: "bg.solid", borderColor: "bg.solid", color: "bg.contrast" }}
+      _selected={{ bgColor: "bg.inverted", borderColor: "bg.inverted", color: "fg.inverted" }}
       {...props}
     >
       <UnstyledLink
@@ -79,7 +79,7 @@ export function Pagination({ count, page, disabled }: PaginationProps) {
     >
       <ButtonGroup variant="ghost" size="sm" flexWrap="wrap">
         {/* Mobile. */}
-        <Box display={["contents", "none"]}>
+        <Box display={["contents", "contents", "contents", "none"]}>
           <ChakraPagination.PrevTrigger asChild>
             <PaginationLink page={Math.max(page - 1, 1)}>
               <IconButton>
@@ -98,7 +98,7 @@ export function Pagination({ count, page, disabled }: PaginationProps) {
         </Box>
 
         {/* Desktop. */}
-        <Box display={["none", "contents"]}>
+        <Box display={["none", "none", "none", "contents"]}>
           <PaginationLink disabled={disabled || !count} page="prev">
             <HiChevronLeft />
           </PaginationLink>

@@ -37,7 +37,9 @@ export default async function RootLayout({ children }: PropsWithChildren) {
             {hasInstalled ? (
               <Flex as="main" flexDir="column" minH="100svh" align="center">
                 <Navbar />
-                <Box w="breakpoint-xl">{children}</Box>
+                <Box maxW="breakpoint-xl" w="full">
+                  {children}
+                </Box>
               </Flex>
             ) : (
               <Seeder />

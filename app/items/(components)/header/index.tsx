@@ -131,11 +131,11 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
     <form.AppForm>
       <div>
         <Flex justify="space-between" gap={4} mb={4}>
-          <Heading size={["2xl", "3xl"]} as="h1">
+          <Heading size={["2xl", "2xl", "3xl"]} as="h1">
             Items
           </Heading>
           <UnstyledLink href="/items/deposit">
-            <Button colorPalette="bg" variant="solid" size={["sm", "md"]}>
+            <Button colorPalette="bg" variant="solid" size={["sm", "sm", "md"]}>
               <MdAdd />
               Deposit
             </Button>
@@ -143,23 +143,29 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
         </Flex>
         <Flex flexDir="column" gap={2}>
           <Flex
-            flexDir={["column", "row"]}
+            flexDir={["column", "column", "row"]}
+            align={["start", "start", "center"]}
             justify="space-between"
-            align={["start", "center"]}
             gap={2}
           >
-            <Box mr={[0, "auto"]}>
+            <Box mr={[0, 0, "auto"]}>
               <Pagination {...paginationProps} />
             </Box>
             <Flex
-              align={["start", "center"]}
+              align={["start", "start", "center"]}
+              flexDir={["column", "row", "row"]}
               justify="end"
-              flexDir={["column", "row"]}
-              w={["full", "auto"]}
-              h={["auto", "40px"]}
+              w={["full", "full", "auto"]}
+              h={["auto", "auto", "40px"]}
               gap={2}
             >
-              <Flex display={["flex", "contents"]} flexDir="row-reverse" gap={2} w="full">
+              <Flex
+                display={["flex", "flex", "contents"]}
+                flexDir={["row", "row", "row-reverse"]}
+                justify={["space-between", "space-between", "start"]}
+                gap={2}
+                w="full"
+              >
                 <Button onClick={filter.toggle} variant="outline" borderColor="border">
                   {!isFilterOpen ? <MdFilterAlt /> : <MdClose />}
                   <Text display={["none", "inline"]}>Filter</Text>
@@ -172,7 +178,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     <Select.Root
                       colorPalette="bg"
                       collection={sortCollection}
-                      w={["full", 320]}
+                      w={["full", 250]}
                       value={[
                         `${field.state.value || "id"},${
                           form.getFieldValue("sortDirection") || "desc"
