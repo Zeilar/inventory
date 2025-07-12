@@ -43,7 +43,7 @@ export function ItemCardLayout({ item, isLoading, thumbnailSrc }: ItemCardProps)
   return (
     <Card.Root w="full" bgColor="transparent" overflow="hidden">
       <Flex
-        h={[150, 200, 225, 175]}
+        h={[150, 200, 225, 170]}
         align="center"
         justify="center"
         borderBottom="1px solid {colors.border}"

@@ -32,13 +32,13 @@ export function AppBarNavlink({ href, icon: IconComponent, isActive }: AppbarNav
               top: "-1px",
               w: "full",
               h: "1px",
-              bgColor: "bg.inverted",
+              bgColor: "cyan.fg",
             }
           : undefined
       }
     >
       <IconButton variant="plain">
-        <Icon color={isActive ? "bg.inverted" : "fg.muted"} transition="colors" size="lg">
+        <Icon color={isActive ? "cyan.fg" : "fg.muted"} transition="colors" size="lg">
           <IconComponent />
         </Icon>
       </IconButton>
@@ -50,14 +50,14 @@ export function DesktopNavlink({ href, isActive, label }: DesktopNavlinkProps) {
   return (
     <UnstyledLink
       href={href}
-      color={isActive ? "fg" : "fg.muted"}
+      color={isActive ? "cyan.fg" : "fg.muted"}
       py={6}
       fontWeight={500}
       fontSize="lg"
       pos="relative"
       transition="colors"
       transitionDuration="faster"
-      _hover={!isActive ? { color: "fg" } : undefined}
+      _hover={!isActive ? { color: "cyan.fg" } : undefined}
       _after={
         isActive
           ? {
@@ -66,7 +66,7 @@ export function DesktopNavlink({ href, isActive, label }: DesktopNavlinkProps) {
               bottom: "-1px",
               w: "full",
               h: "1px",
-              bgColor: "fg",
+              bgColor: "cyan.fg",
             }
           : undefined
       }
