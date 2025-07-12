@@ -28,7 +28,7 @@ RUN adduser --system --uid 1001 nextjs
 
 RUN yarn add -D drizzle-kit@0.31.1 drizzle-orm@0.44.1 pg@8.16.0
 
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/drizzle.config.ts ./
