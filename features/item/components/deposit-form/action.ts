@@ -30,7 +30,7 @@ export async function createItem(
 
   const filesDir = resolve(process.cwd(), "files", `${item.id}`);
   if (!existsSync(filesDir)) {
-    await mkdir(filesDir);
+    await mkdir(filesDir, { recursive: true });
   }
 
   await Promise.all(
@@ -46,7 +46,7 @@ export async function createItem(
 
   const thumbnailDir = resolve(process.cwd(), "thumbnails", `${item.id}`);
   if (!existsSync(thumbnailDir)) {
-    await mkdir(thumbnailDir);
+    await mkdir(thumbnailDir, { recursive: true });
   }
   const thumbnailPath = resolve(thumbnailDir, thumbnail.name);
   try {

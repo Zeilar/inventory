@@ -22,7 +22,7 @@ export async function updateItem(
 
   const filesDir = resolve(process.cwd(), "files", `${id}`);
   if (!existsSync(filesDir)) {
-    await mkdir(filesDir);
+    await mkdir(filesDir, { recursive: true });
   }
 
   const uploadedFiles: string[] = [];
