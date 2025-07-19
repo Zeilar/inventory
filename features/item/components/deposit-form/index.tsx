@@ -6,7 +6,7 @@ import z from "zod";
 import { type FileRejection, useDropzone } from "react-dropzone";
 import { useRouter } from "next/navigation";
 import { Button, Box, Text, Icon, Flex, IconButton, Alert } from "@chakra-ui/react";
-import { Heading } from "@/components";
+import { Heading, Panel } from "@/components";
 import { MdClear, MdUpload } from "react-icons/md";
 import { useMutation } from "react-query";
 import { ItemCardPreview } from "@/app/items/(components)";
@@ -87,25 +87,25 @@ export function DepositItemForm() {
   return (
     <form.AppForm>
       <form.Form display="flex" flexDir="column" gap={8}>
-        <Box display="flex" flexDir="column" gap={8}>
-          <Box
-            display="grid"
-            gridTemplateColumns={[
-              "repeat(1, 1fr)",
-              "repeat(1, 1fr)",
-              "repeat(2, 1fr)",
-              "repeat(3, 1fr)",
-            ]}
-            gap={4}
-          >
-            <Flex flexDir="column" gap={1}>
-              <Text textStyle="label">Preview</Text>
-              <ItemCardPreview
-                thumbnailSrc={thumbnailPreviewMutation.data ?? null}
-                item={{ archived, price, quantity, title }}
-              />
-            </Flex>
-          </Box>
+        <Box
+          display="grid"
+          gridTemplateColumns={[
+            "repeat(1, 1fr)",
+            "repeat(1, 1fr)",
+            "repeat(2, 1fr)",
+            "repeat(3, 1fr)",
+          ]}
+          gap={4}
+        >
+          <Flex flexDir="column" gap={1}>
+            <Heading>Preview</Heading>
+            <ItemCardPreview
+              thumbnailSrc={thumbnailPreviewMutation.data ?? null}
+              item={{ archived, price, quantity, title }}
+            />
+          </Flex>
+        </Box>
+        <Panel display="flex" flexDir="column" gap={8}>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
           <form.AppField
             name="thumbnail"
@@ -182,14 +182,14 @@ export function DepositItemForm() {
                         <Text>Drop your files here</Text>
                       </Heading>
                       <Text mt={1}>Or click anywhere in the area</Text>
-                      <Text mt={2} color="fg.muted" fontSize="sm">
+                      <Text mt={2} color="fg.muted" fontSize="md">
                         Max 10 files, up to 10MB per file. Filenames must be unique.
                       </Text>
                       <input {...filesDropzone.getInputProps()} />
                     </Flex>
                   </Flex>
                   <Flex flexDir={["column", "row"]} gap={2}>
-                    <Box w="full" border="1px solid {colors.border}" rounded="sm">
+                    <Box w="full" border="1px solid {colors.border}" rounded="md">
                       <Text p={3} color={accepted.length === 0 ? "fg.muted" : undefined}>
                         Accepted ({accepted.length})
                       </Text>
@@ -221,7 +221,7 @@ export function DepositItemForm() {
                         </Flex>
                       ) : null}
                     </Box>
-                    <Box w="full" border="1px solid {colors.border}" rounded="sm">
+                    <Box w="full" border="1px solid {colors.border}" rounded="md">
                       <Text p={3} color={rejected.length === 0 ? "fg.muted" : undefined}>
                         Rejected ({rejected.length})
                       </Text>
@@ -262,13 +262,13 @@ export function DepositItemForm() {
               {(field) => <field.TagsField label="Links" />}
             </form.AppField>
           </Flex>
-        </Box>
-        <Flex gap={4} flexDir={["column", "row"]}>
-          <form.SubmitButton w={["100%", "auto"]}>Save</form.SubmitButton>
-          <Button variant="outline" onClick={back} w={["100%", "auto"]}>
-            Cancel
-          </Button>
-        </Flex>
+          <Flex gap={4} flexDir={["column", "row"]}>
+            <form.SubmitButton w={["full", "auto"]}>Save</form.SubmitButton>
+            <Button variant="ghost" onClick={back} w={["full", "auto"]} colorPalette="blue">
+              Cancel
+            </Button>
+          </Flex>
+        </Panel>
       </form.Form>
     </form.AppForm>
   );

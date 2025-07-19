@@ -73,7 +73,7 @@ export async function updateItem(
   ]);
 
   if (currentItem.thumbnail !== thumbnail.name) {
-    const thumbnailDir = resolve(process.cwd(), "public", "thumbnails", `${currentItem.id}`);
+    const thumbnailDir = resolve(process.cwd(), "thumbnails", `${currentItem.id}`);
     const thumbnailPath = resolve(thumbnailDir, thumbnail.name);
     try {
       await writeFile(thumbnailPath, Buffer.from(await thumbnail.arrayBuffer()));

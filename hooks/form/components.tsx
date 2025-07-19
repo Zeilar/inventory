@@ -50,11 +50,12 @@ export function Field({
         </ChakraField.Label>
       )}
       <Input
-        colorPalette="bg"
+        colorPalette="blue"
         required={required}
         value={field.state.value}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
+        _invalid={{ color: "fg.error" }}
         {...props}
       />
       {helperText && <ChakraField.HelperText>{helperText}</ChakraField.HelperText>}
@@ -77,7 +78,7 @@ export function SubmitButton({ loading, ...props }: ButtonProps) {
         <Button
           w="full"
           variant="solid"
-          colorPalette="bg"
+          colorPalette="blue"
           type="submit"
           loading={loading || isSubmitting}
           {...props}
@@ -164,11 +165,12 @@ export function ArchivedToggler() {
       <SegmentGroup.Root value={`${state.value}`} w="fit" shadow="none">
         <SegmentGroup.Item
           roundedRight="none"
-          roundedLeft="sm"
           w="full"
           cursor="pointer"
           onClick={() => handleChange(false)}
           value={`${false}`}
+          _dark={{ bgColor: "gray.muted" }}
+          _light={{ bgColor: "gray.subtle" }}
           _checked={{
             color: "green.fg",
             bgColor: "green.subtle",
@@ -178,11 +180,13 @@ export function ArchivedToggler() {
           Published
         </SegmentGroup.Item>
         <SegmentGroup.Item
-          rounded="none"
+          roundedLeft="none"
           w="full"
           cursor="pointer"
           onClick={() => handleChange(true)}
           value={`${true}`}
+          _dark={{ bgColor: "gray.muted" }}
+          _light={{ bgColor: "gray.subtle" }}
           _checked={{
             color: "orange.fg",
             bgColor: "orange.subtle",

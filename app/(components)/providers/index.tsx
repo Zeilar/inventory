@@ -26,7 +26,7 @@ export function Providers({ children, settings }: ProvidersProps) {
           height="4px"
           options={{ showSpinner: false }}
           shallowRouting
-          color="var(--chakra-colors-bg-fg)"
+          color="var(--chakra-colors-blue-solid)"
         >
           <QueryClientProvider client={queryClient}>
             <SettingsProvider settings={settings}>

@@ -45,5 +45,5 @@ next-env.d.ts
 files/*
 !files/.gitkeep
 
-public/thumbnails/*
-!public/thumbnails/.gitkeep
+thumbnails/*
+!thumbnails/.gitkeep

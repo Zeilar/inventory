@@ -135,7 +135,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
             Items
           </Heading>
           <UnstyledLink href="/items/deposit">
-            <Button colorPalette="bg" variant="solid" size={["sm", "sm", "md"]}>
+            <Button colorPalette="blue" variant="solid" size={["sm", "sm", "md"]}>
               <MdAdd />
               Deposit
             </Button>
@@ -176,7 +176,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                 {(field) => {
                   return (
                     <Select.Root
-                      colorPalette="bg"
+                      colorPalette="blue"
                       collection={sortCollection}
                       w={["full", 250]}
                       value={[
@@ -255,6 +255,8 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                     cursor="pointer"
                     onClick={() => field.handleChange("published")}
                     value="published"
+                    _dark={{ bgColor: "gray.muted" }}
+                    _light={{ bgColor: "gray.subtle" }}
                     _checked={{
                       color: "green.fg",
                       bgColor: "green.subtle",
@@ -265,10 +267,12 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                   </SegmentGroup.Item>
                   <SegmentGroup.Item
                     rounded="none"
-                    w="100%"
+                    w="full"
                     cursor="pointer"
                     onClick={() => field.handleChange("archived")}
                     value="archived"
+                    _dark={{ bgColor: "gray.muted" }}
+                    _light={{ bgColor: "gray.subtle" }}
                     _checked={{
                       color: "orange.fg",
                       bgColor: "orange.subtle",
@@ -280,13 +284,15 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                   <SegmentGroup.Item
                     roundedRight="sm"
                     roundedLeft="none"
-                    w="100%"
+                    w="full"
                     cursor="pointer"
                     onClick={() => field.handleChange("all")}
                     value="all"
+                    _dark={{ bgColor: "gray.muted" }}
+                    _light={{ bgColor: "gray.subtle" }}
                     _checked={{
-                      color: "bg.fg",
-                      bgColor: "bg.subtle",
+                      color: "blue.fg",
+                      bgColor: "blue.subtle",
                     }}
                     css={{ "&::before": { content: "none" } }}
                   >
@@ -350,6 +356,7 @@ export function ItemsHeaderLayout({ paginationProps, searchField }: ItemsHeaderL
                 form.reset(defaultValues);
                 push("/items");
               }}
+              borderColor="border"
             >
               Reset
             </Button>

@@ -8,6 +8,7 @@ import type { SettingsValues } from "@/features/db/schema";
 import { Seeder } from "./(seeder)";
 import { Box, Flex } from "@chakra-ui/react";
 import { z } from "zod";
+import { APP_BAR_HEIGHT } from "./(components)/navbar/config";
 
 export const metadata: Metadata = {
   title: "Inventory",
@@ -37,7 +38,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
             {hasInstalled ? (
               <Flex as="main" flexDir="column" minH="100svh" align="center">
                 <Navbar />
-                <Box maxW="breakpoint-xl" w="full">
+                <Box maxW="breakpoint-xl" w="full" pb={[APP_BAR_HEIGHT, 0]}>
                   {children}
                 </Box>
               </Flex>

@@ -1,3 +1,4 @@
+import { Panel } from "@/components";
 import { Alert, DataList, Flex, Icon, type SystemStyleObject } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 import type { IconType } from "react-icons/lib";
@@ -26,9 +27,9 @@ export function DashboardCardLayout({
   css,
 }: DashboardCardLayoutProps) {
   return (
-    <Flex rounded="sm" bgColor="bg.panel" p={4} gap={4} align="center" css={css}>
+    <Panel p={4} gap={4} display="flex" alignItems="center" css={css}>
       <Flex p={2}>
-        <Icon color="bg.inverted" size="2xl">
+        <Icon color="blue.fg" size="2xl">
           <IconComponent />
         </Icon>
       </Flex>
@@ -41,7 +42,7 @@ export function DashboardCardLayout({
         </DataList.Root>
         {sibling}
       </Flex>
-    </Flex>
+    </Panel>
   );
 }
 

@@ -44,7 +44,7 @@ export function ItemSearchFieldLayout({
         }
       >
         <Input
-          colorPalette="bg"
+          colorPalette="blue"
           value={value}
           onChange={onChange}
           disabled={isLoading}

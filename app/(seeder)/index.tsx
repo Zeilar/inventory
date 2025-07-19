@@ -33,7 +33,7 @@ export function Seeder() {
         variant="solid"
         loading={isLoading}
         onClick={() => mutate()}
-        colorPalette="bg"
+        colorPalette="blue"
         size="xl"
       >
         <MdRocket />

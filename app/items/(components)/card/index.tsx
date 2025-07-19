@@ -1,4 +1,4 @@
-import { Link, SkeletonText } from "@/components";
+import { SkeletonText, UnstyledLink } from "@/components";
 import { Item } from "@/features/db/schema";
 import { AbsoluteCenter, Badge, Card, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { MdImageNotSupported, MdNumbers, MdSell } from "react-icons/md";
@@ -41,7 +41,7 @@ export function ItemCardLayout({ item, isLoading, thumbnailSrc }: ItemCardProps)
   const { title, archived, price, quantity } = item;
 
   return (
-    <Card.Root w="full" bgColor="transparent" overflow="hidden">
+    <Card.Root w="full" bgColor="bg.panel" overflow="hidden">
       <Flex
         h={[150, 200, 225, 170]}
         align="center"
@@ -49,6 +49,7 @@ export function ItemCardLayout({ item, isLoading, thumbnailSrc }: ItemCardProps)
         borderBottom="1px solid {colors.border}"
         pos="relative"
         overflow="hidden"
+        bgColor="bg"
       >
         <Badge
           colorPalette={!archived ? "green" : "orange"}
@@ -94,8 +95,8 @@ export function ItemCardLayout({ item, isLoading, thumbnailSrc }: ItemCardProps)
 
 export function ItemCard({ item, isLoading, thumbnailSrc }: ItemCardProps) {
   return (
-    <Link href={`/items/${item.id}`}>
+    <UnstyledLink href={`/items/${item.id}`}>
       <ItemCardLayout item={item} isLoading={isLoading} thumbnailSrc={thumbnailSrc} />
-    </Link>
+    </UnstyledLink>
   );
 }

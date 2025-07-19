@@ -1,6 +1,6 @@
 import { apiFetch } from "@/app/api/api-fetch";
 import type { Params } from "@/app/types";
-import { A11yBar, Heading } from "@/components";
+import { A11yBar, Heading, Panel } from "@/components";
 import type { Item } from "@/features/db/schema";
 import { EditItemForm } from "@/features/item/components";
 import { Flex } from "@chakra-ui/react";
@@ -26,21 +26,23 @@ export default async function Page({ params }: Params<"id">) {
           current: "Edit",
         }}
       />
-      <Heading size="2xl" as="h2">
-        {title}
-      </Heading>
-      <EditItemForm
-        articleId={articleId}
-        files={files}
-        id={parseInt(id)}
-        quantity={quantity}
-        title={title}
-        tags={tags}
-        archived={archived}
-        links={links}
-        price={price}
-        thumbnail={thumbnail}
-      />
+      <Panel as={Flex} flexDir="column" gap={[4, 8]}>
+        <Heading size="2xl" as="h2">
+          {title}
+        </Heading>
+        <EditItemForm
+          articleId={articleId}
+          files={files}
+          id={parseInt(id)}
+          quantity={quantity}
+          title={title}
+          tags={tags}
+          archived={archived}
+          links={links}
+          price={price}
+          thumbnail={thumbnail}
+        />
+      </Panel>
     </Flex>
   );
 }

@@ -46,12 +46,12 @@ const PaginationLink = ({
       disabled={isDisabled}
       // Make it effectively disabled but don't affect styles.
       pointerEvents={pagination.page === page ? "none" : undefined}
-      _selected={{ bgColor: "bg.inverted", borderColor: "bg.inverted", color: "fg.inverted" }}
+      _selected={{ bgColor: "blue.solid", borderColor: "blue.solid", color: "gray.100" }}
       {...props}
     >
       <UnstyledLink
         href={`?${searchParams}`}
-        _selected={{ color: "fg" }}
+        _selected={{ color: "blue.fg" }}
         pointerEvents={isDisabled ? "none" : undefined}
       >
         {children}

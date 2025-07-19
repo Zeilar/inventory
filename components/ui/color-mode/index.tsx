@@ -50,18 +50,19 @@ export const ColorModeSwitcher = forwardRef<HTMLDivElement, BoxProps>(function C
       ref={ref}
       display="grid"
       gridTemplateColumns="1fr 1fr"
-      rounded="sm"
+      rounded="md"
       border="1px solid {colors.border}"
+      overflow="hidden"
       {...props}
     >
       <Button
         variant="plain"
         onClick={() => setColorMode("light")}
         w="full"
-        rounded="sm"
+        roundedRight="none"
         _light={{ bgColor: "yellow.muted" }}
       >
-        <Icon color="yellow.fg" size="sm">
+        <Icon color="yellow.fg" size="md">
           <MdLightMode />
         </Icon>
         Light
@@ -70,10 +71,10 @@ export const ColorModeSwitcher = forwardRef<HTMLDivElement, BoxProps>(function C
         variant="plain"
         onClick={() => setColorMode("dark")}
         w="full"
-        rounded="sm"
-        _dark={{ bgColor: "bg.muted" }}
+        roundedLeft="none"
+        _dark={{ bgColor: "bg.emphasized" }}
       >
-        <Icon color="fg" size="sm">
+        <Icon color="fg" size="md">
           <MdDarkMode />
         </Icon>
         Dark

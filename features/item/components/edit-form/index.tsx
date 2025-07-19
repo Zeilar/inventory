@@ -153,8 +153,7 @@ export function EditItemForm({
               <Text textStyle="label">Preview</Text>
               <ItemCardPreview
                 thumbnailSrc={
-                  thumbnailPreviewMutation.data ??
-                  (thumbnail ? getThumbnailPath(id, thumbnail) : null)
+                  thumbnailPreviewMutation.data ?? (thumbnail ? getThumbnailPath(id) : null)
                 }
                 item={{
                   archived: archivedValue,
@@ -224,7 +223,7 @@ export function EditItemForm({
                   <Text textStyle="label">Files</Text>
                   <Flex
                     {...getRootProps()}
-                    rounded="sm"
+                    rounded="md"
                     border="2px dashed"
                     borderColor={isDragActive ? "bg.fg" : "border"}
                     h={200}
@@ -253,7 +252,7 @@ export function EditItemForm({
                     </Flex>
                   </Flex>
                   <Flex flexDir={["column", "row"]} gap={2}>
-                    <Box w="full" border="1px solid {colors.border}" rounded="sm">
+                    <Box w="full" border="1px solid {colors.border}" rounded="md">
                       <Text p={3} color={accepted.length === 0 ? "fg.muted" : undefined}>
                         Accepted ({accepted.length})
                       </Text>
@@ -285,7 +284,7 @@ export function EditItemForm({
                         </Flex>
                       ) : null}
                     </Box>
-                    <Box w="full" border="1px solid {colors.border}" rounded="sm">
+                    <Box w="full" border="1px solid {colors.border}" rounded="md">
                       <Text p={3} color={rejected.length === 0 ? "fg.muted" : undefined}>
                         Rejected ({rejected.length})
                       </Text>
@@ -348,7 +347,7 @@ export function EditItemForm({
         </Flex>
         <Flex gap={4} flexDir={["column", "row"]}>
           <form.SubmitButton w={["full", "auto"]}>Save</form.SubmitButton>
-          <Button onClick={back} variant="outline" w={["full", "auto"]}>
+          <Button onClick={back} variant="ghost" w={["full", "auto"]} colorPalette="blue">
             Cancel
           </Button>
         </Flex>

@@ -1,3 +1,3 @@
-export function getThumbnailPath(id: number, path: string): string {
-  return `/thumbnails/${id}/${path}`;
+export function getThumbnailPath(id: number | string): string {
+  return `/api/thumbnail/${id}`;
 }

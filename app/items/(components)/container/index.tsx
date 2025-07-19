@@ -18,13 +18,13 @@ export function ItemsContainerLayout({ rows, isLoading }: ItemContainerLayoutPro
     <Box
       display="grid"
       gridTemplateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
-      gap={4}
+      gap={[4, 8]}
     >
       {rows.map((item) => (
         <ItemCard
           key={item.id}
           item={item}
-          thumbnailSrc={item.thumbnail ? getThumbnailPath(item.id, item.thumbnail) : null}
+          thumbnailSrc={item.thumbnail ? getThumbnailPath(item.id) : null}
           isLoading={isLoading}
         />
       ))}

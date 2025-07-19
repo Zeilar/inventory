@@ -44,7 +44,7 @@ export async function createItem(
     })
   );
 
-  const thumbnailDir = resolve(process.cwd(), "public", "thumbnails", `${item.id}`);
+  const thumbnailDir = resolve(process.cwd(), "thumbnails", `${item.id}`);
   if (!existsSync(thumbnailDir)) {
     await mkdir(thumbnailDir);
   }

@@ -1,4 +1,4 @@
-import { Heading } from "@/components";
+import { Heading, Panel } from "@/components";
 import { Form } from "./form";
 import { getSettings } from "../api/settings/getSettings";
 import { Flex } from "@chakra-ui/react";
@@ -11,7 +11,9 @@ export default async function Page() {
       <Heading size="2xl" as="h2">
         Settings
       </Heading>
-      <Form settings={await getSettings()} />
+      <Panel>
+        <Form settings={await getSettings()} />
+      </Panel>
     </Flex>
   );
 }
