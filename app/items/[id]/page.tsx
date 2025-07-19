@@ -161,15 +161,13 @@ export default async function Page({
               {price || "-"}
             </InfoBox>
             <InfoBox icon={MdOutlineLink} title="Links">
-              <Flex flexDir="column" gap={2}>
+              <Flex flexDir="column" gap={2} maxW="75%">
                 {parsedLinks.length
                   ? parsedLinks.map((link, i) => (
                       <Link key={`${link}-${i}`} href={link} target="_blank">
-                        <Badge size="lg" colorPalette="blue">
+                        <Badge size="lg" colorPalette="blue" gap={2} display="flex">
                           <MdOutlineOpenInNew />
-                          <Text maxW="calc(100vw - (var(--chakra-spacing-1) * 31))" truncate>
-                            {link}
-                          </Text>
+                          <Text whiteSpace="break-spaces">{link}</Text>
                         </Badge>
                       </Link>
                     ))
