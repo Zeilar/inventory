@@ -72,7 +72,7 @@ export async function updateItem(
       .where(eq(itemsTable.id, id)),
   ]);
 
-  if (thumbnail && currentItem.thumbnail !== thumbnail.name) {
+  if (thumbnail) {
     const thumbnailDir = resolve(process.cwd(), "thumbnails", `${currentItem.id}`);
     if (!existsSync(thumbnailDir)) {
       await mkdir(thumbnailDir, { recursive: true });

@@ -21,6 +21,9 @@ services:
     container_name: inventory_app
     restart: always
     image: inventory
+    volumes:
+      - ./files:/app/files
+      - ./thumbnails:/app/thumbnails
     ports:
       - ${PORT}:${PORT}
     networks:
