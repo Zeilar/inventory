@@ -83,14 +83,6 @@ export async function updateItem(
     } catch (error) {
       console.error(`Failed to write thumbnail ${thumbnail.name} to ${thumbnailPath}`, error);
     }
-    try {
-      await rm(resolve(thumbnailDir, currentItem.thumbnail));
-    } catch (error) {
-      console.error(
-        `Failed to remove thumbnail ${currentItem.thumbnail} at ${thumbnailDir}`,
-        error
-      );
-    }
   }
 
   revalidateTag("items");
