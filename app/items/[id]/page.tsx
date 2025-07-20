@@ -1,5 +1,5 @@
 import type { Params, SearchParams } from "@/app/types";
-import { UnstyledLink, A11yBar, Heading, Link, Panel, Tooltip } from "@/components";
+import { UnstyledLink, A11yBar, Heading, Panel, Tooltip } from "@/components";
 import type { Item, ItemHistory } from "@/features/db/schema";
 import type { PropsWithChildren, ReactNode } from "react";
 import { VersionSelect } from "./version-select";
@@ -134,11 +134,11 @@ export default async function Page({
               <Flex display="flex" gap={2} flexWrap="wrap">
                 {parsedTags.length > 0
                   ? parsedTags.map((tag) => (
-                      <Link key={tag} href={`/items?tags=${tag}`}>
+                      <UnstyledLink key={tag} href={`/items?tags=${tag}`}>
                         <Badge size="lg" colorPalette="blue">
                           {tag}
                         </Badge>
-                      </Link>
+                      </UnstyledLink>
                     ))
                   : "-"}
               </Flex>
@@ -170,14 +170,14 @@ export default async function Page({
               <Flex flexDir="column" gap={2}>
                 {parsedLinks.length
                   ? parsedLinks.map((link, i) => (
-                      <Link key={`${link}-${i}`} href={link} target="_blank">
+                      <UnstyledLink key={`${link}-${i}`} href={link} target="_blank">
                         <Badge size="lg" colorPalette="blue" gap={2} display="flex">
                           <Icon flexShrink={0}>
                             <MdOutlineOpenInNew />
                           </Icon>
                           <Text whiteSpace="break-spaces">{link}</Text>
                         </Badge>
-                      </Link>
+                      </UnstyledLink>
                     ))
                   : "-"}
               </Flex>
