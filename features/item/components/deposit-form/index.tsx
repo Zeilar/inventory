@@ -117,7 +117,9 @@ export function DepositItemForm() {
               },
             }}
           >
-            {(field) => <field.ThumbnailField onChange={thumbnailPreviewMutation.mutate} />}
+            {(field) => (
+              <field.ThumbnailField required onChange={thumbnailPreviewMutation.mutate} />
+            )}
           </form.AppField>
           <Box display="flex" gap={8} flexDir={["column", "row"]}>
             <form.AppField

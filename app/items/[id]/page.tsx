@@ -1,5 +1,5 @@
 import type { Params, SearchParams } from "@/app/types";
-import { UnstyledLink, A11yBar, Heading, Link, Panel } from "@/components";
+import { UnstyledLink, A11yBar, Heading, Link, Panel, Tooltip } from "@/components";
 import type { Item, ItemHistory } from "@/features/db/schema";
 import type { PropsWithChildren, ReactNode } from "react";
 import { VersionSelect } from "./version-select";
@@ -108,9 +108,9 @@ export default async function Page({
             </UnstyledLink>
           </Flex>
         </Flex>
-        <Flex gap={[4, 8]} flexDir={["column", "row"]}>
+        <Box display="grid" gridTemplateColumns={["1fr", "1fr 1fr"]} gap={[4, 8]}>
           <Panel w="fit" h="fit">
-            <Image src={getThumbnailPath(id)} w={["full", 200]} alt="" objectFit="contain" />
+            <Image src={getThumbnailPath(id)} alt="" objectFit="contain" />
           </Panel>
           <Flex flexDir="column" gap={[2, 4]}>
             <InfoBox icon={MdOutlineNumbers} title="Quantity">
@@ -119,10 +119,16 @@ export default async function Page({
             <InfoBox icon={MdOutlineFingerprint} title="Article id">
               {articleId || "-"}
             </InfoBox>
-            <InfoBox icon={MdOutlineArchive} title="Archived">
-              {archived && archivedAt
-                ? new Date(archivedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)
-                : "No"}
+            <InfoBox icon={MdOutlineArchive} title="Status">
+              {archived && archivedAt ? (
+                <Tooltip
+                  content={new Date(archivedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
+                >
+                  <Badge colorPalette="orange">Archived</Badge>
+                </Tooltip>
+              ) : (
+                <Badge colorPalette="green">Published</Badge>
+              )}
             </InfoBox>
             <InfoBox icon={MdOutlineTag} title="Tags">
               <Flex display="flex" gap={2} flexWrap="wrap">
@@ -161,12 +167,14 @@ export default async function Page({
               {price || "-"}
             </InfoBox>
             <InfoBox icon={MdOutlineLink} title="Links">
-              <Flex flexDir="column" gap={2} maxW="75%">
+              <Flex flexDir="column" gap={2}>
                 {parsedLinks.length
                   ? parsedLinks.map((link, i) => (
                       <Link key={`${link}-${i}`} href={link} target="_blank">
                         <Badge size="lg" colorPalette="blue" gap={2} display="flex">
-                          <MdOutlineOpenInNew />
+                          <Icon flexShrink={0}>
+                            <MdOutlineOpenInNew />
+                          </Icon>
                           <Text whiteSpace="break-spaces">{link}</Text>
                         </Badge>
                       </Link>
@@ -181,7 +189,7 @@ export default async function Page({
               {new Date(item.updatedAt).toLocaleString(process.env.NEXT_PUBLIC_LOCALE)}
             </InfoBox>
           </Flex>
-        </Flex>
+        </Box>
       </Panel>
     </Flex>
   );

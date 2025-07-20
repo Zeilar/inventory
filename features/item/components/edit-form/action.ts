@@ -13,7 +13,7 @@ export async function updateItem(
   data: Partial<Item>,
   files: File[],
   filesToRemove: string[],
-  thumbnail: File
+  thumbnail: File | null
 ): Promise<void> {
   const currentItem = (await db.select().from(itemsTable).where(eq(itemsTable.id, id))).at(0);
   if (!currentItem) {
@@ -72,7 +72,7 @@ export async function updateItem(
       .where(eq(itemsTable.id, id)),
   ]);
 
-  if (currentItem.thumbnail !== thumbnail.name) {
+  if (thumbnail && currentItem.thumbnail !== thumbnail.name) {
     const thumbnailDir = resolve(process.cwd(), "thumbnails", `${currentItem.id}`);
     if (!existsSync(thumbnailDir)) {
       await mkdir(thumbnailDir, { recursive: true });

@@ -73,10 +73,6 @@ export function EditItemForm({
       const { filesToRemove, quantity, articleId, files, title, tags, links, price, thumbnail } =
         value;
 
-      if (!thumbnail) {
-        throw new Error("Missing thumbnail.");
-      }
-
       let archivedAt: string | null | undefined;
       // Archiving.
       if (!archived && value.archived) {
@@ -165,16 +161,7 @@ export function EditItemForm({
             </Flex>
           </Box>
           <form.AppField name="archived">{(field) => <field.ArchivedToggler />}</form.AppField>
-          <form.AppField
-            name="thumbnail"
-            validators={{
-              onChange: ({ value }) => {
-                if (!value) {
-                  return "Thumbnail is required.";
-                }
-              },
-            }}
-          >
+          <form.AppField name="thumbnail">
             {(field) => <field.ThumbnailField onChange={thumbnailPreviewMutation.mutate} />}
           </form.AppField>
           <Box display="flex" gap={8} flexDir={["column", "row"]}>

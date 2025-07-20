@@ -28,6 +28,7 @@ interface TagsFieldProps {
 
 interface ThumbnailFieldProps {
   onChange(value: File | null): void;
+  required?: boolean;
 }
 
 export function Field({
@@ -200,7 +201,7 @@ export function ArchivedToggler() {
   );
 }
 
-export function ThumbnailField({ onChange }: ThumbnailFieldProps) {
+export function ThumbnailField({ onChange, required }: ThumbnailFieldProps) {
   const { state, handleChange } = useFieldContext<File | null>();
   const { value, meta } = state;
   const { errors } = meta;
@@ -217,9 +218,11 @@ export function ThumbnailField({ onChange }: ThumbnailFieldProps) {
       />
       <FileUpload.Label display="flex" gap={1}>
         Thumbnail
-        <Box as="span" color="fg.error">
-          *
-        </Box>
+        {required && (
+          <Box as="span" color="fg.error">
+            *
+          </Box>
+        )}
       </FileUpload.Label>
       <InputGroup
         startElement={<MdUpload />}
