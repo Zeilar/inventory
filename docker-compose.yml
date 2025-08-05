@@ -22,8 +22,8 @@ services:
     restart: always
     image: inventory
     volumes:
-      - ./files:/app/files
-      - ./thumbnails:/app/thumbnails
+      - /mnt/tank/inventory/files:/app/files
+      - /mnt/tank/inventory/thumbnails:/app/thumbnails
     ports:
       - ${PORT}:${PORT}
     networks:
